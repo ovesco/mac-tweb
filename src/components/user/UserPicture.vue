@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="user-picture">
-            <img src="../assets/images/face.jpeg" v-bind:style="{height: pSize, width: pSize}" />
+            <img src="../../assets/images/face.jpeg" v-bind:style="{height: pSize, width: pSize}"
+            :class="{'rounded': !rounded}"/>
         </div>
     </div>
 </template>
@@ -12,9 +13,13 @@
             image: {
                 type: String,
             },
+            rounded: {
+                type: Boolean,
+                default: true,
+            },
             size: {
                 type: Number,
-                default: () => 3,
+                default: 3,
             },
         },
         computed: {

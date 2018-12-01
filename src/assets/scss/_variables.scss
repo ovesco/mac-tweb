@@ -2,3 +2,15 @@
 @import "../../../node_modules/bootstrap/scss/variables";
 
 $blue: #007aff;
+$red: #DD7169;
+
+$themes: (
+    primary: $blue,
+    success: $success,
+    danger: $red,
+);
+
+$container-size: (
+    md: 600px,
+    lg: 1160px,
+);

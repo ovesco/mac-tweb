@@ -14,9 +14,19 @@ export default new Router({
             component: Network,
             children: [
                 {
-                    path: '/',
+                    path: '/activity',
                     name: 'activity',
                     component: () => import(/* webpackChunkName: "activity" */ './views/Activity.vue'),
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue'),
+                },
+                {
+                    path: '/files',
+                    name: 'files',
+                    component: () => import(/* webpackChunkName: "files" */ './views/Files.vue'),
                 },
             ],
         },

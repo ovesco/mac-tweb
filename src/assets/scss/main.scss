@@ -1,7 +1,6 @@
 @import "variables";
+@import "override";
 @import "../../../node_modules/bootstrap/scss/mixins";
-
-@import "variables";
 
 $spacers: (
         (
@@ -28,6 +27,13 @@ $spacers: (
 $--font-path: '../../../node_modules/element-ui/packages/theme-chalk/src/fonts';
 @import "../../../node_modules/element-ui/packages/theme-chalk/src/index";
 
+@each $type, $size in $container-size {
+    .container-#{$type} {
+        max-width: $size;
+        width: 100%;
+        margin:auto;
+    }
+}
 
 .image-container {
     position:relative;
@@ -47,27 +53,74 @@ $--font-path: '../../../node_modules/element-ui/packages/theme-chalk/src/fonts';
     font-size:0.8em;
     padding: 0 1em;
     line-height:0;
-    height:2.3em;
-    background:$gray-400;
+    height:40px;
+    background-color:$gray-400;
     transition: opacity .2s;
     cursor:pointer;
+    outline:none !important;
+
+    &.btn-small {
+        height: 2rem;
+    }
 
     &.btn-outline {
-        background:transparent !important;
+        background-color:transparent !important;
         border:1px solid $gray-400;
+    }
+
+    &.btn-white {
+        border:1px solid $gray-200;
+        background:white;
+
+        &:hover {
+            background-color:$gray-100;
+        }
+
+        &.active {
+            background-color:$gray-200;
+            color:$blue;
+        }
     }
 
     &:hover {
         opacity:0.8;
     }
 
-    &.btn-primary {
-        background:$blue;
-        color:white;
+    @each $class, $color in $themes {
+        &.btn-#{$class} {
+            background-color:$color;
+            color:white;
 
-        &.btn-outline {
-            border:1px solid $blue;
-            color:$blue;
+            &.active {
+                background-color:darken($color, 20%);
+            }
+
+            &.btn-outline {
+                border:1px solid $color;
+                color:$color;
+
+                &.active {
+                    border:1px solid darken($color, 20%);
+                    color:darken($color, 20%);
+                }
+            }
+        }
+
+    }
+}
+
+.btn-group {
+    .btn {
+        border-radius:0;
+        border-right-width:0;
+
+        &:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        &:last-child {
+            border-radius: 0 4px 4px 0;
+            border-right-width:1px;
         }
     }
 }

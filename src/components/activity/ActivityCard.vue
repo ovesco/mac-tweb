@@ -6,35 +6,37 @@
             </div>
             <div class="card-content">
                 <div class="pl-lg-5 pr-lg-5" v-if="hasText">
-                    <slot name="text"></slot>
+                    <slot name="text"/>
                 </div>
-                <slot></slot>
+                <slot/>
             </div>
             <div class="activity-likes pl-lg-5 pr-lg-5 pt-lg-3 pb-lg-3">
                 <div class="d-lg-flex align-items-lg-center justify-content-lg-between">
                     <div class="users-likes d-flex align-items-lg-center pt-lg-3 pb-lg-3">
                         <div class="likes d-flex mr-lg-3">
-                            <span style="background:#dd7169;"><icon icon="heart"></icon></span>
-                            <span style="background:#007aff;"><icon icon="thumbs-up"></icon></span>
+                            <span style="background:#dd7169;"><icon icon="heart"/></span>
+                            <span style="background:#007aff;"><icon icon="thumbs-up"/></span>
                         </div>
                         <p class="m-0">Bidule Chouette, Machin Chose et 12 personnes aiment ça</p>
                     </div>
-                    <button class="btn btn-primary">Liker</button>
+                    <press-like-button />
                 </div>
             </div>
             <div class="activity-comments">
-                <comments></comments>
+                <comments/>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import pressLikeButton from '../Smart/PressLikeButton.vue';
     import activityPoster from './ActivityPoster.vue';
     import comments from './Comments.vue';
 
     export default {
         components: {
+            pressLikeButton,
             activityPoster,
             comments,
         },

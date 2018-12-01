@@ -1,17 +1,13 @@
 <template>
     <div>
-        <div class="activity-content pt-lg-5">
+        <div class="container-md pt-lg-5">
             <div>
                 <card-activity>
                     <div slot="text">
                         Yo les soss voila les fameux tests!
                     </div>
                     <div>
-                        <div class="d-flex p-lg-5">
-                            <file-preview class="flex-grow-1"></file-preview>
-                            <file-preview class="flex-grow-1 pl-lg-5 pr-lg-5"></file-preview>
-                            <file-preview class="flex-grow-1"></file-preview>
-                        </div>
+                        <activity-files class="pl-lg-3 pr-lg-3 pt-lg-5 pb-lg-5" />
                     </div>
                 </card-activity>
             </div>
@@ -20,21 +16,13 @@
 </template>
 
 <script>
-    import cardActivity from '../components/activity/Card.vue';
-    import filePreview from '../components/activity/FilePreview.vue';
+    import cardActivity from '../components/activity/ActivityCard.vue';
+    import activityFiles from '../components/activity/ActivityFiles.vue';
 
     export default {
         components: {
             cardActivity,
-            filePreview,
+            activityFiles,
         },
     };
 </script>
-
-<style>
-    .activity-content {
-        max-width:600px;
-        width:100%;
-        margin:auto;
-    }
-</style>

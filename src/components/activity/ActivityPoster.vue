@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="user-details d-lg-flex align-items-lg-center">
-            <user-picture :image="'yolo'" class="mr-lg-3"></user-picture>
+            <user-picture class="mr-lg-3"/>
             <div class="user-details d-lg-flex flex-lg-column">
                 <div class="username mb-lg-1 d-flex">
                     <smart-username />
@@ -15,8 +15,8 @@
 </template>
 
 <script>
-    import userPicture from '../UserPicture.vue';
-    import smartUsername from '../Smart/SmartUsername';
+    import userPicture from '../user/UserPicture.vue';
+    import smartUsername from '../Smart/SmartUsername.vue';
 
     export default {
         components: {

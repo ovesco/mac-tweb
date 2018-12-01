@@ -9,7 +9,7 @@
                         Lorem ipsum de la grosse bonne balle des familles, j'aime bien le caca
                         aussi parfois..
                     </p>
-                    <div class="comment-meta d-flex">
+                    <div class="comment-meta d-flex mt-lg-2">
                         <p class="m-0 text-black-50">Il y a 5 minutes</p>
                         <a href="#" class="ml-lg-2">Liker</a>
                     </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-    import userPicture from '../UserPicture.vue';
+    import userPicture from '../user/UserPicture.vue';
     import smartUsername from '../Smart/SmartUsername.vue';
 
     export default {
