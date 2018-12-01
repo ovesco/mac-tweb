@@ -1,0 +1,73 @@
+@import "variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+@import "variables";
+
+$spacers: (
+        (
+                0: 0,
+                1: ($spacer * .2),
+                2: ($spacer * .4),
+                3: ($spacer * .6),
+                4: ($spacer * .8),
+                5: $spacer,
+                6: ($spacer * 1.5),
+                7: ($spacer * 3),
+                8: ($spacer * 5),
+                9: ($spacer * 7),
+                10: ($spacer * 10),
+        )
+);
+
+
+@import "../../../node_modules/bootstrap/scss/reboot";
+@import "../../../node_modules/bootstrap/scss/grid";
+@import "../../../node_modules/bootstrap/scss/utilities";
+
+// ElementUI
+$--font-path: '../../../node_modules/element-ui/packages/theme-chalk/src/fonts';
+@import "../../../node_modules/element-ui/packages/theme-chalk/src/index";
+
+
+.image-container {
+    position:relative;
+    overflow:hidden;
+
+    img {
+        position:absolute;
+        min-width:100%;
+        height:100%;
+    }
+}
+
+.btn {
+
+    border:0;
+    border-radius:4px;
+    font-size:0.8em;
+    padding: 0 1em;
+    line-height:0;
+    height:2.3em;
+    background:$gray-400;
+    transition: opacity .2s;
+    cursor:pointer;
+
+    &.btn-outline {
+        background:transparent !important;
+        border:1px solid $gray-400;
+    }
+
+    &:hover {
+        opacity:0.8;
+    }
+
+    &.btn-primary {
+        background:$blue;
+        color:white;
+
+        &.btn-outline {
+            border:1px solid $blue;
+            color:$blue;
+        }
+    }
+}
