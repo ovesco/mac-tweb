@@ -9,7 +9,7 @@
                 </el-table-column>
                 <el-table-column label="Type" width="60">
                     <template slot-scope="scope">
-                        <icon class="mimetype-icon" :icon="scope.row.icon" />
+                        <file-icon class="file-icon" :mime="scope.row.mimeType" />
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -44,6 +44,7 @@
     import FilesPropMixin from '../../mixins/FilesPropMixin';
     import FileSelectionMixin from '../../mixins/FileSelectionMixin';
     import FileContainerMixin from '../../mixins/FileContainerMixin';
+    import FileIcon from './FileIcon.vue';
 
     export default {
         mixins: [
@@ -51,6 +52,9 @@
             FileSelectionMixin,
             FileContainerMixin,
         ],
+        components: {
+            FileIcon,
+        },
     };
 </script>
 
@@ -59,7 +63,7 @@
 
     .files-list {
 
-        .mimetype-icon {
+        .file-icon {
             color:$gray-500;
             font-size:1.2rem;
         }

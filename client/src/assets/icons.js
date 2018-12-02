@@ -14,7 +14,7 @@ import {
     faFolderPlus,
     faSignInAlt,
     faSignOutAlt,
-    faImage,
+    faFileImage,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -31,6 +31,6 @@ library.add(faCopy);
 library.add(faFolderPlus);
 library.add(faSignInAlt);
 library.add(faSignOutAlt);
-library.add(faImage);
+library.add(faFileImage);
 
 Vue.component('icon', FontAwesomeIcon);

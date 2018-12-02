@@ -1,8 +1,6 @@
 require('dotenv').config();
 const UserManager = require('./manager/UserManager');
 
-const manager = new UserManager();
-
 (async () => {
     for (let i = 0; i < 10; i++) {
         const user = {
@@ -12,6 +10,6 @@ const manager = new UserManager();
             email: `user${i}@swag.com`,
         };
 
-        await manager.save(user);
+        await UserManager.save(user);
     }
 })();

@@ -33,6 +33,7 @@
     import newDirectoryButton from '../components/files/NewDirectoryButton.vue';
     import directoryList from '../components/files/DirectoryList.vue';
     import fileSelectionMixin from '../mixins/FileSelectionMixin';
+    import DummyFiles from '../assets/DummyFiles';
 
     export default {
         mixins: [fileSelectionMixin],
@@ -43,28 +44,7 @@
         },
         data() {
             return {
-                files: [
-                    {
-                        id: 0,
-                        filename: 'yoloswag.pdf',
-                        icon: 'file-pdf',
-                        tags: ['swag', 'yolo'],
-                        date: new Date(),
-                        src: 'http://www.pdf995.com/samples/pdf.pdf',
-                        author: 'jean michel',
-                        selected: false,
-                    },
-                    {
-                        id: 1,
-                        filename: 'yoloswag.pdf',
-                        icon: 'file-pdf',
-                        tags: ['much', 'bimbim'],
-                        src: 'http://www.africau.edu/images/default/sample.pdf',
-                        date: new Date(),
-                        author: 'jean michel',
-                        selected: false,
-                    },
-                ],
+                files: DummyFiles,
             };
         },
     };

@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="files-grid">
-            <div class="row">
-                <div class="file-col col-6 col-sm-4"
+            <div class="row no-gutters pb-1">
+                <div class="file-col col-6 col-sm-4 pt-3 pb-2 pl-3 pr-2"
                      v-for="file in files" :key="file.id" :class="[colClass]">
                     <file-block :file.sync="file" />
                 </div>
