@@ -1,18 +1,14 @@
 const Joi = require('joi');
 
 module.exports = class {
-    constructor(schema) {
+    constructor(collection, schema) {
         this.schema = schema;
-    }
-
-    static async initCollection(db, name) {
-        const collection = db.collection(name);
-        await collection.create();
         this.collection = collection;
     }
 
     async find(key) {
-        return this.collection.document(key);
+        const result = await this.collection.document(key);
+        return result;
     }
 
     async save(doc) {

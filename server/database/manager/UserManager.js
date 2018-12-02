@@ -1,15 +1,12 @@
 const UserSchema = require('./../schema/User');
 const BaseManager = require('./BaseManager');
+const db = require('./../index');
 
 class UserManager extends BaseManager {
-    constructor() {
-        super();
-        this.collection = null;
-    }
-
-    async build(db) {
-        this.collection = await exports.initCollection(db, 'users');
+    constructor(collection) {
+        super(collection, UserSchema);
+        this.collection = collection;
     }
 }
 
-module.exports = UserManager;
+module.exports = new UserManager(db.collection('users'));

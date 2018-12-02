@@ -1,6 +1,11 @@
 const { gql } = require('apollo-server');
+const UserManager = require('./../database/manager/UserManager');
 
 module.exports.userTypeDefs = gql`
+    extend type Query {
+        user(key: ID!): User
+    }
+    
     type User {
         id: ID!
         username: String!
@@ -10,6 +15,7 @@ module.exports.userTypeDefs = gql`
 `;
 
 module.exports.userResolvers = {
-    User: {
+    Query: {
+        user: async (_, { key }) => UserManager.find(key),
     },
 };

@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup": "node ./database/setup",
+    "dummy": "node ./database/dummy"
   },
   "author": "",
   "license": "ISC",
@@ -12,9 +14,12 @@
     "apollo-datasource": "^0.2.1",
     "apollo-server": "^2.2.5",
     "arangojs": "^6.9.0",
+    "dotenv": "^6.1.0",
     "eslint-plugin-import": "^2.14.0",
     "graphql": "^14.0.2",
-    "joi": "^14.3.0"
+    "joi": "^14.3.0",
+    "lodash": "^4.17.11",
+    "merge-graphql-schemas": "^1.5.8"
   },
   "devDependencies": {
     "eslint": "^5.9.0",

@@ -1,6 +1,5 @@
 const { Database } = require('arangojs');
 
-const db = new Database();
-db.createDatabase('colibri').then(() => {
-    db.use('colibri');
-});
+const database = new Database(process.env.ARANGO_URL);
+database.useDatabase(process.env.DB_NAME);
+module.exports = database;
