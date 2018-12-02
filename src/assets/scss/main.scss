@@ -55,7 +55,7 @@ $--font-path: '../../../node_modules/element-ui/packages/theme-chalk/src/fonts';
     line-height:0;
     height:40px;
     background-color:$gray-400;
-    transition: opacity .2s;
+    transition: opacity .2s, border-color .3s;
     cursor:pointer;
     outline:none !important;
 
@@ -73,12 +73,12 @@ $--font-path: '../../../node_modules/element-ui/packages/theme-chalk/src/fonts';
         background:white;
 
         &:hover {
-            background-color:$gray-100;
+            border-color:$gray-500;
         }
 
-        &.active {
-            background-color:$gray-200;
+        &.active, &:active {
             color:$blue;
+            border-color: $blue;
         }
     }
 
@@ -121,6 +121,14 @@ $--font-path: '../../../node_modules/element-ui/packages/theme-chalk/src/fonts';
         &:last-child {
             border-radius: 0 4px 4px 0;
             border-right-width:1px;
+        }
+
+        &.active {
+            border-right-width: 1px;
+
+            &+.btn {
+                border-left-width:0;
+            }
         }
     }
 }

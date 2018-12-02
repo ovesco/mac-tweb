@@ -4,10 +4,10 @@
             <div class="d-flex justify-content-between mb-lg-5">
                 <div class="d-flex">
                     <slot name="actions" />
-                    <add-to-directory-button :files="selected" v-if="selected.length > 0"
-                                             class="mr-2" v-on:directory-selected="check" />
+                    <add-to-directory-button :files="files" v-if="selected.length > 0"
+                            class="mr-2" v-on:directory-selected="moveDirSelected" />
                     <read-files-button v-if="selected.length > 0 && selected.length < 4"
-                                       :files="selected" />
+                           :files="selected" />
                 </div>
                 <div class="d-flex">
                     <el-select v-model="amount" placeholder="Select"
@@ -21,8 +21,13 @@
                     </el-select>
                     <div class="btn-group">
                         <button class="btn btn-white"
-                                :class="{'active': displayMode === 'list'}"
-                                @click="displayMode = 'list'">
+                                :class="{'active': displayMode === GRID}"
+                                @click="displayMode = GRID">
+                            <i class="el-icon-menu"></i>
+                        </button>
+                        <button class="btn btn-white"
+                                :class="{'active': displayMode === LIST}"
+                                @click="displayMode = LIST">
                             <i class="el-icon-tickets"></i>
                         </button>
                     </div>
@@ -30,34 +35,46 @@
             </div>
 
             <el-card shadow="never">
-                <list-files :selected.sync="selected" />
+                <files-list v-if="displayMode === LIST" :files.sync="files" />
+                <files-grid v-if="displayMode === GRID" :files.sync="files" :cols="4" />
             </el-card>
         </div>
     </div>
 </template>
 
 <script>
-    import listFiles from './FilesList.vue';
+    import filesList from './FilesList.vue';
+    import filesGrid from './FilesGrid.vue';
     import AddToDirectoryButton from './AddToDirectoryButton.vue';
     import readFilesButton from './ReadFilesButton.vue';
+    import FilesPropMixin from '../../mixins/FilesPropMixin';
+
+    const MODE = {
+        GRID: 'grid',
+        LIST: 'list',
+    };
 
     export default {
+        mixins: [
+            FilesPropMixin,
+        ],
         components: {
             AddToDirectoryButton,
-            listFiles,
+            filesList,
+            filesGrid,
             readFilesButton,
-        },
-        props: {
-            selected: {
-                type: Array,
-                default: () => [],
-            },
         },
         data() {
             return {
-                displayMode: 'list',
+                displayMode: MODE.LIST,
                 amount: 20,
+                ...MODE,
             };
+        },
+        methods: {
+            moveDirSelected(dir) {
+                console.log(dir);
+            },
         },
     };
 </script>

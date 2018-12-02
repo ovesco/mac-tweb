@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="file-tag">
-            <el-tag :size="size">{{ tag }}</el-tag>
+            <el-tag :size="size">#{{ tag }}</el-tag>
         </div>
     </div>
 </template>

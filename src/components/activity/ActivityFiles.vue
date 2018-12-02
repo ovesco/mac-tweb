@@ -1,68 +1,37 @@
 <template>
     <div>
         <div v-if="selected.length > 0" class="p-lg-2 d-flex">
-            <read-files-button :files="selected" class="mr-2" />
-            <add-to-directory-button :files="selected" />
+            <add-to-directory-button :files="selected" class="mr-2" />
+            <read-files-button :files="selected" v-if="selected.length < 4" />
         </div>
         <div class="row no-gutters">
-            <div class="col-6 col-sm-4 p-lg-2" v-for="(file, k) in files" :key="k">
-                <file-preview :file="file" />
+            <div class="col-6 col-sm-4 p-lg-2" v-for="(file, k) in files.slice(0, show)" :key="k">
+                <file-block :file="file" />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import filePreview from './FilePreview.vue';
+    import fileBlock from '../files/FileBlock.vue';
     import addToDirectoryButton from '../files/AddToDirectoryButton.vue';
     import readFilesButton from '../files/ReadFilesButton.vue';
+    import FilesPropMixin from '../../mixins/FilesPropMixin';
 
     export default {
         components: {
-            filePreview,
+            fileBlock,
             addToDirectoryButton,
             readFilesButton,
         },
-        data() {
-            return {
-                files: [
-                    {
-                        id: 0,
-                        filename: 'yoloswag.pdf',
-                        icon: 'file-pdf',
-                        tags: ['swag', 'yolo'],
-                        date: new Date(),
-                        src: 'http://www.pdf995.com/samples/pdf.pdf',
-                        author: 'jean michel',
-                        selected: false,
-                    },
-                    {
-                        id: 0,
-                        filename: 'yoloswag.pdf',
-                        icon: 'file-pdf',
-                        tags: ['swag', 'yolo'],
-                        date: new Date(),
-                        src: 'http://www.pdf995.com/samples/pdf.pdf',
-                        author: 'jean michel',
-                        selected: false,
-                    },
-                    {
-                        id: 0,
-                        filename: 'yoloswag.pdf',
-                        icon: 'file-pdf',
-                        tags: ['swag', 'yolo'],
-                        date: new Date(),
-                        src: 'http://www.pdf995.com/samples/pdf.pdf',
-                        author: 'jean michel',
-                        selected: false,
-                    },
-                ],
-            };
-        },
-        computed: {
-            selected() {
-                return this.files.filter(file => file.selected);
+        props: {
+            show: {
+                type: Number,
+                default: () => 10000,
             },
         },
+        mixins: [
+            FilesPropMixin,
+        ],
     };
 </script>

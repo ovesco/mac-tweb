@@ -1,21 +1,20 @@
 <template>
     <div>
         <div class="pdf-reader">
-            <div class="reader-content" v-if="src">
-                <iframe :src="src"></iframe>
+            <div class="reader-content" v-if="file">
+                <iframe :src="file.src"></iframe>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import FilePropMixin from '../../mixins/FilePropMixin';
+
     export default {
-        props: {
-            src: {
-                type: String,
-                default: () => null,
-            },
-        },
+        mixins: [
+            FilePropMixin,
+        ],
     };
 </script>
 

@@ -1,12 +1,19 @@
 <template>
     <div>
         <div class="header fixed-top d-lg-flex justify-content-lg-between">
-            <div class="d-lg-flex align-items-lg-center pl-lg-3 logo">
-                <div class="mr-lg-3">
-                    <img src="../assets/images/logo.png" />
+            <div class="left d-flex">
+                <div class="logo d-flex align-items-center pl-lg-3">
+                    <div class="mr-lg-3">
+                        <img src="../assets/images/logo.png" />
+                    </div>
+                    <p class="title m-lg-0 pr-lg-2">Colibri</p>
+                    <p class="m-lg-0">Collaboration</p>
                 </div>
-                <p class="title m-lg-0 pr-lg-2">Colibri</p>
-                <p class="m-lg-0">File sharing for students</p>
+                <div class="search pt-lg-3 pb-lg-3 d-flex align-items-center">
+                    <div class="input-search-container pl-lg-3">
+                        <input type="text" title="Search" placeholder="Rechercher..." />
+                    </div>
+                </div>
             </div>
             <div class="d-lg-flex p-lg-3 align-items-lg-center">
                 <div class="d-lg-flex">
@@ -43,7 +50,22 @@
         border-bottom:1.5px solid $gray-200;
         background:white;
 
+        .search {
+
+            .input-search-container {
+
+                border-left:1px solid $gray-300;
+
+                input[type=text] {
+                    border:none;
+                    font-size:0.9rem;
+                }
+            }
+        }
+
         .logo {
+
+            width:249px;
 
             img {
                 width:3em;

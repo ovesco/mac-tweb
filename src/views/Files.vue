@@ -12,7 +12,7 @@
                         </el-card>
                     </div>
                     <div class="col-lg-9">
-                        <files-viewer :selected.sync="selected">
+                        <files-viewer :files.sync="files">
                             <template slot="actions">
                                 <button class="btn btn-white mr-2"
                                     v-if="selected.length > 0">
@@ -32,8 +32,10 @@
     import filesViewer from '../components/files/FilesViewer.vue';
     import newDirectoryButton from '../components/files/NewDirectoryButton.vue';
     import directoryList from '../components/files/DirectoryList.vue';
+    import fileSelectionMixin from '../mixins/FileSelectionMixin';
 
     export default {
+        mixins: [fileSelectionMixin],
         components: {
             newDirectoryButton,
             filesViewer,
@@ -41,7 +43,28 @@
         },
         data() {
             return {
-                selected: [],
+                files: [
+                    {
+                        id: 0,
+                        filename: 'yoloswag.pdf',
+                        icon: 'file-pdf',
+                        tags: ['swag', 'yolo'],
+                        date: new Date(),
+                        src: 'http://www.pdf995.com/samples/pdf.pdf',
+                        author: 'jean michel',
+                        selected: false,
+                    },
+                    {
+                        id: 1,
+                        filename: 'yoloswag.pdf',
+                        icon: 'file-pdf',
+                        tags: ['much', 'bimbim'],
+                        src: 'http://www.africau.edu/images/default/sample.pdf',
+                        date: new Date(),
+                        author: 'jean michel',
+                        selected: false,
+                    },
+                ],
             };
         },
     };

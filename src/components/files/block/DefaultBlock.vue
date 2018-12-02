@@ -1,25 +1,15 @@
 <template>
     <div>
-        <div class="document-preview" :class="{'active': file.selected}">
-            <div class="d-flex flex-column justify-content-between align-items-center">
-                <div>
-                    <div class="select">
-                        <el-checkbox v-model="file.selected">Sélectionner</el-checkbox>
-                    </div>
-                </div>
+        <div class="block-preview" :class="{'active': file.selected}">
+            <div class="d-flex flex-column justify-content-center align-items-center">
                 <div>
                     <div class="icon d-flex justify-content-center mb-2">
-                        <icon icon="file-pdf"/>
+                        <file-icon :mime="file.mimeType" />
                     </div>
                     <div class="file-metadata">
                         <p class="filename m-0 text-center">{{ file.filename }}</p>
-                        <p class="metadata m-0 text-center">{{ file.date }} - {{ file.size }}</p>
-                    </div>
-                </div>
-                <div class="pb-2">
-                    <div class="tags-container d-flex justify-content-center">
-                        <file-tag v-for="tag in file.tags" :key="tag" :tag="tag"
-                                  size="mini" class="mr-1" />
+                        <p class="metadata m-0 text-center">{{ file.date | moment('from') }}</p>
+                        <p class="metadata m-0 text-center">{{ file.size }}</p>
                     </div>
                 </div>
             </div>
@@ -28,31 +18,26 @@
 </template>
 
 <script>
-    import fileTag from '../files/FileTag.vue';
+    import FileBlockMixin from '../../../mixins/FileBlockMixin';
 
     export default {
-        components: {
-            fileTag,
-        },
-        props: {
-            file: {
-                type: Object,
-                required: true,
-            },
-        },
+        mixins: [
+            FileBlockMixin,
+        ],
     };
 </script>
 
 <style lang="scss">
-    @import "../../assets/scss/_variables.scss";
+    @import "../../../assets/scss/_variables.scss";
 
-    .document-preview {
+    .block-preview {
+
         width:100%;
         padding-top:100%;
         background:$gray-200;
-        border:2px dashed $gray-300;
         border-radius:5px;
         position:relative;
+        overflow:hidden;
 
         &:hover {
 
@@ -76,11 +61,12 @@
 
             .select, .tags-container {
                 opacity:0;
+                transition:opacity .2s;
             }
 
             .icon {
                 color:$gray-400;
-                font-size:3em;
+                font-size:2em;
             }
 
             .file-metadata {

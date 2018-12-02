@@ -18,8 +18,9 @@ export default new Vuex.Store({
         addFileToWatch: (state, file) => {
             state.reader.files.push(file);
         },
-        clearFilesToWatch: (state) => {
-            state.reader.files.splice(0);
+        removeReaderFile: (state, file) => {
+            const index = state.reader.files.indexOf(file);
+            if (index > -1) state.reader.files.splice(index, 1);
         },
     },
     actions: {
