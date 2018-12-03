@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 import Edge from './Edge';
 
 export enum LikeType {

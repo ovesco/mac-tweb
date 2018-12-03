@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import * as Joi from 'joi';
 import Base from './Base';
 import Comment from './Comment';
 import Tag from './Tag';

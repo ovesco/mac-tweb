@@ -1,7 +1,8 @@
-import Joi from 'joi';
-import { BaseCollection, DocumentCollection } from 'arangojs/lib/cjs/collection';
+import * as Joi from 'joi';
 import db from '../Database';
 import Base from '../schema/Base';
+import {BaseCollection} from 'arangojs/lib/cjs/collection';
+import {DocumentCollection} from 'arangojs';
 
 export default abstract class AbstractManager {
     protected collection : BaseCollection;
@@ -10,24 +11,24 @@ export default abstract class AbstractManager {
         this.collection = db.collection(collectionName);
     }
 
-    async find<T extends Base>(key: string) : T {
-        return await this.collection.document(key);
+    find<T extends Base>(key: string) : Promise<T> {
+        return this.collection.document(key);
     }
 
-    async update<T extends Base>(key: string, item: T): T {
+    update<T extends Base>(key: string, item: T): Promise<T> {
         const schema = (<typeof Base> Base.constructor).getSchema();
         Joi.assert(item, schema);
-        return await this.collection.update(key, item);
+        return this.collection.update(key, item);
     }
 
-    async save<T extends Base>(item: T): T {
+    save<T extends Base>(item: T): Promise<T> {
         if (this.collection instanceof DocumentCollection) {
-            return await this.collection.save(item);
+            return this.collection.save(item);
         }
         throw new Error('TODO mamene');
     }
 
-    async delete<T extends Base>(item: T): void {
+    async remove<T extends Base>(item: T) {
         await this.collection.remove(item);
     }
 }

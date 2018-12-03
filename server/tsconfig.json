@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "noImplicitAny": true,
+        "skipLibCheck": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "outDir": "build",
+        "rootDir": "./src",
+        "sourceMap": true,
+        "moduleResolution": "node"
+    },
+    "filesGlob": [
+        "src/**/*.ts",
+        "src/Server.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
+    ]
+}
