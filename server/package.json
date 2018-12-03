@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/arangodb": "^3.4.8",
     "apollo-datasource": "^0.2.1",
     "apollo-server": "^2.2.5",
     "arangojs": "^6.9.0",
@@ -22,7 +23,12 @@
     "merge-graphql-schemas": "^1.5.8"
   },
   "devDependencies": {
+    "@types/joi": "^14.0.0",
+    "@types/lodash": "^4.14.118",
     "eslint": "^5.9.0",
-    "eslint-config-airbnb-base": "^13.1.0"
+    "eslint-config-airbnb-base": "^13.1.0",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb-base": "^0.2.0",
+    "typescript": "^3.2.1"
   }
 }

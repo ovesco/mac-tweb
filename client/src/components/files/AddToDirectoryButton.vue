@@ -16,17 +16,15 @@
 
 <script>
     import directoryList from './DirectoryList.vue';
+    import FilesPropMixin from '../../mixins/FilesPropMixin';
 
     export default {
         components: {
             directoryList,
         },
-        props: {
-            files: {
-                type: Array,
-                default: () => [],
-            },
-        },
+        mixins: [
+            FilesPropMixin,
+        ],
         methods: {
             nextEmit(args) {
                 this.$emit('directory-selected', args);

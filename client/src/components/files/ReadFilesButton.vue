@@ -9,13 +9,12 @@
 </template>
 
 <script>
+    import FilesPropMixin from '../../mixins/FilesPropMixin';
+
     export default {
-        props: {
-            files: {
-                type: Array,
-                default: () => [],
-            },
-        },
+        mixins: [
+            FilesPropMixin,
+        ],
         methods: {
             readFiles() {
                 if (this.files.length > 0) {
