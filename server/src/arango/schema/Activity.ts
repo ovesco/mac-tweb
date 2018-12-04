@@ -1,27 +1,31 @@
 import * as Joi from 'joi';
 
-import Base from './Base';
+import Base, { IBase } from './Base';
 import Tag from './Tag';
 import Comment from './Comment';
 
-export default class Activity extends Base {
+export interface IActivity extends IBase {
     content?: string;
     userKey: string;
-    date: Date;
-    tags: Array<Tag>;
-    comments: Array<Comment>;
+    tags?: Array<Tag>;
+    comments?: Array<Comment>;
+}
+
+export default class Activity extends Base implements IActivity {
+    content?: string;
+    userKey: string;
+    tags?: Array<Tag>;
+    comments?: Array<Comment>;
 
     constructor() {
         super();
-        this.date = new Date();
         this.tags = [];
     }
 
-    static getSchema() : object {
+    getSchema() : object {
         return Joi.object().keys({
             content: Joi.string().alphanum(),
             userKey: Joi.string().required(),
-            date: Joi.date().required(),
             tags: Joi.array().items(Tag.getSchema()),
             comments: Joi.array().items(Comment.getSchema()),
         });

@@ -4,7 +4,7 @@
             <div class="d-flex justify-content-between mb-lg-5">
                 <div class="d-flex">
                     <slot name="actions" />
-                    <add-to-directory-button :files="files" v-if="selected.length > 0"
+                    <add-to-directory-button :files="selected" v-if="selected.length > 0"
                             class="mr-2" v-on:directory-selected="moveDirSelected" />
                     <read-files-button v-if="selected.length > 0 && selected.length < 4"
                            :files="selected" />

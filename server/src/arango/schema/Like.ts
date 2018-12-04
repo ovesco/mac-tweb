@@ -7,18 +7,15 @@ export enum LikeType {
     SAVE = 'save',
 }
 
-export class Like extends Edge {
-    date: Date;
+export interface ILike{
+    type: LikeType;
+}
+
+export default class Like extends Edge implements ILike {
     type: LikeType;
 
-    constructor() {
-        super();
-        this.date = new Date();
-    }
-
-    static getSchema() : object {
+    getSchema() : object {
         return Joi.object().keys({
-            date: Joi.date().required(),
             type: Joi.string().required(),
         });
     }

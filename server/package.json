@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc && node build/Server.js",
+    "setup": "tsc && node build/arango/Setup.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,10 +17,11 @@
     "graphql": "^14.0.2",
     "graphql-tools": "^4.0.3",
     "joi": "^14.3.0",
-    "ts-node": "^7.0.1",
     "lodash": "^4.17.11",
     "merge-graphql-schemas": "^1.5.8",
-    "typescript": "^3.2.1"
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.1",
+    "uniqid": "^5.0.3"
   },
   "devDependencies": {
     "@types/arangodb": "^3.4.8",
@@ -26,6 +29,7 @@
     "@types/joi": "^14.0.0",
     "@types/lodash": "^4.14.118",
     "@types/node": "^10.12.12",
+    "@types/uniqid": "^4.1.2",
     "eslint": "^5.9.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",

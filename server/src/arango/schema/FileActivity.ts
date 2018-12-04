@@ -1,12 +1,16 @@
 import * as Joi from 'joi';
-import Activity from './Activity';
+import Activity, { IActivity } from './Activity';
 
-export default class FileActivity extends Activity {
-    files: Array<string>;
+export interface IFileActivity extends IActivity {
+    filesKey: Array<string>;
+}
 
-    static getSchema() : object {
+export default class FileActivity extends Activity implements IFileActivity {
+    filesKey: Array<string>;
+
+    getSchema() : object {
         return Joi.object().keys({
-            files: Joi.array().min(1).required(),
+            filesKey: Joi.array().min(1).required(),
         });
     }
 }

@@ -1,10 +1,14 @@
 import * as Joi from 'joi';
-import Base from './Base';
+import Base, { IBase } from './Base';
 
-export default class Tag extends Base {
+export interface ITag extends IBase {
+    tag: String;
+}
+
+export default class Tag extends Base implements ITag {
     tag: String;
 
-    static getSchema() : object {
+    getSchema() : object {
         return Joi.object().keys({
             tag: Joi.string().min(2).alphanum().required(),
         });
