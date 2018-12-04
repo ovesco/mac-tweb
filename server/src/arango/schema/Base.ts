@@ -4,6 +4,9 @@ export interface IBase {
     _key?: string;
     _id?: string;
     date?: Date;
+
+    _getSchema(): object;
+    buildSchema(): object;
 }
 
 export default abstract class Base implements IBase {
@@ -15,11 +18,19 @@ export default abstract class Base implements IBase {
         this.date = new Date();
     }
 
-    getSchema() : object {
-        return Joi.object().keys({});
+    _getSchema() : object {
+
+        return Joi.object().keys({
+            _key: Joi.string().alphanum(),
+            _id: Joi.string(),
+            date: Joi.date(),
+            ...this.buildSchema(),
+        });
     }
 
-    static getSchema() : object {
-        return this.prototype.constructor().getSchema();
+    abstract buildSchema(): object;
+
+    static schema() : object {
+        return this.prototype.constructor()._getSchema();
     }
 }

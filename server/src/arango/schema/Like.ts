@@ -14,9 +14,9 @@ export interface ILike{
 export default class Like extends Edge implements ILike {
     type: LikeType;
 
-    getSchema() : object {
-        return Joi.object().keys({
+    buildSchema() : object {
+        return {
             type: Joi.string().required(),
-        });
+        };
     }
 }

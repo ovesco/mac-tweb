@@ -20,13 +20,13 @@ export default class User extends Base implements IUser {
     email: String;
     roles: Array<ROLE>;
 
-    getSchema() : object {
-        return Joi.object().keys({
+    buildSchema() : object {
+        return {
             username: Joi.string().alphanum().min(3).max(20).required(),
             password: Joi.string().alphanum().min(7).max(30),
-            name: Joi.string().alphanum().min(3).required(),
+            name: Joi.string().min(3).required(),
             email: Joi.string().email().required(),
             roles: Joi.array(),
-        });
+        };
     }
 }

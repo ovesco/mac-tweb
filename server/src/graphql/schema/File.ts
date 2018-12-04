@@ -11,6 +11,7 @@ export const typeDefs = gql`
     type File {
         _key: ID!
         date: String!
+        description: String!
         filename: String!
         mimeType: String!
         size: Int!

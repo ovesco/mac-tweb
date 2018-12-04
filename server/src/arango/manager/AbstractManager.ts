@@ -10,13 +10,12 @@ export default abstract class AbstractManager {
     protected db : Database;
     protected collection : BaseCollection;
 
-    constructor(collectionName: string, protected schema: object) {
+    constructor(collectionName: string) {
         this.db = database;
         this.collection = this.db.collection(collectionName);
     }
 
     find<T extends IBase>(key: string) : Promise<T> {
-        console.log('YAMAN');
         return this.collection.document(key);
     }
 
@@ -49,17 +48,22 @@ export default abstract class AbstractManager {
         );
     }
 
+    findByMultipleKeys<T extends IBase>(keys: Array<String>) : Promise<Array<T>> {
+        return this.db.query(aql`FOR x IN ${this.collection} FILTER x._key IN ${keys} RETURN x`)
+            .then(cursor => cursor.all());
+    }
+
     findAll() : Promise<Array<IBase>> {
         return this.collection.all().then(cursor => cursor.map(doc => doc));
     }
 
     update(key: string, item: IBase): Promise<IBase> {
-        Joi.assert(item, this.schema);
+        Joi.assert(item, item._getSchema());
         return this.collection.update(key, item);
     }
 
     save<T extends IBase>(item: T): Promise<T> {
-        Joi.assert(item, this.schema);
+        Joi.assert(item, item._getSchema());
         return (this.collection as DocumentCollection).save(item).then((response : IBase) => {
             item._key = response._key;
             item._id = response._id;

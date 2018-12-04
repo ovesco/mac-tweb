@@ -4,6 +4,10 @@ import UserManager from '../arango/manager/UserManager';
 import { IUser } from '../arango/schema/User';
 import Session, { ISession } from '../arango/schema/Session';
 
+export interface ISecurityContext  {
+    user: IUser
+}
+
 class Security {
     authenticate(username: string, password: string): Promise<ISession> {
         return UserManager.findByUsername(username).then((user) => {

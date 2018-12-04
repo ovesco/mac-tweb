@@ -2,15 +2,17 @@ import * as Joi from 'joi';
 import Base, { IBase } from './Base';
 
 export interface ITag extends IBase {
-    tag: String;
+    tag: string;
 }
 
 export default class Tag extends Base implements ITag {
-    tag: String;
+    constructor(public tag: string) {
+        super();
+    }
 
-    getSchema() : object {
-        return Joi.object().keys({
-            tag: Joi.string().min(2).alphanum().required(),
-        });
+    buildSchema() : object {
+        return {
+            tag: Joi.string().min(1).alphanum().required(),
+        };
     }
 }

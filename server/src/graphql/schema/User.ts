@@ -1,8 +1,9 @@
 import { gql } from 'apollo-server';
+import { plainToClass } from 'class-transformer';
 import UserManager from '../../arango/manager/UserManager';
 import FileManager from '../../arango/manager/FileManager';
 import CommentManager from '../../arango/manager/CommentManager';
-import { IUser } from '../../arango/schema/User';
+import User, { IUser } from '../../arango/schema/User';
 
 export const typeDefs = gql`
     extend type Query {
@@ -42,6 +43,6 @@ export const resolvers = {
         comments: async (user: IUser) => CommentManager.getUserComments(user._key),
     },
     Mutation: {
-        addUser: async (_:any, { data } : { data: IUser }) => UserManager.save(data),
+        addUser: async (_:any, { data } : { data: IUser }) => UserManager.save(plainToClass(User, data)),
     },
 };
