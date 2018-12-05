@@ -1,12 +1,10 @@
 import * as Joi from 'joi';
 import database from '../Database';
-import Base, { IBase } from '../schema/Base';
+import { IBase } from '../schema/Base';
 import { BaseCollection } from 'arangojs/lib/cjs/collection';
 import { aql, Database, DocumentCollection } from 'arangojs';
-import {object, string} from "joi";
 
 export default abstract class AbstractManager {
-
     protected db : Database;
     protected collection : BaseCollection;
 

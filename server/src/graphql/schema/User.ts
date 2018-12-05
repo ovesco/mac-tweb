@@ -26,10 +26,10 @@ export const typeDefs = gql`
         _key: ID!
         date: String!
         username: String!
-        name: String!
+        name: String! @capitalize
         email: String!
-        files: [File]
-        comments: [Comment]
+        files: [File] @aql(query: "FOR f IN files FILTER f.userKey == @current._key RETURN f")
+        comments: [Comment] @aql(query: "FOR c IN comments FILTER c.userKey == @current._key RETURN c")
     }
 `;
 
@@ -43,6 +43,7 @@ export const resolvers = {
         comments: async (user: IUser) => CommentManager.getUserComments(user._key),
     },
     Mutation: {
-        addUser: async (_:any, { data } : { data: IUser }) => UserManager.save(plainToClass(User, data)),
+        addUser: async (_:any, { data } : { data: IUser }) =>
+            UserManager.save(plainToClass(User, data)),
     },
 };

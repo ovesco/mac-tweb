@@ -3,18 +3,19 @@ import { merge } from 'lodash';
 
 import Security from '../auth/Security';
 
+// Types
 import { typeDefs as activityTypeDefs, resolvers as activityResolvers } from './schema/Activity';
 import { typeDefs as commentTypeDefs, resolvers as commentResolvers } from './schema/Comment';
 import { typeDefs as fileTypeDefs, resolvers as fileResolvers } from './schema/File';
 import { typeDefs as tagTypeDefs, resolvers as tagResolvers } from './schema/Tag';
 import { typeDefs as userTypeDefs, resolvers as userResolvers } from './schema/User';
+import { typeDefs as sessionTyeDefs, resolvers as sessionResolvers } from './schema/Session';
+import { typeDefs as AQLTypeDefs, AqlDirective } from './directive/AQLDirective';
+
+// Directives
+import { typeDefs as capitalizeTypeDefs, CapitalizeDirective } from './directive/Capitalize';
 
 const query = gql`
-    type Session {
-        userKey: String!
-        localKey: String!
-    }
-
     type Query {
         version: String
     }
@@ -41,6 +42,10 @@ export const typeDefs = [
     fileTypeDefs,
     tagTypeDefs,
     userTypeDefs,
+    sessionTyeDefs,
+
+    capitalizeTypeDefs,
+    AQLTypeDefs,
 ];
 
 export const resolvers = merge(
@@ -50,4 +55,10 @@ export const resolvers = merge(
     fileResolvers,
     tagResolvers,
     userResolvers,
+    sessionResolvers,
 );
+
+export const schemaDirectives = {
+    capitalize: CapitalizeDirective,
+    aql: AqlDirective,
+};
