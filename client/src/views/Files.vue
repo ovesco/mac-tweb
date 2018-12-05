@@ -30,8 +30,8 @@
 
 <script>
     import filesViewer from '../components/files/FilesViewer.vue';
-    import newDirectoryButton from '../components/files/NewDirectoryButton.vue';
-    import directoryList from '../components/files/DirectoryList.vue';
+    import newDirectoryButton from '../components/directories/NewDirectoryButton.vue';
+    import directoryList from '../components/directories/DirectoryList.vue';
     import fileSelectionMixin from '../mixins/FileSelectionMixin';
     import DummyFiles from '../assets/DummyFiles';
 

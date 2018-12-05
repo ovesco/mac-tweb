@@ -45,7 +45,7 @@
 <script>
     import filesList from './FilesList.vue';
     import filesGrid from './FilesGrid.vue';
-    import AddToDirectoryButton from './AddToDirectoryButton.vue';
+    import AddToDirectoryButton from '../directories/AddToDirectoryButton.vue';
     import readFilesButton from './ReadFilesButton.vue';
     import FilesPropMixin from '../../mixins/FilesPropMixin';
 

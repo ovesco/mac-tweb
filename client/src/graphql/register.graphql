@@ -1,0 +1,5 @@
+mutation ($data: UserInput!) {
+    addUser(data: $data) {
+        localKey
+    }
+}

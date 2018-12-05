@@ -1,10 +1,6 @@
 /* eslint-disable no-param-reassign */
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default {
+    namespaced: true,
     state: {
         menuCollapsed: false,
         reader: {
@@ -23,6 +19,12 @@ export default new Vuex.Store({
             if (index > -1) state.reader.files.splice(index, 1);
         },
     },
-    actions: {
+    getters: {
+        showReader(state) {
+            return state.reader.files.length > 0;
+        },
+        menuCollapsed(state) {
+            return state.menuCollapsed;
+        },
     },
-});
+};

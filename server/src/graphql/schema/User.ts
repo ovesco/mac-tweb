@@ -4,6 +4,7 @@ import UserManager from '../../arango/manager/UserManager';
 import FileManager from '../../arango/manager/FileManager';
 import CommentManager from '../../arango/manager/CommentManager';
 import User, { IUser } from '../../arango/schema/User';
+import Security from '../../auth/Security';
 
 export const typeDefs = gql`
     extend type Query {
@@ -12,7 +13,7 @@ export const typeDefs = gql`
     }
 
     extend type Mutation {
-        addUser(data: UserInput!): User
+        addUser(data: UserInput!): Session
     }
 
     input UserInput {
@@ -43,7 +44,9 @@ export const resolvers = {
         comments: async (user: IUser) => CommentManager.getUserComments(user._key),
     },
     Mutation: {
-        addUser: async (_:any, { data } : { data: IUser }) =>
-            UserManager.save(plainToClass(User, data)),
+        addUser: async (_:any, { data } : { data: IUser }) => {
+            const user = await UserManager.save(plainToClass(User, data));
+            return Security.createSession(user);
+        },
     },
 };

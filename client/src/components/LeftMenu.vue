@@ -3,19 +3,19 @@
         <div class="n-menu" v-bind:class="{'n-menu-large': !menuCollapsed}">
             <div class="d-flex flex-column justify-content-between">
                 <el-menu :collapse="menuCollapsed" :router="true">
-                    <el-menu-item index="activity" class="d-flex">
+                    <el-menu-item :route="{name: 'activity'}" index="activity" class="d-flex">
                         <div class="icon" v-bind:class="{'collapsed': menuCollapsed}">
                             <icon icon="comment-alt" />
                         </div>
                         <span slot="title">Activité</span>
                     </el-menu-item>
-                    <el-menu-item index="profile" class="d-flex">
+                    <el-menu-item :route="{name: 'profile'}" index="profile" class="d-flex">
                         <div class="icon" v-bind:class="{'collapsed': menuCollapsed}">
                             <icon icon="user" />
                         </div>
                         <span slot="title">Profil</span>
                     </el-menu-item>
-                    <el-menu-item index="files" class="d-flex">
+                    <el-menu-item :route="{name: 'files'}" index="files" class="d-flex">
                         <div class="icon" v-bind:class="{'collapsed': menuCollapsed}">
                             <icon icon="folder-open" />
                         </div>
@@ -39,15 +39,17 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex';
+
     export default {
         computed: {
-            menuCollapsed() {
-                return this.$store.state.menuCollapsed;
-            },
+            ...mapGetters({
+                menuCollapsed: 'ui/menuCollapsed',
+            }),
         },
         methods: {
             toggle() {
-                this.$store.commit('collapseMenu', !this.menuCollapsed);
+                this.$store.commit('ui/collapseMenu', !this.menuCollapsed);
             },
         },
     };

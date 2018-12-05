@@ -15,9 +15,10 @@
 </template>
 
 <script>
-    import Header from './components/Header.vue';
-    import LeftMenu from './components/LeftMenu.vue';
-    import filesReader from './components/reader/FileReader.vue';
+    import { mapGetters } from 'vuex';
+    import Header from '../components/Header.vue';
+    import LeftMenu from '../components/LeftMenu.vue';
+    import filesReader from '../components/reader/FileReader.vue';
 
     export default {
         components: {
@@ -26,18 +27,16 @@
             sLeftMenu: LeftMenu,
         },
         computed: {
-            menuCollapsed() {
-                return this.$store.state.menuCollapsed;
-            },
-            showReader() {
-                return this.$store.state.reader.files.length > 0;
-            },
+            ...mapGetters({
+                menuCollapsed: 'ui/menuCollapsed',
+                showReader: 'ui/showReader',
+            }),
         },
     };
 </script>
 
 <style lang="scss">
-    @import "assets/scss/variables";
+    @import "../assets/scss/variables";
 
     .main-content {
         width:100%;

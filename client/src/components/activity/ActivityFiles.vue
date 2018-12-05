@@ -14,7 +14,7 @@
 
 <script>
     import fileBlock from '../files/FileBlock.vue';
-    import addToDirectoryButton from '../files/AddToDirectoryButton.vue';
+    import addToDirectoryButton from '../directories/AddToDirectoryButton.vue';
     import readFilesButton from '../files/ReadFilesButton.vue';
     import FilesPropMixin from '../../mixins/FilesPropMixin';
 

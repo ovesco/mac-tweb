@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Network from './Network.vue';
+import Network from './rootViews/Network.vue';
 
 Vue.use(Router);
 
@@ -9,33 +9,31 @@ export default new Router({
     base: process.env.BASE_URL,
     routes: [
         {
-            path: '/',
+            path: '/login',
+            name: 'login',
+            component: () => import(/* webpackChunkName: "login" */ './rootViews/Login.vue'),
+        },
+        {
+            path: '/n',
             name: 'home',
             component: Network,
             children: [
                 {
-                    path: '/activity',
+                    path: '/n/activity',
                     name: 'activity',
                     component: () => import(/* webpackChunkName: "activity" */ './views/Activity.vue'),
                 },
                 {
-                    path: '/profile',
+                    path: '/n/profile',
                     name: 'profile',
                     component: () => import(/* webpackChunkName: "profile" */ './views/Profile.vue'),
                 },
                 {
-                    path: '/files',
+                    path: '/n/files',
                     name: 'files',
                     component: () => import(/* webpackChunkName: "files" */ './views/Files.vue'),
                 },
             ],
         },
-        /*
-        {
-            path: '/about',
-            name: 'about',
-            component: () => import(/* webpackChunkName: "about" * './views/About.vue'),
-        },
-        */
     ],
 });

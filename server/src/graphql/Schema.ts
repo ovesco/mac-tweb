@@ -10,6 +10,7 @@ import { typeDefs as fileTypeDefs, resolvers as fileResolvers } from './schema/F
 import { typeDefs as tagTypeDefs, resolvers as tagResolvers } from './schema/Tag';
 import { typeDefs as userTypeDefs, resolvers as userResolvers } from './schema/User';
 import { typeDefs as sessionTyeDefs, resolvers as sessionResolvers } from './schema/Session';
+import { typeDefs as directoryTypeDefs, resolvers as directoryResolvers } from './schema/Directory';
 import { typeDefs as AQLTypeDefs, AqlDirective } from './directive/AQLDirective';
 
 // Directives
@@ -43,6 +44,7 @@ export const typeDefs = [
     tagTypeDefs,
     userTypeDefs,
     sessionTyeDefs,
+    directoryTypeDefs,
 
     capitalizeTypeDefs,
     AQLTypeDefs,
@@ -56,6 +58,7 @@ export const resolvers = merge(
     tagResolvers,
     userResolvers,
     sessionResolvers,
+    directoryResolvers,
 );
 
 export const schemaDirectives = {

@@ -26,7 +26,7 @@ class Security {
     }
 
     async context({ req } : { req: any}) {
-        const token = req.headers[process.env.SESSION_HEADER] || '';
+        const token = (req.headers[process.env.SESSION_HEADER] || '').replace('Bearer ', '');
         return SessionManager.findOneBy({ localKey: token }, true).then(
             (session: ISession) => session === null
                 ? null

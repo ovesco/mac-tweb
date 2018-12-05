@@ -1,5 +1,3 @@
-import {func} from "joi";
-
 require('dotenv').config();
 import AbstractManager from './manager/AbstractManager';
 import manager1 from './manager/ActivityManager';
@@ -8,6 +6,7 @@ import manager3 from './manager/FileManager';
 import manager4 from './manager/SessionManager';
 import manager5 from './manager/TagManager';
 import manager6 from './manager/UserManager';
+import DirectoryManager from './manager/DirectoryManager';
 import db from './Database';
 
 function initCollections() {
@@ -18,6 +17,7 @@ function initCollections() {
         manager4,
         manager5,
         manager6,
+        DirectoryManager,
     ];
 
     managers.forEach((manager: AbstractManager) => {
