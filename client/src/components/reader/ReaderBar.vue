@@ -1,7 +1,7 @@
 <template>
     <div class="height-standard">
-        <div class="reader-bar d-flex justify-content-between">
-            <div class="d-flex align-items-center pl-3">
+        <div class="reader-bar d-flex justify-content-between align-items-center">
+            <div class="pl-3">
                 <smart-filename :file="file" size="0.9em" color="#444"
                                 class="d-flex align-items-center" />
             </div>
@@ -36,7 +36,7 @@
         },
         methods: {
             close(file) {
-                this.$store.commit('removeReaderFile', file);
+                this.$store.commit('ui/removeReaderFile', file);
             },
         },
     };

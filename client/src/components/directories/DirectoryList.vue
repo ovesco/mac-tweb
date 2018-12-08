@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="directory-list">
-            <ApolloQuery :query="require('../../graphql/directoryList.graphql')">
+            <ApolloQuery :query="require('../../graphql/DirectoryQueries.js').getDirectories">
                 <template slot-scope="{ result: { loading, error, data }}">
                     <div v-if="loading">Loading</div>
                     <div v-else-if="error">Erreur mamene</div>

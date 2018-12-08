@@ -1,8 +1,9 @@
 <template>
     <div>
         <at v-model="content" :ats="['@', '#']" :members="members">
-            <div class="smart-input" contenteditable="true" @focus="onFocus" @blur="outFocus"></div>
-            <span class="placeholder" v-if="showPlaceholder">Ecrire un commentaire...</span>
+            <div class="smart-input" spellcheck="false" contenteditable="true"
+                 @focus="onFocus" @blur="outFocus"></div>
+            <span class="placeholder" v-if="showPlaceholder">{{ placeholder }}</span>
         </at>
     </div>
 </template>

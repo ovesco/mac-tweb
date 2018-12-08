@@ -18,7 +18,7 @@
 </template>
 
 <script>
-    import addDirectoryQuery from '../../graphql/addDirectory.graphql';
+    import { addDirectory as addQuery, getDirectories } from '../../graphql/DirectoryQueries';
 
     export default {
         data() {
@@ -30,9 +30,16 @@
             async submit($event) {
                 $event.preventDefault();
                 await this.$apollo.mutate({
-                    mutation: addDirectoryQuery,
+                    mutation: addQuery,
                     variables: {
                         name: this.name,
+                    },
+                    update: (cache, { data: { addDirectory } }) => {
+                        const { directories } = cache.readQuery({ query: getDirectories });
+                        cache.writeQuery({
+                            query: getDirectories,
+                            data: { directories: directories.concat([addDirectory]) },
+                        });
                     },
                 });
             },

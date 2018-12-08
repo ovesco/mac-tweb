@@ -51,37 +51,29 @@
 <style lang="scss">
     @import "../../assets/scss/variables";
 
-    .activity-card {
+    .activity-likes {
+        border-top:1px solid $gray-200;
+        border-bottom:1px solid $gray-200;
 
-        background:white;
-        border:1px solid $gray-200;
-        box-shadow:0 1px 2px rgba(0,0,0,0.03);
-        border-radius:4px;
+        p {
+            font-size:0.8em;
+            color:$gray-600;
+        }
 
-        .activity-likes {
-            border-top:1px solid $gray-200;
-            border-bottom:1px solid $gray-200;
+        .likes {
 
-            p {
-                font-size:0.8em;
-                color:$gray-600;
-            }
+            span {
+                font-size:0.5em;
+                color:white;
+                width:2em;
+                height:2em;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                border-radius:100%;
 
-            .likes {
-
-                span {
-                    font-size:0.5em;
-                    color:white;
-                    width:2em;
-                    height:2em;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    border-radius:100%;
-
-                    &:not(:first-child) {
-                        margin-left:-0.7em;
-                    }
+                &:not(:first-child) {
+                    margin-left:-0.7em;
                 }
             }
         }

@@ -47,8 +47,7 @@
 
 <script>
     import gql from 'graphql-tag';
-    import loginQuery from '../graphql/login.graphql';
-    import registerQuery from '../graphql/register.graphql';
+    import { loginQuery, registerQuery } from '../graphql/AuthQueries';
 
     export default {
         data() {

@@ -19,7 +19,7 @@
             readFiles() {
                 if (this.files.length > 0) {
                     this.files.forEach((file) => {
-                        this.$store.commit('addFileToWatch', file);
+                        this.$store.commit('ui/addFileToWatch', file);
                     });
                 }
             },

@@ -35,13 +35,7 @@ export default abstract class AbstractManager {
                 '@value0': this.collection.name,
                 ...vars,
             },
-        }).then(cursor => {
-            return cursor.all().then(result => {
-                console.log('RESULT');
-                console.log(result);
-                return result;
-            });
-        });
+        }).then(cursor => cursor.all());
     }
 
     findOneBy<T extends IBase>(data: object, strict: boolean) : Promise<T> {

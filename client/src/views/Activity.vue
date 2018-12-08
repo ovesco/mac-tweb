@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="container-md pt-lg-5">
+            <div class="mb-5"><add-activity /></div>
             <div>
                 <card-activity>
                     <div slot="text">
@@ -17,12 +18,14 @@
 </template>
 
 <script>
+    import addActivity from '../components/activity/AddActivity.vue';
     import cardActivity from '../components/activity/ActivityCard.vue';
     import activityFiles from '../components/activity/ActivityFiles.vue';
     import DummyFiles from '../assets/DummyFiles';
 
     export default {
         components: {
+            addActivity,
             cardActivity,
             activityFiles,
         },

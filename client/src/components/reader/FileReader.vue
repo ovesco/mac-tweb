@@ -27,7 +27,7 @@
         },
         computed: {
             files() {
-                return this.$store.state.reader.files;
+                return this.$store.state.ui.reader.files;
             },
         },
     };

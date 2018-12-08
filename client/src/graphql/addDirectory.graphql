@@ -1,5 +1,0 @@
-mutation ($name: String!) {
-    addDirectory(name: $name) {
-        name
-    }
-}

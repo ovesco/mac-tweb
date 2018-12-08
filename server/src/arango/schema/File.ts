@@ -14,6 +14,11 @@ export interface IFile extends IBase {
     tags?: Array<Tag>;
 }
 
+export interface IFileInput {
+    upload: any;
+    description: string;
+}
+
 export default class File extends Base {
     filename: string;
     description: string;
