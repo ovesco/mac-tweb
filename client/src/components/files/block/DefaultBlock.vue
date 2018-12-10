@@ -7,7 +7,8 @@
                         <file-icon :mime="file.mimeType" />
                     </div>
                     <div class="file-metadata">
-                        <p class="filename m-0 text-center">{{ file.filename }}</p>
+                        <smart-filename :file="file" :file-key="file._key"
+                            smart-style="position:relative;z-index:5;font-size:0.9em" />
                         <p class="metadata m-0 text-center">{{ file.date | moment('from') }}</p>
                         <p class="metadata m-0 text-center">{{ file.size }}</p>
                     </div>
@@ -19,11 +20,15 @@
 
 <script>
     import FileBlockMixin from '../../../mixins/FileBlockMixin';
+    import SmartFilename from '../../Smart/SmartFilename.vue';
 
     export default {
         mixins: [
             FileBlockMixin,
         ],
+        components: {
+            SmartFilename,
+        },
     };
 </script>
 

@@ -11,14 +11,14 @@
                     <el-checkbox v-model="file.selected">Sélectionner</el-checkbox>
                 </div>
                 <div class="d-flex flex-column p-1">
-                    <p v-if="overlay" class="m-0 text-center">{{ file.filename }}</p>
-                    <div class="tags-container d-flex justify-content-center">
+                    <smart-filename v-if="overlay" :file="file" color="white" :file-key="file._key"
+                        smart-style="display:block;text-align:center;font-size:0.9em;color:white" />
+                    <div class="tags-container d-flex justify-content-center" v-if="file.tags">
                         <file-tag v-for="tag in file.tags" :key="tag" :tag="tag"
                                   size="mini" class="mr-1" />
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
@@ -27,6 +27,7 @@
     import imageBlock from './block/ImageBlock.vue';
     import defaultBlock from './block/DefaultBlock.vue';
     import FileBlockMixin from '../../mixins/FileBlockMixin';
+    import SmartFilename from '../Smart/SmartFilename.vue';
 
     export default {
         mixins: [
@@ -35,6 +36,7 @@
         components: {
             defaultBlock,
             imageBlock,
+            SmartFilename,
         },
         computed: {
             overlay() {

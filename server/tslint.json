@@ -7,7 +7,8 @@
         "ter-indent": [4],
         "linebreak-style": [false],
         "no-console": [false],
-        "variable-name": [false]
+        "variable-name": [false],
+        "ter-max-len": [150]
     },
     "rulesDirectory": []
 }

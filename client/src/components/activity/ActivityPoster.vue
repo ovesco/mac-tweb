@@ -4,11 +4,13 @@
             <user-picture class="mr-lg-3"/>
             <div class="user-details d-lg-flex flex-lg-column">
                 <div class="username mb-lg-1 d-flex">
-                    <smart-username />
-                    <span class="text-black-50 mr-lg-1 ml-lg-1">a chargé 3 documents avec</span>
-                    <smart-username :weight="400" />
+                    <smart-username :user="activity.user" />
+                    <span class="text-black-50 ml-2"
+                          v-if="activity.files && activity.files.length > 0">
+                        a chargé {{ activity.files.length }} document{{ s }}
+                    </span>
                 </div>
-                <span class="text-black-50 post-date">25 Décembre 2018</span>
+                <span class="text-black-50 post-date">{{ date | moment('from') }}</span>
             </div>
         </div>
     </div>
@@ -22,6 +24,21 @@
         components: {
             userPicture,
             smartUsername,
+        },
+        props: {
+            activity: {
+                type: Object,
+                required: true,
+            },
+            date: {
+                type: String || Date,
+                default: () => new Date(),
+            },
+        },
+        computed: {
+            s() {
+                return this.activity.files.length < 2 ? '' : 's';
+            },
         },
     };
 </script>

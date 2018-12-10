@@ -11,7 +11,7 @@ const httpEndpoint = process.env.GRAPHQL_ENDPOINT || 'http://localhost:4000/grap
 // Config
 const defaultOptions = {
     httpEndpoint,
-    wsEndpoint: process.env.GRAPHQL_ENDPOINT_WS || 'ws://localhost:4000/graphql',
+    // wsEndpoint: process.env.GRAPHQL_ENDPOINT_WS || 'ws://localhost:4000/graphql',
     tokenName: AUTH_TOKEN,
     // Enable Automatic Query persisting with Apollo Engine
     persisting: false,

@@ -1,5 +1,5 @@
 import { gql } from 'apollo-server';
-import { ISecurityContext } from '../../auth/Security';
+import { ISecurityContext } from '../../auth/SecurityController';
 import DirectoryManager from '../../arango/manager/DirectoryManager';
 import Directory, { IDirectory } from '../../arango/schema/Directory';
 

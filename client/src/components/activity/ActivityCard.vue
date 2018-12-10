@@ -2,7 +2,7 @@
     <div>
         <div class="activity-card">
             <div class="card-header p-lg-5">
-                <activity-poster />
+                <activity-poster :activity="activity" :date="activity.date" />
             </div>
             <div class="card-content">
                 <div class="pl-lg-5 pr-lg-5" v-if="hasText">
@@ -12,18 +12,12 @@
             </div>
             <div class="activity-likes pl-lg-5 pr-lg-5 pt-lg-3 pb-lg-3">
                 <div class="d-lg-flex align-items-lg-center justify-content-lg-between">
-                    <div class="users-likes d-flex align-items-lg-center pt-lg-3 pb-lg-3">
-                        <div class="likes d-flex mr-lg-3">
-                            <span style="background:#dd7169;"><icon icon="heart"/></span>
-                            <span style="background:#007aff;"><icon icon="thumbs-up"/></span>
-                        </div>
-                        <p class="m-0">Bidule Chouette, Machin Chose et 12 personnes aiment ça</p>
-                    </div>
-                    <press-like-button />
+                    <activity-like :likes="activity.likes" />
+                    <press-like-button :item-id="activity._id" :likes="activity.likes" />
                 </div>
             </div>
             <div class="activity-comments">
-                <comments/>
+                <comments :comments="activity.comments" />
             </div>
         </div>
     </div>
@@ -32,13 +26,21 @@
 <script>
     import pressLikeButton from '../Smart/PressLikeButton.vue';
     import activityPoster from './ActivityPoster.vue';
+    import activityLike from '../like/ActivityLike.vue';
     import comments from './Comments.vue';
 
     export default {
         components: {
             pressLikeButton,
+            activityLike,
             activityPoster,
             comments,
+        },
+        props: {
+            activity: {
+                type: Object,
+                required: true,
+            },
         },
         computed: {
             hasText() {

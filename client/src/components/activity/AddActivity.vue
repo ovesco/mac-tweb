@@ -2,12 +2,12 @@
     <div>
         <div class="activity-card p-5">
             <div class="pt-lg-3 pb-lg-5">
-                <smart-input :value.sync="description"
+                <smart-input v-on:change="handleChange"
                         placeholder="Exprimez-vous ou décrivez les fichiers
                     que vous allez uploader..."
                 />
             </div>
-            <div class="upload-zone">
+            <div>
                 <el-upload class="activity-drag"
                         ref="uploader"
                         drag
@@ -22,12 +22,13 @@
                         <em>ou cliquez pour choisir</em>
                     </div>
                     <div class="el-upload__tip text-black-50" slot="tip">
-                        Seul les PDFs et les images sont supportés,
+                        Seuls les PDFs et les images sont supportés,
                         n'oubliez pas d'ajouter des #hashtags
                     </div>
                 </el-upload>
-                <div class="d-flex justify-content-end pt-2" v-if="fileList.length > 0">
-                    <button class="btn btn-primary btn-small" @click="upload">Publier</button>
+                <div class="d-flex justify-content-end pt-2"
+                     v-if="fileList.length > 0 && description.length > 0">
+                    <button class="btn btn-primary btn-small" @click="publish">Publier</button>
                 </div>
             </div>
         </div>
@@ -37,6 +38,7 @@
 <script>
     import SmartInput from '../Smart/SmartInput.vue';
     import { uploadQuery } from '../../graphql/FileQueries';
+    import { addActivityQuery } from '../../graphql/ActivityQueries';
 
     export default {
         components: {
@@ -51,25 +53,32 @@
         methods: {
             fileAdded(file) {
                 this.fileList.push(file);
-                console.log(file);
+            },
+            handleChange(d) {
+                this.description = d;
             },
             fileRemoved(file) {
                 const index = this.fileList.indexOf(file);
                 if (index !== -1) this.fileList.splice(index, 1);
             },
-            upload() {
-                // eslint-disable-next-line arrow-body-style
-                const files = this.fileList.map((item) => {
-                    return {
-                        upload: item.raw,
-                        description: this.description,
-                    };
-                });
+            publish() {
                 this.$apollo.mutate({
-                    mutation: uploadQuery,
-                    variables: { files },
-                }).then((result) => {
-                    console.log(result);
+                    mutation: addActivityQuery,
+                    variables: { data: { content: this.description } },
+                }).then(({ data }) => {
+                    // Activity creation success, start uploading files if any
+                    if (this.fileList.length > 0) this.upload(data.addActivity._key);
+                });
+            },
+            upload(activityKey) {
+                /* eslint-disable */
+                Promise.all(this.fileList.map((item) => {
+                    return this.$apollo.mutate({
+                        mutation: uploadQuery,
+                        variables: { file: { upload: item.raw, activityKey } },
+                    });
+                })).then((res) => {
+                    console.log(res);
                 });
             },
         },

@@ -14,12 +14,17 @@ import './assets/icons';
 import './assets/scss/main.scss';
 import { createProvider } from './vue-apollo';
 
+// custom
+import FilenameFilter from './filters/filename';
+
+Vue.filter('filename', FilenameFilter);
+
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
 Vue.use(Toasted, {
     position: 'top-center',
-    duration: 5000
+    duration: 5000,
 });
 Vue.use(VueMoment, { moment });
 

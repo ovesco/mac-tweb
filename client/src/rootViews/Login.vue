@@ -67,8 +67,6 @@
                 const variables = this.createAccount
                     ? { data: { ...this.form } }
                     : { username: this.form.username, password: this.form.password };
-
-                console.log(variables);
                 return this.$apollo.mutate({
                     mutation: gql`${this.createAccount ? registerQuery : loginQuery}`,
                     variables,
@@ -76,11 +74,16 @@
                     const localKey = this.createAccount
                         ? result.data.addUser.localKey
                         : result.data.login.localKey;
+                    const userKey = this.createAccount
+                        ? result.data.addUser.user._key
+                        : result.data.login.user._key;
                     if (localKey === undefined) {
                         this.$toasted.show('Nom d\'utilisateur ou mot de passe incorrect', { type: 'error' });
                     } else {
-                        console.log(localKey);
-                        this.$store.commit('security/login', localKey);
+                        this.$store.commit('security/login', {
+                            token: localKey,
+                            userKey,
+                        });
                         this.$router.push({ name: 'home' });
                     }
                 }).catch((err) => {

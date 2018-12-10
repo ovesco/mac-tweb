@@ -13,10 +13,9 @@ function extractProperty(item: object, property: string) {
 
 export const AqlDirective = class extends SchemaDirectiveVisitor {
     visitFieldDefinition(field: any) {
-        const { query, resolve } = this.args;
+        const { query, single } = this.args;
+        const unique = single === true;
         field.resolve = (current: object, args: object, context:object) => {
-            const { baseResolver = defaultFieldResolver } = field;
-            const keep = resolve === true;
             const bindVars: any = {};
             let index = 1;
             const aqlQuery = query.split(' ').reduce((str: string, item: string) => {
@@ -36,11 +35,11 @@ export const AqlDirective = class extends SchemaDirectiveVisitor {
             return db.query({
                 query: aqlQuery,
                 bindVars,
-            }).then(cursor => cursor.all());
+            }).then(cursor => cursor.all()).then(result => unique && result.length === 1 ? result[0] : result);
         };
     }
 };
 
 export const typeDefs = gql`
-    directive @aql(query: String!, resolve: Boolean) on FIELD_DEFINITION
+    directive @aql(query: String!, single: Boolean) on FIELD_DEFINITION
 `;

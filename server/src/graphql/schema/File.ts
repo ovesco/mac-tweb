@@ -1,10 +1,14 @@
 import { gql } from 'apollo-server';
 import FileManager from '../../arango/manager/FileManager';
 import Uploader from '../../fs/Uploader';
-import File, { IFile, IFileInput } from '../../arango/schema/File';
+import {IFile, IActivityFileInput } from '../../arango/schema/File';
 import { getUser } from './Helper';
-import { ISecurityContext } from '../../auth/Security';
-import TagManager from "../../arango/manager/TagManager";
+import { ISecurityContext } from '../../auth/SecurityController';
+import ActivityManager from '../../arango/manager/ActivityManager';
+import ActivityFileEdgeManager from '../../arango/manager/ActivityFileEdgeManager';
+import ActivityFileEdge from '../../arango/schema/ActivityFileEdge';
+import { IActivity } from '../../arango/schema/Activity';
+
 
 export const typeDefs = gql`
     extend type Query {
@@ -12,15 +16,16 @@ export const typeDefs = gql`
     }
 
     extend type Mutation {
-        uploadFiles(files: [FileInput]!): [File]
+        uploadActivityFile(fileInput: ActivityFileInput!): File
     }
 
-    input FileInput {
-        description: String
+    input ActivityFileInput {
+        activityKey: String!
         upload: Upload!
     }
 
     type File {
+        _id: ID!
         _key: ID!
         date: String!
         description: String!
@@ -30,8 +35,8 @@ export const typeDefs = gql`
         userKey: ID!
         user: User
         src: String
-        tags: [Tag]
-        comments: [Comment]
+        tags: [String]
+        likes: [Like] @aql(query: "FOR l IN likes FILTER l._to == @current._id RETURN l")
     }
 `;
 export const resolvers = {
@@ -42,23 +47,21 @@ export const resolvers = {
         user: async (file: IFile) => getUser(file.userKey),
     },
     Mutation: {
-        // @ts-ignore
-        uploadFiles: async (parent: any, { files } : { files: Array<object> },
-                            context: ISecurityContext) => {
-            files.forEach(async (fileInput: IFileInput) => {
-                const { stream, filename, mimetype } = await fileInput.upload;
-                if(!Uploader.mimeTypeSupported(mimetype)) throw new Error('Unsupported mime type');
-                const file = new File();
-                file.filename = filename;
-                file.description = fileInput.description;
-                file.src = Uploader.buildPath(context.user._key);
-                file.mimeType = mimetype;
-                file.userKey = context.user._key;
-                Uploader.writeStream(stream, file.src, () => {
-                    
+        uploadActivityFile: async (parent: any, { fileInput } : { fileInput: IActivityFileInput },
+                            context: ISecurityContext) : Promise<IFile> => {
+            return ActivityManager.find(fileInput.activityKey).then((activity) => {
+                return Uploader.saveFile(context.user, fileInput.upload).then((file) => {
+                    const { tags, content } = (activity as IActivity);
+                    console.log(content);
+                    file.tags = tags;
+                    file.description = content;
+                    return FileManager.save(file).then((fileUpdated) => {
+                        return ActivityFileEdgeManager
+                            .save(new ActivityFileEdge(activity._id, fileUpdated._id))
+                            .then(() => fileUpdated);
+                    });
                 });
             });
-            return [];
         },
     },
 };

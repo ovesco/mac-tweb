@@ -6,38 +6,39 @@ import Tag from './Tag';
 export interface IFile extends IBase {
     filename: string;
     mimeType: string;
-    description: string;
+    description?: string;
     size: number;
     userKey: string;
     src?: string;
     comments?: Array<Comment>;
-    tags?: Array<Tag>;
+    tags?: Array<string>;
 }
 
-export interface IFileInput {
+export interface IActivityFileInput {
     upload: any;
-    description: string;
+    activityKey: string;
 }
 
 export default class File extends Base {
     filename: string;
-    description: string;
+    description?: string;
     mimeType: string;
     size: number;
     userKey: string;
     src?: string;
     comments?: Array<Comment>;
-    tags?: Array<Tag>;
+    tags?: Array<string>;
 
     buildSchema() : object {
         return {
-            filename: Joi.string().alphanum().min(4).required(),
-            mimeType: Joi.string().min(3).alphanum().required(),
+            filename: Joi.string().min(4).required(),
+            mimeType: Joi.string().min(3).required(),
             size: Joi.number().min(10).integer().positive().required(),
+            description: Joi.string(),
             userKey: Joi.string().required(),
             src: Joi.string(),
             comments: Joi.array().items(Comment.schema()),
-            tags: Joi.array().items(Tag.schema()),
+            tags: Joi.array(),
         };
     }
 }

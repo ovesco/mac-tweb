@@ -31,6 +31,6 @@ export default abstract class Base implements IBase {
     abstract buildSchema(): object;
 
     static schema() : object {
-        return this.prototype.constructor()._getSchema();
+        return Object.create(this.prototype)._getSchema();
     }
 }

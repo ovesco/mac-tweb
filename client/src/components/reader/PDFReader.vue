@@ -2,7 +2,7 @@
     <div>
         <div class="pdf-reader">
             <div class="reader-content" v-if="file">
-                <iframe :src="file.src"></iframe>
+                <iframe :src="fileSrc"></iframe>
             </div>
         </div>
     </div>

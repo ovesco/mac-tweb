@@ -6,24 +6,27 @@ export enum ROLE {
 }
 
 export interface IUser extends IBase {
-    username: String;
-    password?: String;
-    name: String;
-    email: String;
+    username: string;
+    password?: string;
+    salt: string;
+    name: string;
+    email: string;
     roles: Array<ROLE>;
 }
 
 export default class User extends Base implements IUser {
-    username: String;
-    password?: String;
-    name: String;
-    email: String;
+    username: string;
+    password?: string;
+    salt: string;
+    name: string;
+    email: string;
     roles: Array<ROLE>;
 
     buildSchema() : object {
         return {
             username: Joi.string().alphanum().min(3).max(20).required(),
-            password: Joi.string().alphanum().min(7).max(30),
+            password: Joi.string().min(7),
+            salt: Joi.string(),
             name: Joi.string().min(3).required(),
             email: Joi.string().email().required(),
             roles: Joi.array(),

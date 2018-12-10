@@ -1,24 +1,52 @@
-import { createWriteStream } from 'fs';
+import * as fs from 'fs';
 import { Stream } from 'stream';
 import * as uniqid from 'uniqid';
+import File from '../arango/schema/File';
+import { IUser } from '../arango/schema/User';
 
 export default class Uploader {
     static mimeTypeSupported(mime: string): boolean {
         return process.env.SUPPORTED_MIME_TYPES.split(',').indexOf(mime) !== -1;
     }
 
-    static writeStream(filestream: Stream, path: string) {
-        // @ts-ignore
+    static streamFile(src: string) : fs.ReadStream {
+        return fs.createReadStream(__dirname + '/' + src);
+    }
+
+    static writeStream(filestream: Stream, dirname: string, path: string) {
         return new Promise((resolve, reject) => {
-            const wstream = createWriteStream(path);
+            const directory = __dirname + '/' + dirname;
+            const filepath = __dirname + '/' + path;
+            if(!fs.existsSync(directory)) {
+                fs.mkdirSync(directory);
+            }
+            const wstream = fs.createWriteStream(filepath);
             filestream.pipe(wstream);
-            wstream.end();
             wstream.on('finish', () => {
-                resolve();
+                const stats = fs.statSync(filepath);
+                resolve(stats.size);
             });
             wstream.on('error', (err) => {
                 reject(err);
             });
+        });
+    }
+
+    static async saveFile(user: IUser, fileInput: Promise<object>): Promise<File> {
+        // @ts-ignore
+        const { stream, filename, mimetype } = await fileInput;
+        if(!Uploader.mimeTypeSupported(mimetype)) throw new Error('Unsupported mime type');
+
+        // Create file
+        const file = new File();
+        file.filename = filename;
+        file.src = Uploader.buildPath(user._key);
+        file.mimeType = mimetype;
+        file.userKey = user._key;
+
+        return Uploader.writeStream(stream, user._key, file.src).then((size: number) => {
+            file.size = size;
+            return file;
         });
     }
 

@@ -4,7 +4,8 @@ import UserManager from '../../arango/manager/UserManager';
 import FileManager from '../../arango/manager/FileManager';
 import CommentManager from '../../arango/manager/CommentManager';
 import User, { IUser } from '../../arango/schema/User';
-import Security from '../../auth/Security';
+import SecurityController from '../../auth/SecurityController';
+import LikeManager from "../../arango/manager/LikeManager";
 
 export const typeDefs = gql`
     extend type Query {
@@ -31,6 +32,8 @@ export const typeDefs = gql`
         email: String!
         files: [File] @aql(query: "FOR f IN files FILTER f.userKey == @current._key RETURN f")
         comments: [Comment] @aql(query: "FOR c IN comments FILTER c.userKey == @current._key RETURN c")
+        likes: [Like] @aql(query: "For l IN likes FILTER l._from == @current._id RETURN l")
+        reputation: [Like]
     }
 `;
 
@@ -40,13 +43,19 @@ export const resolvers = {
         users: async () => UserManager.findAll(),
     },
     User: {
-        files: async (user: IUser) => FileManager.getUserFiles(user._key),
-        comments: async (user: IUser) => CommentManager.getUserComments(user._key),
+        reputation: async(user: IUser) => {
+            return LikeManager.getUserReputation(user).catch((error) => {
+                console.log(error);
+                return [];
+            });
+        },
     },
     Mutation: {
         addUser: async (_:any, { data } : { data: IUser }) => {
-            const user = await UserManager.save(plainToClass(User, data));
-            return Security.createSession(user);
+            const user = plainToClass(User, data);
+            user.salt = SecurityController.generateSalt();
+            user.password = SecurityController.encodePassword(user.password, user.salt);
+            return UserManager.save(user).then(res => SecurityController.createSession(res));
         },
     },
 };

@@ -1,7 +1,6 @@
 import * as Joi from 'joi';
 
 import Base, { IBase } from './Base';
-import Tag from './Tag';
 import Comment from './Comment';
 
 export interface IActivity extends IBase {
@@ -9,7 +8,6 @@ export interface IActivity extends IBase {
     userKey: string;
     tags?: Array<string>;
     comments?: Array<Comment>;
-    filesKey?: Array<string>;
 }
 
 export default class Activity extends Base implements IActivity {
@@ -17,7 +15,6 @@ export default class Activity extends Base implements IActivity {
     userKey: string;
     tags?: Array<string>;
     comments?: Array<Comment>;
-    filesKey?: Array<string>;
 
     buildSchema() : object {
         return {
@@ -25,7 +22,6 @@ export default class Activity extends Base implements IActivity {
             userKey: Joi.string().required(),
             tags: Joi.array(),
             comments: Joi.array().items(Comment.schema()),
-            filesKey: Joi.array(),
         };
     }
 }

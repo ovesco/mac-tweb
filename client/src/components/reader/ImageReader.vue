@@ -2,7 +2,7 @@
     <div>
         <div class="image-reader" v-if="file">
             <div class="image-content d-flex flex-column align-items-center justify-content-center">
-                <img :src="file.src" />
+                <img :src="fileSrc" />
                 <p class="m-0 image-meta text-white-50">
                     {{ file.date|moment('from') }} - {{ file.size }}
                 </p>

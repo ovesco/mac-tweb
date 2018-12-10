@@ -1,7 +1,7 @@
 import { gql } from 'apollo-server';
 import { merge } from 'lodash';
 
-import Security from '../auth/Security';
+import SecurityController from '../auth/SecurityController';
 
 // Types
 import { typeDefs as activityTypeDefs, resolvers as activityResolvers } from './schema/Activity';
@@ -11,6 +11,7 @@ import { typeDefs as tagTypeDefs, resolvers as tagResolvers } from './schema/Tag
 import { typeDefs as userTypeDefs, resolvers as userResolvers } from './schema/User';
 import { typeDefs as sessionTyeDefs, resolvers as sessionResolvers } from './schema/Session';
 import { typeDefs as directoryTypeDefs, resolvers as directoryResolvers } from './schema/Directory';
+import {  typeDefs as likeTypeDefs, resolvers as likeResolvers } from './schema/Like';
 import { typeDefs as AQLTypeDefs, AqlDirective } from './directive/AQLDirective';
 
 // Directives
@@ -32,7 +33,7 @@ const queryResolvers = {
     },
     Mutation: {
         login: async (_:any, { username, password }
-            : { username: string, password: string }) => Security.authenticate(username, password),
+            : { username: string, password: string }) => SecurityController.authenticate(username, password),
     },
 };
 
@@ -45,6 +46,7 @@ export const typeDefs = [
     userTypeDefs,
     sessionTyeDefs,
     directoryTypeDefs,
+    likeTypeDefs,
 
     capitalizeTypeDefs,
     AQLTypeDefs,
@@ -59,6 +61,7 @@ export const resolvers = merge(
     userResolvers,
     sessionResolvers,
     directoryResolvers,
+    likeResolvers,
 );
 
 export const schemaDirectives = {

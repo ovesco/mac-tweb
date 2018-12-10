@@ -1,7 +1,7 @@
 <template>
     <div style="width:100%;height:100%;">
         <div class="image-container">
-            <img :src="file.src" />
+            <img :src="fileSrc" />
         </div>
     </div>
 </template>
