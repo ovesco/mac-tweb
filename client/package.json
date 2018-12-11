@@ -17,6 +17,7 @@
     "element-ui": "^2.4.11",
     "graphql-tag": "^2.9.0",
     "moment": "^2.22.2",
+    "textarea-caret": "^3.1.0",
     "vue": "^2.5.17",
     "vue-apollo": "^3.0.0-beta.11",
     "vue-at": "^2.5.0-beta",

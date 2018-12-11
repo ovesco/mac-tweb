@@ -6,7 +6,11 @@ class TagManager extends AbstractManager {
     extractTags(content: string) : Promise<Array<string>> {
         // Extract hashtags and remove # char
         const extract = content.match(/#[a-z0-9_]+/g);
-        if (extract === null) return new Promise((resolve) => resolve([]));
+        if (extract === null) {
+            return new Promise((resolve) => {
+                resolve([]);
+            });
+        }
         const hashtags = extract.map(hashtag => hashtag.substr(1).toLowerCase());
         return this.db.query(aql`FOR t IN tags FILTER t.tag IN ${hashtags} RETURN t.tag`)
             .then(cursor => cursor.all()).then((existingTags) => {

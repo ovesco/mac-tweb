@@ -15,6 +15,7 @@ import './assets/scss/main.scss';
 import { createProvider } from './vue-apollo';
 
 // custom
+// eslint-disable-next-line
 import FilenameFilter from './filters/filename';
 
 Vue.filter('filename', FilenameFilter);

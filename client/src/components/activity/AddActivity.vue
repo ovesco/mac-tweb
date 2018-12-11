@@ -3,8 +3,7 @@
         <div class="activity-card p-5">
             <div class="pt-lg-3 pb-lg-5">
                 <smart-input v-on:change="handleChange"
-                        placeholder="Exprimez-vous ou décrivez les fichiers
-                    que vous allez uploader..."
+                    placeholder="Exprimez-vous ou décrivez les fichiers que vous allez uploader..."
                 />
             </div>
             <div>
@@ -38,7 +37,7 @@
 <script>
     import SmartInput from '../Smart/SmartInput.vue';
     import { uploadQuery } from '../../graphql/FileQueries';
-    import { addActivityQuery } from '../../graphql/ActivityQueries';
+    import { addActivityQuery, feedQuery } from '../../graphql/ActivityQueries';
 
     export default {
         components: {
@@ -65,6 +64,10 @@
                 this.$apollo.mutate({
                     mutation: addActivityQuery,
                     variables: { data: { content: this.description } },
+                    update: (cache, { data }) => {
+                        const { feed } = cache.readQuery({ query: feedQuery });
+                        feed.unshift(data.addActivity);
+                    },
                 }).then(({ data }) => {
                     // Activity creation success, start uploading files if any
                     if (this.fileList.length > 0) this.upload(data.addActivity._key);
@@ -76,9 +79,20 @@
                     return this.$apollo.mutate({
                         mutation: uploadQuery,
                         variables: { file: { upload: item.raw, activityKey } },
+                        update: (cache, { data }) => {
+
+                            const { feed } = cache.readQuery({ query: feedQuery });
+                            const activities = feed.filter(a => a._key === activityKey);
+                            if (activities.length === 0) return;
+                            activities[0].files.push(data.uploadActivityFile);
+                        },
+                    }).catch(e => {
+                        console.log(e);
                     });
                 })).then((res) => {
-                    console.log(res);
+                    // console.log(res);
+                }).catch((e) => {
+                    console.log(e);
                 });
             },
         },

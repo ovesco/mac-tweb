@@ -10,7 +10,7 @@
                         a chargé {{ activity.files.length }} document{{ s }}
                     </span>
                 </div>
-                <span class="text-black-50 post-date">{{ date | moment('from') }}</span>
+                <span class="text-black-50 post-date">{{ activity.date | moment('from') }}</span>
             </div>
         </div>
     </div>
@@ -29,10 +29,6 @@
             activity: {
                 type: Object,
                 required: true,
-            },
-            date: {
-                type: String || Date,
-                default: () => new Date(),
             },
         },
         computed: {

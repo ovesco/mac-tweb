@@ -3,7 +3,7 @@ import * as Joi from 'joi';
 export interface IBase {
     _key?: string;
     _id?: string;
-    date?: Date;
+    date?: string | Date;
 
     _getSchema(): object;
     buildSchema(): object;
@@ -12,7 +12,7 @@ export interface IBase {
 export default abstract class Base implements IBase {
     _key?: string;
     _id?: string;
-    date?: Date;
+    date?: string | Date;
 
     constructor() {
         this.date = new Date();

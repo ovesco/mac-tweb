@@ -5,16 +5,8 @@
                 <comment class="mb-lg-4"/>
                 <comment class=""/>
             </div>
-            <div class="comment-rediger d-flex align-items-lg-start mt-lg-3"
-                 v-bind:class="{'border': comments.length > 0}">
-                <div class="writer-picture mr-lg-3">
-                    <user-picture :size="2.3" />
-                </div>
-                <div class="writer-comment flex-grow-1 pt-lg-3">
-                    <form method="post">
-                        <smart-input placeholder="Rédiger un commentaire" />
-                    </form>
-                </div>
+            <div class="comment-rediger mt-lg-3" v-bind:class="{'border': comments.length > 0}">
+                <add-comment />
             </div>
         </div>
     </div>
@@ -22,14 +14,12 @@
 
 <script>
     import comment from './Comment.vue';
-    import userPicture from '../user/UserPicture.vue';
-    import smartInput from '../Smart/SmartInput.vue';
+    import AddComment from './AddComment.vue';
 
     export default {
         components: {
-            smartInput,
-            userPicture,
             comment,
+            AddComment,
         },
         props: {
             comments: {

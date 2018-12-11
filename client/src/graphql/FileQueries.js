@@ -9,6 +9,7 @@ export const fileFragment = gql`
         date
         size
         mimeType
+        userKey
         tags
         likes {
             ...likeFragment
@@ -21,17 +22,11 @@ export const fileFragment = gql`
 export const uploadQuery = gql`
     mutation uploadFiles($file: ActivityFileInput!) {
         uploadActivityFile(fileInput: $file) {
-            _key
-            date
-            description
-            filename
-            mimeType
-            size
-            userKey
-            src
-            tags
+            ...fileFragment
         }
     }
+    
+    ${fileFragment}
 `;
 
 export const fileQuery = gql`

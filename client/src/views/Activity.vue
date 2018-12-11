@@ -2,22 +2,24 @@
     <div>
         <div class="container-md pt-lg-5">
             <div class="mb-5"><add-activity /></div>
-            <apollo-query :query="require('../graphql/ActivityQueries').feedQuery"
-                          fetch-policy="no-cache">
+            <apollo-query :query="require('../graphql/ActivityQueries').feedQuery">
                 <template slot-scope="{ result: { loading, error, data } }">
                     <div v-if="loading">Chargement</div>
                     <div v-else-if="error">Erreur! {{ error }}</div>
                     <div v-else-if="data">
-                        <card-activity v-for="activity in data.feed" class="mb-5"
-                                        :activity="activity" :key="activity._key">
+                        <card-activity v-for="activity in data.feed"
+                                       class="mb-5" :activity="activity" :key="activity._key">
                             <div slot="text" v-if="activity.content"
                                  v-html="activity.content"></div>
                             <activity-files :files="activity.files"
                                             class="pl-lg-3 pr-lg-3 pt-lg-5 pb-lg-5"
                                             v-if="activity.files && activity.files.length > 0" />
                         </card-activity>
+                        <div v-if="data.feed.length === 0">
+                            Rien à afficher pour l'instant
+                        </div>
                     </div>
-                    <div v-else>No result</div>
+                    <div v-else></div>
                 </template>
             </apollo-query>
         </div>

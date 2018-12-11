@@ -2,7 +2,7 @@
     <div>
         <div class="activity-card">
             <div class="card-header p-lg-5">
-                <activity-poster :activity="activity" :date="activity.date" />
+                <activity-poster :activity="activity" />
             </div>
             <div class="card-content">
                 <div class="pl-lg-5 pr-lg-5" v-if="hasText">
@@ -27,7 +27,7 @@
     import pressLikeButton from '../Smart/PressLikeButton.vue';
     import activityPoster from './ActivityPoster.vue';
     import activityLike from '../like/ActivityLike.vue';
-    import comments from './Comments.vue';
+    import comments from '../comment/Comments.vue';
 
     export default {
         components: {

@@ -2,39 +2,44 @@ import gql from 'graphql-tag';
 import { likeFragment } from './LikeQueries';
 import { fileFragment } from './FileQueries';
 
-export const addActivityQuery = gql`
-    mutation($data: ActivityInput!) {
-        addActivity(data: $data) {
-            _id
-            _key
-            date
-            content
-            userKey
+export const activityFragment = gql`
+    fragment activityFragment on Activity {
+        _id
+        _key
+        date
+        content
+        files {
+            ...fileFragment
         }
-    }
-`;
-
-export const feedQuery = gql`
-    query {
-        feed {
-            _id
+        likes {
+            ...likeFragment
+        }
+        user {
             _key
-            user {
-                _key
-                username
-                name
-            }
-            content
-            date
-            files {
-                ...fileFragment
-            }
-            likes {
-                ...likeFragment
-            }
+            name
         }
     }
 
     ${fileFragment}
     ${likeFragment}
+`;
+
+export const addActivityQuery = gql`
+    mutation($data: ActivityInput!) {
+        addActivity(data: $data) {
+            ...activityFragment
+        }
+    }
+    
+    ${activityFragment}
+`;
+
+export const feedQuery = gql`
+    query {
+        feed {
+            ...activityFragment
+        }
+    }
+
+    ${activityFragment}
 `;

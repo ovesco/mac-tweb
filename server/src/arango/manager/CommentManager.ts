@@ -1,9 +1,7 @@
-import AbstractManager from './AbstractManager';
-import { aql } from 'arangojs';
-import { IComment } from '../schema/Comment';
+import EdgeManager from './EdgeManager';
 
 const COMMENTS = 'comments';
-class CommentManager extends AbstractManager {
+class CommentManager extends EdgeManager {
 }
 
 export default new CommentManager(COMMENTS);

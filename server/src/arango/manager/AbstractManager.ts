@@ -65,6 +65,7 @@ export default abstract class AbstractManager {
         return (this.collection as DocumentCollection).save(item).then((response : IBase) => {
             item._key = response._key;
             item._id = response._id;
+            if (item.date instanceof Date) item.date = item.date.toISOString();
             return item;
         });
     }

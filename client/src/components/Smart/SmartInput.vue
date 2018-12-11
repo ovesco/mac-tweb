@@ -1,23 +1,23 @@
 <template>
     <div>
-        <at v-model="content" :ats="['@', '#']" :members="members">
-            <div class="smart-input" spellcheck="false" contenteditable="true"
-                 @focus="onFocus" @blur="outFocus" @input="$emit('change', content)"></div>
-            <span class="placeholder" v-if="showPlaceholder">{{ placeholder }}</span>
-        </at>
+        <at-ta v-model="content" :ats="['#']" :members="members">
+            <textarea class="smart-input" spellcheck="false"
+                      @keydown="keydown"
+                      :placeholder="placeholder" title="">
+            </textarea>
+        </at-ta>
     </div>
 </template>
 
 <script>
-    import At from 'vue-at';
+    import AtTa from 'vue-at/dist/vue-at-textarea';
 
     export default {
         components: {
-            At,
+            AtTa,
         },
         data() {
             return {
-                focus: false,
                 content: '',
                 members: [
                     'yolo',
@@ -27,25 +27,16 @@
                 ],
             };
         },
+        methods: {
+            keydown($event) {
+                this.$emit('change', this.content, $event);
+            },
+        },
         props: {
             placeholder: { type: String, default: () => '' },
             title: { type: String, default: () => '' },
             value: { type: String, default: () => '' },
             name: { type: String, default: () => '' },
-        },
-        methods: {
-            onFocus() {
-                this.focus = true;
-            },
-            outFocus() {
-                this.focus = false;
-                if (this.content.replace(/<\/?[^>]+(>|$)/g, '') === '') this.content = '';
-            },
-        },
-        computed: {
-            showPlaceholder() {
-                return this.focus === false && !this.content.trim();
-            },
         },
     };
 </script>
@@ -53,9 +44,11 @@
 <style scoped lang="scss">
     .smart-input {
         font-size:0.85rem;
-        line-height:1em;
-        min-height:1em;
+        line-height:0.9em;
         outline:none;
+        border-width:0 0 1px 0;
+        border-color: #eee;
+        resize: none;
         width:100%;
         position:relative;
         z-index:10;

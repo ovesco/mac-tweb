@@ -29,7 +29,7 @@ export const typeDefs = gql`
         userKey: ID!
         user: User
         tags: [String]
-        files: [File]
+        files: [File]!
         likes: [Like] @aql(query: "FOR l IN likes FILTER l._to == @current._id RETURN l")
         comments: [Comment]
     }
