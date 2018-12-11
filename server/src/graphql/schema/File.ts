@@ -20,7 +20,7 @@ export const typeDefs = gql`
     }
 
     input ActivityFileInput {
-        activityKey: String!
+        activityId: String!
         upload: Upload!
     }
 
@@ -48,11 +48,10 @@ export const resolvers = {
     },
     Mutation: {
         uploadActivityFile: async (parent: any, { fileInput } : { fileInput: IActivityFileInput },
-                            context: ISecurityContext) : Promise<IFile> => {
-            return ActivityManager.find(fileInput.activityKey).then((activity) => {
+                                   context: ISecurityContext) : Promise<IFile> => {
+            return ActivityManager.findById(fileInput.activityId).then((activity) => {
                 return Uploader.saveFile(context.user, fileInput.upload).then((file) => {
                     const { tags, content } = (activity as IActivity);
-                    console.log(content);
                     file.tags = tags;
                     file.description = content;
                     return FileManager.save(file).then((fileUpdated) => {

@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div class="comments p-lg-5">
-            <div class="comments-list pb-3" v-if="comments.length > 0">
-                <comment class="mb-lg-4"/>
-                <comment class=""/>
+        <div class="p-lg-5">
+            <div class="pb-3" v-if="comments.length > 0">
+                <comment class="mb-lg-4" v-for="comment in comments"
+                         :key="comment._id" :comment="comment"/>
             </div>
-            <div class="comment-rediger mt-lg-3" v-bind:class="{'border': comments.length > 0}">
-                <add-comment />
+            <div class="mt-lg-3">
+                <add-comment :item-id="itemId" />
             </div>
         </div>
     </div>
@@ -26,17 +26,14 @@
                 type: Array,
                 default: () => [],
             },
+            itemId: {
+                type: String,
+                required: true,
+            },
         },
     };
 </script>
 
 <style lang="scss" scoped>
     @import "../../assets/scss/variables";
-
-    .comments {
-
-        .comment-rediger.border {
-            border-top:1px solid $gray-200;
-        }
-    }
 </style>

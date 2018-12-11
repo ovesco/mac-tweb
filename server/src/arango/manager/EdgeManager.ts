@@ -34,6 +34,7 @@ export default class extends AbstractManager {
         return (this.collection as EdgeCollection).save(item).then((response : IEdge) => {
             item._key = response._key;
             item._id = response._id;
+            if (item.date instanceof Date) item.date = item.date.toISOString();
             return item;
         });
     }

@@ -17,6 +17,10 @@ export default abstract class AbstractManager {
         return this.collection.document(key);
     }
 
+    findById<T extends IBase>(_id: string) : Promise<T> {
+        return this.findOneBy({ _id }, true);
+    }
+
     findBy<T extends IBase>(data: object) : Promise<Array<T>> {
         let index = 1;
         const vars:any = {};
@@ -57,7 +61,7 @@ export default abstract class AbstractManager {
 
     update(key: string, item: IBase): Promise<IBase> {
         Joi.assert(item, item._getSchema());
-        return this.collection.update(key, item);
+        return this.collection.update(key, item).then(() => item);
     }
 
     save<T extends IBase>(item: T): Promise<T> {

@@ -14,11 +14,17 @@ export const commentFragment = gql`
 `;
 
 export const createOrUpdateComment = gql`
-    mutation($content: String!, $itemId: ID!, $commentKey: String) {
+    mutation($content: String!, $itemId: ID, $commentKey: String) {
         createOrUpdateComment(content: $content, itemId: $itemId, commentKey: $commentKey) {
             ...commentFragment
         }
     }
 
     ${commentFragment}
+`;
+
+export const deleteComment = gql`
+    mutation($commentId: ID!) {
+        deleteComment(commentId: $commentId)
+    }
 `;

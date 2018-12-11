@@ -7,7 +7,8 @@
             </div>
             <div class="d-flex align-items-center">
                 <p class="m-0 mt-1 mr-1">Uploadé par</p>
-                <smart-username class="d-flex align-items-center mr-3" :weight="400" size="0.9em" />
+                <smart-username class="d-flex align-items-center mr-3" style="font-size:0.9em"
+                                :user="file.user" />
                 <el-tooltip effect="dark" placement="bottom"
                             :content="'Fermer ' + file.filename">
                     <a href="#" @click="close(file)">

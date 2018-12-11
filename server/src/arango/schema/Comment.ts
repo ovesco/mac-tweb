@@ -10,7 +10,6 @@ export default class Comment extends Edge implements IComment {
 
     _edgeSchema(): object {
         return {
-            userKey: Joi.string().required(),
             content: Joi.string().required(),
         };
     }

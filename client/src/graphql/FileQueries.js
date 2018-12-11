@@ -1,5 +1,6 @@
 import gql from 'graphql-tag';
 import { likeFragment } from './LikeQueries';
+import { userFragment } from './UserQueries';
 
 export const fileFragment = gql`
     fragment fileFragment on File {
@@ -9,13 +10,16 @@ export const fileFragment = gql`
         date
         size
         mimeType
-        userKey
         tags
+        user {
+            ...userFragment
+        }
         likes {
             ...likeFragment
         }
     }
 
+    ${userFragment}
     ${likeFragment}
 `;
 

@@ -1,11 +1,12 @@
 <template>
     <div class="d-flex align-items-start">
-        <div class="writer-picture mr-lg-3">
+        <div class="mr-lg-3">
             <user-picture :size="2.3" />
         </div>
-        <div class="writer-comment flex-grow-1 pt-lg-3">
+        <div class="flex-grow-1 pt-lg-3">
             <form method="post">
-                <smart-input placeholder="Rédiger un commentaire" v-on:change="check" />
+                <smart-input placeholder="Rédiger un commentaire" v-if="showInput"
+                             :value.sync="comment" v-on:keydown="check" />
             </form>
         </div>
     </div>
@@ -14,6 +15,8 @@
 <script>
     import userPicture from '../user/UserPicture.vue';
     import smartInput from '../Smart/SmartInput.vue';
+    import FeedMixin from '../../mixins/FeedMixin';
+    import { feedQuery } from '../../graphql/ActivityQueries';
     import { createOrUpdateComment } from '../../graphql/CommentQueries';
 
     export default {
@@ -27,14 +30,33 @@
             smartInput,
             userPicture,
         },
+        data() {
+            return {
+                comment: '',
+                showInput: true,
+            };
+        },
+        mixins: [
+            FeedMixin,
+        ],
         methods: {
-            async check(content, event) {
+            async check(event) {
                 if (event.code === 'Enter') { // do the shit m8
+                    this.showInput = false;
                     await this.$apollo.mutate({
                         mutation: createOrUpdateComment,
                         variables: {
-                            content,
+                            content: this.comment,
                             itemId: this.itemId,
+                        },
+                        update: (cache, { data }) => {
+                            const comment = data.createOrUpdateComment;
+                            const { feed } = cache.readQuery({ query: feedQuery });
+                            const activity = this.getActivity(feed, this.itemId);
+                            if (activity === null) return;
+                            activity.comments.push(comment);
+                            this.comment = '';
+                            this.showInput = true;
                         },
                     });
                 }

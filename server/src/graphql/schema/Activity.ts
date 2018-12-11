@@ -31,7 +31,7 @@ export const typeDefs = gql`
         tags: [String]
         files: [File]!
         likes: [Like] @aql(query: "FOR l IN likes FILTER l._to == @current._id RETURN l")
-        comments: [Comment]
+        comments: [Comment] @aql(query: "For c IN comments FILTER c._to == @current._id SORT c.date ASC RETURN c")
     }
 `;
 

@@ -6,7 +6,7 @@
                 trigger="click">
             <div>
                 <apollo-query :query="require('../../graphql/FileQueries').fileQuery"
-                              :variables="{ fileKey }">
+                              :variables="{ fileKey: file._key }">
                     <template slot-scope="{ result: { loading, error, data } }">
                         <div v-if="loading">Loading</div>
                         <div v-else-if="error">Erreur {{error}}</div>
@@ -53,12 +53,6 @@
             FilePropMixin,
             SmartMixin,
         ],
-        props: {
-            fileKey: {
-                type: String,
-                required: true,
-            },
-        },
         components: {
             FileIcon,
             LikeButton,

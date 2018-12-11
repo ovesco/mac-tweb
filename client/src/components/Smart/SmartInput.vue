@@ -1,10 +1,10 @@
 <template>
     <div>
-        <at-ta v-model="content" :ats="['#']" :members="members">
+        <at-ta :ats="['#']" :members="members">
             <textarea class="smart-input" spellcheck="false"
-                      @keydown="keydown"
-                      :placeholder="placeholder" title="">
-            </textarea>
+                      @keydown="$emit('keydown', $event)"
+                      @input="$emit('update:value', $event.target.value)"
+                      :placeholder="placeholder" title="">{{value}}</textarea>
         </at-ta>
     </div>
 </template>
@@ -27,15 +27,10 @@
                 ],
             };
         },
-        methods: {
-            keydown($event) {
-                this.$emit('change', this.content, $event);
-            },
-        },
         props: {
             placeholder: { type: String, default: () => '' },
             title: { type: String, default: () => '' },
-            value: { type: String, default: () => '' },
+            value: { type: String, required: true },
             name: { type: String, default: () => '' },
         },
     };
@@ -45,6 +40,7 @@
     .smart-input {
         font-size:0.85rem;
         line-height:0.9em;
+        height:1.7em;
         outline:none;
         border-width:0 0 1px 0;
         border-color: #eee;

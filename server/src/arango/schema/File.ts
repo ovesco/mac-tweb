@@ -16,7 +16,7 @@ export interface IFile extends IBase {
 
 export interface IActivityFileInput {
     upload: any;
-    activityKey: string;
+    activityId: string;
 }
 
 export default class File extends Base {

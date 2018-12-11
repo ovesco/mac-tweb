@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import { likeFragment } from './LikeQueries';
 import { fileFragment } from './FileQueries';
+import { commentFragment } from './CommentQueries';
 
 export const activityFragment = gql`
     fragment activityFragment on Activity {
@@ -14,6 +15,9 @@ export const activityFragment = gql`
         likes {
             ...likeFragment
         }
+        comments {
+            ...commentFragment
+        }
         user {
             _key
             name
@@ -22,6 +26,7 @@ export const activityFragment = gql`
 
     ${fileFragment}
     ${likeFragment}
+    ${commentFragment}
 `;
 
 export const addActivityQuery = gql`

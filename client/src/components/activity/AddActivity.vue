@@ -2,7 +2,7 @@
     <div>
         <div class="activity-card p-5">
             <div class="pt-lg-3 pb-lg-5">
-                <smart-input v-on:change="handleChange"
+                <smart-input :value.sync="description"
                     placeholder="Exprimez-vous ou décrivez les fichiers que vous allez uploader..."
                 />
             </div>
@@ -38,11 +38,15 @@
     import SmartInput from '../Smart/SmartInput.vue';
     import { uploadQuery } from '../../graphql/FileQueries';
     import { addActivityQuery, feedQuery } from '../../graphql/ActivityQueries';
+    import FeedMixin from '../../mixins/FeedMixin';
 
     export default {
         components: {
             SmartInput,
         },
+        mixins: [
+            FeedMixin,
+        ],
         data() {
             return {
                 fileList: [],
@@ -52,9 +56,6 @@
         methods: {
             fileAdded(file) {
                 this.fileList.push(file);
-            },
-            handleChange(d) {
-                this.description = d;
             },
             fileRemoved(file) {
                 const index = this.fileList.indexOf(file);
@@ -70,27 +71,27 @@
                     },
                 }).then(({ data }) => {
                     // Activity creation success, start uploading files if any
-                    if (this.fileList.length > 0) this.upload(data.addActivity._key);
+                    if (this.fileList.length > 0) this.upload(data.addActivity._id);
                 });
             },
-            upload(activityKey) {
+            upload(activityId) {
                 /* eslint-disable */
                 Promise.all(this.fileList.map((item) => {
                     return this.$apollo.mutate({
                         mutation: uploadQuery,
-                        variables: { file: { upload: item.raw, activityKey } },
+                        variables: { file: { upload: item.raw, activityId } },
                         update: (cache, { data }) => {
 
                             const { feed } = cache.readQuery({ query: feedQuery });
-                            const activities = feed.filter(a => a._key === activityKey);
-                            if (activities.length === 0) return;
-                            activities[0].files.push(data.uploadActivityFile);
+                            const activity = this.getActivity(feed, activityId);
+                            if (activity === null) return;
+                            activity.files.push(data.uploadActivityFile);
                         },
                     }).catch(e => {
                         console.log(e);
                     });
                 })).then((res) => {
-                    // console.log(res);
+                    console.log(res);
                 }).catch((e) => {
                     console.log(e);
                 });

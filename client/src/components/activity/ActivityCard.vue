@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="activity-comments">
-                <comments :comments="activity.comments" />
+                <comments :comments="activity.comments" :itemId="activity._id" />
             </div>
         </div>
     </div>

@@ -12,7 +12,8 @@ module.exports = {
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         indent: 'off',
         'linebreak-style': 'off',
-        'no-underscore-dangle': 'off'
+        'no-underscore-dangle': 'off',
+        'vue/no-textarea-mustache': 'off',
     },
     parserOptions: {
         parser: 'babel-eslint',
