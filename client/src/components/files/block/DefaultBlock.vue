@@ -7,10 +7,10 @@
                         <file-icon :mime="file.mimeType" />
                     </div>
                     <div class="file-metadata">
-                        <smart-filename :file="file" :file-key="file._key"
+                        <smart-filename :file="file"
                             smart-style="position:relative;z-index:5;font-size:0.9em" />
                         <p class="metadata m-0 text-center">{{ file.date | moment('from') }}</p>
-                        <p class="metadata m-0 text-center">{{ file.size }}</p>
+                        <p class="metadata m-0 text-center">{{ file.size | size }}</p>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,11 @@ class SecurityController {
         });
     }
 
+    extractUser(context: ISecurityContext): IUser {
+        if(!context.user) throw new Error('You must be authenticated to access this resource');
+        return context.user;
+    }
+
     createSession(user: IUser) : Promise<ISession> {
         const session = new Session();
         session.userKey = user._key;

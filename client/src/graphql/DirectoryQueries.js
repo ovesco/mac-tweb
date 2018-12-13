@@ -1,21 +1,66 @@
 import gql from 'graphql-tag';
+import { userFragment } from './UserQueries';
+import { fileFragment } from './FileQueries';
+
+export const directoryFragment = gql`
+    fragment directoryFragment on Directory {
+        _id
+        _key
+        name
+        user {
+            ...userFragment
+        }
+    }
+    
+    ${userFragment}
+`;
+
+export const addFileToDirectoryQuery = gql`
+    mutation ($directoryId: ID!, $fileId: ID!) {
+        addFileToDirectory(directoryId: $directoryId, fileId: $fileId) {
+            ...fileFragment
+        }
+    }
+    
+    ${fileFragment}
+`;
+
+export const removeFileFromDirectoryQuery = gql`
+    mutation ($directoryId: ID!, $fileId: ID!) {
+        removeFileFromDirectory(directoryId: $directoryId, fileId: $fileId)
+    }
+`;
 
 export const addDirectory = gql`
     mutation ($name: String!) {
         addDirectory(name: $name) {
-            _key
-            name
-            userKey
+            ...directoryFragment
         }
     }
+    
+    ${directoryFragment}
 `;
 
-export const getDirectories = gql`
-    {
-        directories {
-            _key
-            name
-            userKey
+export const directoryQuery = gql`
+    query($directoryKey: ID!) {
+        directory(_key: $directoryKey) {
+            ...directoryFragment
+            files {
+                ...fileFragment
+            }
         }
     }
+
+    ${fileFragment}
+    ${directoryFragment}
+`;
+
+export const directoriesQuery = gql`
+    {
+        directories {
+            ...directoryFragment
+        }
+    }
+
+    ${directoryFragment}
 `;

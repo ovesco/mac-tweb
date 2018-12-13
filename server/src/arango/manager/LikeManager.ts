@@ -1,7 +1,10 @@
-import  {aql } from 'arangojs';
+import  { aql } from 'arangojs';
 import EdgeManager from './EdgeManager';
 import { IUser } from '../schema/User';
 import { ILike } from '../schema/Like';
+
+export const LIKES_GRAPH = 'likes_graph';
+export const LIKES_COLLECTION = 'likes_collection';
 
 class LikeManager extends EdgeManager {
     async getUserReputation(user: IUser) {
@@ -14,4 +17,4 @@ class LikeManager extends EdgeManager {
     }
 }
 
-export default new LikeManager('likes');
+export default new LikeManager(LIKES_COLLECTION);

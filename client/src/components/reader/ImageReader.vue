@@ -4,7 +4,7 @@
             <div class="image-content d-flex flex-column align-items-center justify-content-center">
                 <img :src="fileSrc" />
                 <p class="m-0 image-meta text-white-50">
-                    {{ file.date|moment('from') }} - {{ file.size }}
+                    {{ file.date|moment('from') }} - {{ file.size|size }}
                 </p>
             </div>
         </div>

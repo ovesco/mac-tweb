@@ -11,12 +11,14 @@
                     <el-checkbox v-model="file.selected">Sélectionner</el-checkbox>
                 </div>
                 <div class="d-flex flex-column p-1">
-                    <smart-filename v-if="overlay" :file="file" color="white" :file-key="file._key"
+                    <smart-filename v-if="overlay" :file="file" color="white"
                         smart-style="display:block;text-align:center;font-size:0.9em;color:white" />
                     <div class="tags-container d-flex justify-content-center" v-if="file.tags">
                         <file-tag v-for="tag in file.tags" :key="tag" :tag="tag"
                                   size="mini" class="mr-1" />
                     </div>
+                    <div v-if="!file.tags || file.tags.length === 0"
+                         class="notags text-center text-black-50">Aucun tags</div>
                 </div>
             </div>
         </div>
@@ -56,6 +58,10 @@
         border-radius:5px;
         position:relative;
         overflow:hidden;
+
+        .notags {
+            font-size:0.7em;
+        }
 
         .preview, .overlay {
 

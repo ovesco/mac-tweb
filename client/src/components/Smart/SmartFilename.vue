@@ -35,7 +35,7 @@
                 </apollo-query>
             </div>
             <p class="m-0 f-title" slot="reference" :style="smartStyle">
-                {{ file.filename | filename }}
+                {{ file.filename | filename(this.nameSize) }}
             </p>
         </el-popover>
     </div>
@@ -57,6 +57,12 @@
             FileIcon,
             LikeButton,
             LikeBadges,
+        },
+        props: {
+            nameSize: {
+                type: Number,
+                default: () => 30,
+            },
         },
     };
 </script>

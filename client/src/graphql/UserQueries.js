@@ -24,3 +24,26 @@ export const userQuery = gql`
     
     ${userFragment}
 `;
+
+export const meQuery = gql`
+    {
+        me {
+            ...userFragment
+            files {
+                _id
+                _key
+                filename
+                size
+                date
+                mimeType
+                tags
+                src
+                user {
+                    ...userFragment
+                }
+            }
+        }
+    }
+    
+    ${userFragment}
+`;

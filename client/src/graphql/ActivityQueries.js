@@ -39,6 +39,12 @@ export const addActivityQuery = gql`
     ${activityFragment}
 `;
 
+export const deleteActivityQuery = gql`
+    mutation($activityId: ID!) {
+        deleteActivity(activityId: $activityId)
+    }
+`;
+
 export const feedQuery = gql`
     query {
         feed {

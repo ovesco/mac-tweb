@@ -1,14 +1,13 @@
 import { gql } from 'apollo-server';
 import { plainToClass } from 'class-transformer';
 import UserManager from '../../arango/manager/UserManager';
-import FileManager from '../../arango/manager/FileManager';
-import CommentManager from '../../arango/manager/CommentManager';
 import User, { IUser } from '../../arango/schema/User';
-import SecurityController from '../../auth/SecurityController';
-import LikeManager from "../../arango/manager/LikeManager";
+import SecurityController, { ISecurityContext } from '../../auth/SecurityController';
+import LikeManager from '../../arango/manager/LikeManager';
 
 export const typeDefs = gql`
     extend type Query {
+        me: User
         user(_key: ID!): User
         users: [User]
     }
@@ -39,6 +38,7 @@ export const typeDefs = gql`
 
 export const resolvers = {
     Query: {
+        me: async (x: any, y: any, context: ISecurityContext) => UserManager.find(context.user._key),
         user: async (_:any, { _key } : { _key: string }) => UserManager.find(_key),
         users: async () => UserManager.findAll(),
     },

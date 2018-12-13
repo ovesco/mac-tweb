@@ -8,7 +8,7 @@ export default abstract class AbstractManager {
     protected db : Database;
     protected collection : BaseCollection;
 
-    constructor(collectionName: string) {
+    constructor(protected collectionName: string) {
         this.db = database;
         this.collection = this.db.collection(collectionName);
     }

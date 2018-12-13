@@ -1,7 +1,8 @@
 <template>
     <div>
         <div v-if="selected.length > 0" class="p-lg-2 d-flex">
-            <add-to-directory-button :files="selected" class="mr-2" />
+            <add-to-directory-button :files="selected" class="mr-2"
+                 v-on:directory-selected="addToDirectory" />
             <read-files-button :files="selected" v-if="selected.length < 4" />
         </div>
         <div class="row no-gutters">

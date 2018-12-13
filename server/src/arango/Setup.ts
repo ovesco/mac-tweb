@@ -1,15 +1,20 @@
 require('dotenv').config();
 import AbstractManager from './manager/AbstractManager';
-import ActivityManager from './manager/ActivityManager';
+import ActivityManager, { ACTIVITIES_COLLECTION } from './manager/ActivityManager';
 import CommentManager from './manager/CommentManager';
-import FileManager from './manager/FileManager';
+import FileManager, { FILES_COLLECTION } from './manager/FileManager';
 import SessionManager from './manager/SessionManager';
 import TagManager from './manager/TagManager';
-import UserManager from './manager/UserManager';
+import UserManager, { USERS_COLLECTION } from './manager/UserManager';
 import DirectoryManager from './manager/DirectoryManager';
 import ActivityFileEdgeManager from './manager/ActivityFileEdgeManager';
-import LikeManager from './manager/LikeManager';
+import DirectoryFileEdgeManager from './manager/DirectoryFileEdgeManager';
+import LikeManager, { LIKES_GRAPH, LIKES_COLLECTION } from './manager/LikeManager';
 import db from './Database';
+
+db.graph('likes_graph').get().then((res) => {
+    console.log(res);
+});
 
 function initCollections() {
     const managers = [
@@ -21,23 +26,37 @@ function initCollections() {
         UserManager,
         DirectoryManager,
         ActivityFileEdgeManager,
+        DirectoryFileEdgeManager,
         LikeManager,
     ];
 
-    managers.forEach((manager: AbstractManager) => {
+    return Promise.all(managers.map((manager: AbstractManager) => {
         manager.getCollection().create().then(
             () => null,
             err => console.log('Collection already exist'),
         );
-    });
+    }));
 }
 
-db.listDatabases().then((res) => {
+db.listDatabases().then(async (res) => {
     if(!res.includes(process.env.DB_NAME)) {
         db.createDatabase(process.env.DB_NAME).then(() => {
-            initCollections();
+            initCollections().then(async () => {
+                try {
+                    await db.graph(LIKES_GRAPH).get();
+                } catch (e) {
+                    await db.graph(LIKES_GRAPH).create({
+                        edgeDefinitions: [{
+                            collection: LIKES_COLLECTION,
+                            from: [USERS_COLLECTION],
+                            to: [ACTIVITIES_COLLECTION, FILES_COLLECTION],
+                        }],
+                    });
+                }
+            });
         });
     } else {
-        initCollections();
+        await initCollections();
     }
 });
+// */

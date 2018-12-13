@@ -12,9 +12,14 @@ const server = new ApolloServer({
     resolvers,
     schemaDirectives,
     context: SecurityController.context,
+    formatError: (error: any) => {
+        // console.log(error);
+        return error;
+    },
 });
 
 const app = express();
+
 server.applyMiddleware({ app });
 
 app.get('/file/:fileKey', (req, res) => {

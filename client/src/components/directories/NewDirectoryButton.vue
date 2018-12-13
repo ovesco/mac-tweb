@@ -2,6 +2,7 @@
     <div>
         <el-popover
                 placement="bottom"
+                v-model="visible"
                 width="250">
             <form class="d-flex" @submit="submit">
                 <el-input placeholder="Nom du dossier" size="small" v-model="name"/>
@@ -18,29 +19,33 @@
 </template>
 
 <script>
-    import { addDirectory as addQuery, getDirectories } from '../../graphql/DirectoryQueries';
+    import { addDirectory as addQuery, directoriesQuery } from '../../graphql/DirectoryQueries';
 
     export default {
         data() {
             return {
                 name: '',
+                visible: false,
             };
         },
         methods: {
             async submit($event) {
                 $event.preventDefault();
-                await this.$apollo.mutate({
+                this.$apollo.mutate({
                     mutation: addQuery,
                     variables: {
                         name: this.name,
                     },
                     update: (cache, { data: { addDirectory } }) => {
-                        const { directories } = cache.readQuery({ query: getDirectories });
+                        const { directories } = cache.readQuery({ query: directoriesQuery });
                         cache.writeQuery({
-                            query: getDirectories,
+                            query: directoriesQuery,
                             data: { directories: directories.concat([addDirectory]) },
                         });
                     },
+                }).then(() => {
+                    this.name = '';
+                    this.visible = false;
                 });
             },
         },

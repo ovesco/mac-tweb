@@ -12,26 +12,27 @@ import App from './App.vue';
 
 import './assets/icons';
 import './assets/scss/main.scss';
-import { createProvider } from './vue-apollo';
+import apolloProvider from './apollo';
 
 // custom
-// eslint-disable-next-line
 import FilenameFilter from './filters/filename';
+import SizeFilter from './filters/size';
 
 Vue.filter('filename', FilenameFilter);
+Vue.filter('size', SizeFilter);
 
 Vue.config.productionTip = false;
 
 Vue.use(ElementUI);
 Vue.use(Toasted, {
-    position: 'top-center',
-    duration: 5000,
+    position: 'top-right',
+    duration: 3000,
 });
 Vue.use(VueMoment, { moment });
 
 new Vue({
     router,
     store,
-    apolloProvider: createProvider(),
+    apolloProvider,
     render: h => h(App),
 }).$mount('#app');

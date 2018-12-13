@@ -37,7 +37,7 @@
 <script>
     import SmartInput from '../Smart/SmartInput.vue';
     import { uploadQuery } from '../../graphql/FileQueries';
-    import { addActivityQuery, feedQuery } from '../../graphql/ActivityQueries';
+    import { addActivityQuery } from '../../graphql/ActivityQueries';
     import FeedMixin from '../../mixins/FeedMixin';
 
     export default {
@@ -65,10 +65,12 @@
                 this.$apollo.mutate({
                     mutation: addActivityQuery,
                     variables: { data: { content: this.description } },
+                    /*
                     update: (cache, { data }) => {
                         const { feed } = cache.readQuery({ query: feedQuery });
                         feed.unshift(data.addActivity);
                     },
+                    */
                 }).then(({ data }) => {
                     // Activity creation success, start uploading files if any
                     if (this.fileList.length > 0) this.upload(data.addActivity._id);
@@ -80,18 +82,23 @@
                     return this.$apollo.mutate({
                         mutation: uploadQuery,
                         variables: { file: { upload: item.raw, activityId } },
+                        /*
                         update: (cache, { data }) => {
-
                             const { feed } = cache.readQuery({ query: feedQuery });
                             const activity = this.getActivity(feed, activityId);
                             if (activity === null) return;
-                            activity.files.push(data.uploadActivityFile);
+                            activity.files.push({
+                                selected: false,
+                                ...data.uploadActivityFile
+                            });
                         },
+                        */
                     }).catch(e => {
                         console.log(e);
                     });
-                })).then((res) => {
-                    console.log(res);
+                })).then(async () => {
+                    this.$apollo.provider.defaultClient.resetStore();
+                    //await this.$apollo.query({ query: feedQuery, fetchPolicy: 'no-cache' });
                 }).catch((e) => {
                     console.log(e);
                 });

@@ -5,7 +5,7 @@
                 <div class="d-flex">
                     <slot name="actions" />
                     <add-to-directory-button :files="selected" v-if="selected.length > 0"
-                            class="mr-2" v-on:directory-selected="moveDirSelected" />
+                            class="mr-2" v-on:directory-selected="addToDirectory" />
                     <read-files-button v-if="selected.length > 0 && selected.length < 4"
                            :files="selected" />
                 </div>
@@ -70,11 +70,6 @@
                 amount: 20,
                 ...MODE,
             };
-        },
-        methods: {
-            moveDirSelected(dir) {
-                console.log(dir);
-            },
         },
     };
 </script>

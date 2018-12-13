@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="directory-list">
-            <ApolloQuery :query="require('../../graphql/DirectoryQueries.js').getDirectories">
+            <ApolloQuery :query="require('../../graphql/DirectoryQueries.js').directoriesQuery">
                 <template slot-scope="{ result: { loading, error, data }}">
                     <div v-if="loading">Loading</div>
                     <div v-else-if="error">Erreur mamene</div>
@@ -11,6 +11,10 @@
                                           :key="item._key" :index="item._key"
                                           @click="$emit('directory-selected', item)">
                                 <span>{{ item.name }}</span>
+                            </el-menu-item>
+                            <el-menu-item v-if="showMines" index="my-files"
+                                          @click="$emit('myfiles-selected')">
+                                <span>Mes fichiers</span>
                             </el-menu-item>
                         </el-menu>
                     </div>
@@ -28,20 +32,10 @@
                 type: String,
                 default: () => null,
             },
-        },
-        data() {
-            return {
-                menu: [
-                    {
-                        id: '1',
-                        title: 'Des fichiers à moi',
-                    },
-                    {
-                        id: '2',
-                        title: 'D\'autres fichiers',
-                    },
-                ],
-            };
+            showMines: {
+                type: Boolean,
+                default: () => false,
+            },
         },
     };
 </script>

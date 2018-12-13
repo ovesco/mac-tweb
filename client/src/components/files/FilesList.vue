@@ -12,14 +12,14 @@
                         <file-icon class="file-icon" :mime="scope.row.mimeType" />
                     </template>
                 </el-table-column>
-                <el-table-column
-                        prop="filename"
-                        label="Fichier"
-                        width="180">
+                <el-table-column label="Fichier" width="180">
+                    <template slot-scope="scope">
+                        {{ scope.row.filename|filename(25) }}
+                    </template>
                 </el-table-column>
                 <el-table-column label="Auteur" width="180">
                     <template slot-scope="scope">
-                        <smart-username :weight="400" :text="scope.row.filename" />
+                        <smart-username :weight="400" :user="scope.row.user" />
                     </template>
                 </el-table-column>
                 <el-table-column label="Tags">
