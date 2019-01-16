@@ -13,7 +13,7 @@
                     <el-select v-model="amount" placeholder="Select"
                                class="mr-lg-2" style="width:100px;">
                         <el-option
-                                v-for="item in [20, 40, 60]"
+                                v-for="item in [8,16,32]"
                                 :key="item"
                                 :label="item"
                                 :value="item">
@@ -66,10 +66,15 @@
         },
         data() {
             return {
+                amount: 8,
                 displayMode: MODE.LIST,
-                amount: 20,
                 ...MODE,
             };
+        },
+        watch: {
+            amount(newValue) {
+                this.$emit('amount', newValue);
+            },
         },
     };
 </script>

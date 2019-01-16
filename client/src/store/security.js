@@ -1,3 +1,5 @@
+import router from '../router';
+
 /* eslint-disable no-param-reassign */
 export default {
     namespaced: true,
@@ -13,6 +15,7 @@ export default {
         logout(state) {
             state.userKey = null;
             state.token = null;
+            router.push({ name: 'login' });
         },
     },
     getters: {

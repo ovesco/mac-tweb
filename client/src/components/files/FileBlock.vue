@@ -18,7 +18,7 @@
                                   size="mini" class="mr-1" />
                     </div>
                     <div v-if="!file.tags || file.tags.length === 0"
-                         class="notags text-center text-black-50">Aucun tags</div>
+                         class="notags text-center text-white-50 pb-1">Aucun tags</div>
                 </div>
             </div>
         </div>

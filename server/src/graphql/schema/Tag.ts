@@ -3,7 +3,7 @@ import TagManager from '../../arango/manager/TagManager';
 
 export const typeDefs = gql`
     extend type Query {
-        tag(_key: ID!): Tag
+        tags(search: String): [Tag]
     }
 
     type Tag {
@@ -14,7 +14,6 @@ export const typeDefs = gql`
 `;
 export const resolvers = {
     Query: {
-        tag: async (_:any, { _key } : { _key: string }) => TagManager.find(_key),
+        tags: async (_:any, { search } : { search: string }) => TagManager.search(search),
     },
 };
-

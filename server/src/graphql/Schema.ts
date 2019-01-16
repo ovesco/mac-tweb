@@ -9,10 +9,10 @@ import { typeDefs as commentTypeDefs, resolvers as commentResolvers } from './sc
 import { typeDefs as fileTypeDefs, resolvers as fileResolvers } from './schema/File';
 import { typeDefs as tagTypeDefs, resolvers as tagResolvers } from './schema/Tag';
 import { typeDefs as userTypeDefs, resolvers as userResolvers } from './schema/User';
-import { typeDefs as sessionTyeDefs, resolvers as sessionResolvers } from './schema/Session';
 import { typeDefs as directoryTypeDefs, resolvers as directoryResolvers } from './schema/Directory';
-import {  typeDefs as likeTypeDefs, resolvers as likeResolvers } from './schema/Like';
+import { typeDefs as likeTypeDefs, resolvers as likeResolvers } from './schema/Like';
 import { typeDefs as AQLTypeDefs, AqlDirective } from './directive/AQLDirective';
+import { typeDefs as notificationTypeDefs, resolvers as notificationResolvers } from './schema/Notification';
 
 // Directives
 import { typeDefs as capitalizeTypeDefs, CapitalizeDirective } from './directive/Capitalize';
@@ -20,6 +20,11 @@ import { typeDefs as capitalizeTypeDefs, CapitalizeDirective } from './directive
 const query = gql`
     type Query {
         version: String
+    }
+
+    type Session {
+        token: String!
+        user: User!
     }
 
     type Mutation {
@@ -44,9 +49,9 @@ export const typeDefs = [
     fileTypeDefs,
     tagTypeDefs,
     userTypeDefs,
-    sessionTyeDefs,
     directoryTypeDefs,
     likeTypeDefs,
+    notificationTypeDefs,
 
     capitalizeTypeDefs,
     AQLTypeDefs,
@@ -59,9 +64,9 @@ export const resolvers = merge(
     fileResolvers,
     tagResolvers,
     userResolvers,
-    sessionResolvers,
     directoryResolvers,
     likeResolvers,
+    notificationResolvers,
 );
 
 export const schemaDirectives = {

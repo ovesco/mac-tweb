@@ -1,7 +1,7 @@
 import EdgeManager from './EdgeManager';
 
-const COMMENTS = 'comments';
+export const COMMENT_QUALIFIER = 'comment';
 class CommentManager extends EdgeManager {
 }
 
-export default new CommentManager(COMMENTS);
+export default new CommentManager(COMMENT_QUALIFIER);

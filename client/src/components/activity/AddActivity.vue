@@ -57,6 +57,10 @@
             fileAdded(file) {
                 this.fileList.push(file);
             },
+            clear() {
+                this.$refs.uploader.clearFiles();
+                this.description = '';
+            },
             fileRemoved(file) {
                 const index = this.fileList.indexOf(file);
                 if (index !== -1) this.fileList.splice(index, 1);
@@ -74,6 +78,7 @@
                 }).then(({ data }) => {
                     // Activity creation success, start uploading files if any
                     if (this.fileList.length > 0) this.upload(data.addActivity._id);
+                    else this.clear();
                 });
             },
             upload(activityId) {
@@ -98,6 +103,7 @@
                     });
                 })).then(async () => {
                     this.$apollo.provider.defaultClient.resetStore();
+                    this.clear();
                     //await this.$apollo.query({ query: feedQuery, fetchPolicy: 'no-cache' });
                 }).catch((e) => {
                     console.log(e);

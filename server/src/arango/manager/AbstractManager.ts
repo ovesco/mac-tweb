@@ -3,6 +3,7 @@ import database from '../Database';
 import { IBase } from '../schema/Base';
 import { BaseCollection } from 'arangojs/lib/cjs/collection';
 import { aql, Database, DocumentCollection } from 'arangojs';
+import { ArrayCursor } from 'arangojs/lib/cjs/cursor';
 
 export default abstract class AbstractManager {
     protected db : Database;
@@ -11,6 +12,10 @@ export default abstract class AbstractManager {
     constructor(protected collectionName: string) {
         this.db = database;
         this.collection = this.db.collection(collectionName);
+    }
+
+    query(query: any): Promise<ArrayCursor> {
+        return this.db.query(query);
     }
 
     find<T extends IBase>(key: string) : Promise<T> {
@@ -33,13 +38,15 @@ export default abstract class AbstractManager {
             }
         }
         const query = 'FOR x IN @@value0 FILTER ' + terms.join(' && ') + ' RETURN x';
-        return this.db.query({
+        return this.query({
             query,
             bindVars: {
                 '@value0': this.collection.name,
                 ...vars,
             },
-        }).then(cursor => cursor.all());
+        }).then(cursor => cursor.all()).catch(() => {
+            console.log('Error in findBy');
+        });
     }
 
     findOneBy<T extends IBase>(data: object, strict: boolean) : Promise<T> {
@@ -51,15 +58,17 @@ export default abstract class AbstractManager {
     }
 
     findByMultipleKeys<T extends IBase>(keys: Array<String>) : Promise<Array<T>> {
-        return this.db.query(aql`FOR x IN ${this.collection} FILTER x._key IN ${keys} RETURN x`)
-            .then(cursor => cursor.all());
+        return this.query(aql`FOR x IN ${this.collection} FILTER x._key IN ${keys} RETURN x`)
+            .then(cursor => cursor.all()).catch(() => {
+                console.log('BAIL multiplekeys');
+            });
     }
 
-    findAll() : Promise<Array<IBase>> {
-        return this.collection.all().then(cursor => cursor.map(doc => doc));
+    findAll<T extends IBase>() : Promise<Array<T>> {
+        return this.collection.all().then(cursor => cursor.all());
     }
 
-    update(key: string, item: IBase): Promise<IBase> {
+    update<T extends IBase>(key: string, item: T): Promise<T> {
         Joi.assert(item, item._getSchema());
         return this.collection.update(key, item).then(() => item);
     }

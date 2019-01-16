@@ -25,7 +25,7 @@ export const typeDefs = gql`
         name: String!
         userKey: String!
         user: User! @aql(query: "FOR u IN users FILTER u._key == @current.userKey RETURN u", single: true)
-        files: [File]
+        filesAmount: Int!
     }
 `;
 
@@ -37,9 +37,7 @@ export const resolvers = {
         },
     },
     Directory: {
-        files: async (parent: IDirectory) => DirectoryFileEdgeManager.getDirectoryFiles(parent._id).catch(e => {
-            console.log(e);
-        }),
+        filesAmount: (directory: IDirectory) => DirectoryFileEdgeManager.countFiles(directory._id),
     },
     Mutation: {
         addDirectory: async (_:any, { name } :  { name: string }, context: ISecurityContext) => {

@@ -45,6 +45,16 @@ export const deleteActivityQuery = gql`
     }
 `;
 
+export const myActivitiesQuery = gql`
+    query {
+        myActivities {
+            ...activityFragment
+        }
+    }
+    
+    ${activityFragment}
+`;
+
 export const feedQuery = gql`
     query {
         feed {

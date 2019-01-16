@@ -9,6 +9,12 @@
                         </div>
                         <span slot="title">Activité</span>
                     </el-menu-item>
+                    <el-menu-item :route="{name: 'search'}" index="search" class="d-flex">
+                        <div class="icon" v-bind:class="{'collapsed': menuCollapsed}">
+                            <icon icon="search" />
+                        </div>
+                        <span slot="title">Rechercher</span>
+                    </el-menu-item>
                     <el-menu-item :route="{name: 'profile'}" index="profile" class="d-flex">
                         <div class="icon" v-bind:class="{'collapsed': menuCollapsed}">
                             <icon icon="user" />

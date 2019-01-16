@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Toasted from 'vue-toasted';
+import ClickOutside from 'vue-click-outside';
 import ElementUI from 'element-ui';
 
 import moment from 'moment';
@@ -20,6 +21,7 @@ import SizeFilter from './filters/size';
 
 Vue.filter('filename', FilenameFilter);
 Vue.filter('size', SizeFilter);
+Vue.directive('clickOutside', ClickOutside);
 
 Vue.config.productionTip = false;
 

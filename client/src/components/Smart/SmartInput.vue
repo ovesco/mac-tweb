@@ -1,9 +1,10 @@
 <template>
     <div>
-        <at-ta :ats="['#']" :members="members">
+        <at-ta :ats="['#']" :members="members" ref="at">
             <textarea class="smart-input" spellcheck="false"
                       @keydown="$emit('keydown', $event)"
-                      @input="$emit('update:value', $event.target.value)"
+                      @blur="handleBlur"
+                      @input="$emit('update:value', $event.target.value) && log()"
                       :placeholder="placeholder" title="">{{value}}</textarea>
         </at-ta>
     </div>
@@ -26,6 +27,14 @@
                     'stylé',
                 ],
             };
+        },
+        methods: {
+            handleBlur() {
+                this.$refs.at.closePanel();
+            },
+            log() {
+                console.log(this.$refs.at._data.atwho);
+            },
         },
         props: {
             placeholder: { type: String, default: () => '' },

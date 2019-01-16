@@ -40,7 +40,7 @@
 
         position:fixed;
         padding-top:57px;
-        z-index:20;
+        z-index:150;
         top:0;
         width:100%;
         height:100%;

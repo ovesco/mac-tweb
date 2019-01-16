@@ -14,7 +14,7 @@
                 </el-table-column>
                 <el-table-column label="Fichier" width="180">
                     <template slot-scope="scope">
-                        {{ scope.row.filename|filename(25) }}
+                        <smart-filename :file="scope.row" />
                     </template>
                 </el-table-column>
                 <el-table-column label="Auteur" width="180">
@@ -24,9 +24,9 @@
                 </el-table-column>
                 <el-table-column label="Tags">
                     <template slot-scope="scope">
-                        <div class="d-flex">
+                        <div class="d-flex flex-wrap">
                             <file-tag v-for="tag in scope.row.tags" :key="tag"
-                                      :tag="tag" class="mr-1" />
+                                      :tag="tag" class="mr-1 mb-1" />
                         </div>
                     </template>
                 </el-table-column>
@@ -44,6 +44,7 @@
     import FilesPropMixin from '../../mixins/FilesPropMixin';
     import FileSelectionMixin from '../../mixins/FileSelectionMixin';
     import FileContainerMixin from '../../mixins/FileContainerMixin';
+    import SmartFilename from '../Smart/SmartFilename.vue';
     import FileIcon from './FileIcon.vue';
 
     export default {
@@ -53,6 +54,7 @@
             FileContainerMixin,
         ],
         components: {
+            SmartFilename,
             FileIcon,
         },
     };

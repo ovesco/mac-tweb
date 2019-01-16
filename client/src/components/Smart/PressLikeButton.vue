@@ -1,10 +1,10 @@
 <template>
     <div>
-        <button class="btn btn-primary btn-small ml-2" v-bind:class="{
+        <button class="btn btn-primary btn-small" v-bind:class="{
             'focused' : press,
-            'btn-primary': action === LIKE || state === LIKE,
-            'btn-success': action === STAR || state === STAR,
-            'btn-danger' : action === SAVE || state === SAVE,
+            'btn-primary': state === LIKE || action === LIKE,
+            'btn-success': state === STAR || action === STAR,
+            'btn-danger' : state === SAVE || action === SAVE,
             'btn-outline' : state !== null,
         }" ref="button">
             <span v-if="(action === LIKE && state === null) || state === LIKE">

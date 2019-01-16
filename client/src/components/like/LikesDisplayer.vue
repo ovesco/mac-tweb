@@ -28,3 +28,12 @@
         },
     };
 </script>
+
+<style scoped lang="scss">
+    @import "../../assets/scss/variables";
+
+    p {
+        font-size:0.8em;
+        color:$gray-600;
+    }
+</style>

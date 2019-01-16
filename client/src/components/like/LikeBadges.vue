@@ -20,3 +20,23 @@
         },
     };
 </script>
+
+<style scoped lang="scss">
+    .likes {
+
+        span {
+            font-size:0.5em;
+            color:white;
+            width:2em;
+            height:2em;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:100%;
+
+            &:not(:first-child) {
+                margin-left:-0.7em;
+            }
+        }
+    }
+</style>

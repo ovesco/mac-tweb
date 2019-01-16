@@ -9,6 +9,8 @@
                      v-bind:class="{'menu-collapsed': menuCollapsed}">
                     <router-view />
                 </div>
+                <notifications-manager />
+                <activity-modal />
             </div>
         </div>
     </div>
@@ -16,13 +18,17 @@
 
 <script>
     import { mapGetters } from 'vuex';
+    import NotificationsManager from '../components/notification/NotificationsManager.vue';
     import Header from '../components/Header.vue';
     import LeftMenu from '../components/LeftMenu.vue';
+    import activityModal from '../components/activity/ActivityModal.vue';
     import filesReader from '../components/reader/FileReader.vue';
 
     export default {
         components: {
             filesReader,
+            activityModal,
+            NotificationsManager,
             sHeader: Header,
             sLeftMenu: LeftMenu,
         },

@@ -12,7 +12,7 @@ export default class Tag extends Base implements ITag {
 
     buildSchema() : object {
         return {
-            tag: Joi.string().min(1).alphanum().required(),
+            tag: Joi.string().min(1).trim().required(),
         };
     }
 }

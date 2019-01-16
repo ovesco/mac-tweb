@@ -9,20 +9,19 @@
                     <p class="title m-lg-0 pr-lg-2">Colibri</p>
                     <p class="m-lg-0">Collaboration</p>
                 </div>
-                <div class="search pt-lg-3 pb-lg-3 d-flex align-items-center">
-                    <div class="input-search-container pl-lg-3">
-                        <input type="text" title="Search" placeholder="Rechercher..." />
-                    </div>
-                </div>
             </div>
             <div class="d-lg-flex p-lg-3 align-items-lg-center">
-                <div class="d-lg-flex">
-                    <div class="action pl-lg-3 pr-lg-3">
-                        <i class="el-icon-bell"></i>
-                    </div>
-                    <div class="action pl-lg-3 pr-lg-3">
-                        <i class="el-icon-setting"></i>
-                    </div>
+                <div class="d-lg-flex pr-3 pt-2">
+                    <el-badge is-dot class="item" :hidden="!$store.getters['ui/notified']">
+                        <i class="el-icon-bell action notifications-manager"
+                           :class="{
+                                active: $store.getters['ui/notified'],
+                                focus: $store.getters['ui/showNotifications'],
+                            }"
+                           @click="$store.commit('ui/showNotifications',
+                                !$store.getters['ui/showNotifications'])"
+                        ></i>
+                    </el-badge>
                 </div>
                 <div class="user-menu ml-lg-3 mr-lg-3">
                     <el-dropdown>
@@ -30,9 +29,9 @@
                             <img src="./../assets/images/face.jpeg" />
                         </div>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>Action 1</el-dropdown-item>
-                            <el-dropdown-item>Action 2</el-dropdown-item>
-                            <el-dropdown-item>Action 3</el-dropdown-item>
+                            <el-dropdown-item>
+                                <div @click="$store.commit('security/logout')">Logout</div>
+                            </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </div>
@@ -40,6 +39,11 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+};
+</script>
 
 <style lang="scss">
     @import "../assets/scss/variables";
@@ -49,19 +53,6 @@
         width: 100%;
         border-bottom:1.5px solid $gray-200;
         background:white;
-
-        .search {
-
-            .input-search-container {
-
-                border-left:1px solid $gray-300;
-
-                input[type=text] {
-                    border:none;
-                    font-size:0.9rem;
-                }
-            }
-        }
 
         .logo {
 
@@ -85,11 +76,6 @@
             }
         }
 
-        .action {
-            font-size:1.3em;
-            color:$gray-500;
-        }
-
         .user-menu {
 
             line-height:0;
@@ -99,6 +85,21 @@
                 height:2.7em;
                 border-radius:100px;
             }
+        }
+    }
+
+    .action {
+        font-size:1.5em;
+        color:$gray-500;
+        cursor:pointer;
+
+        &.active {
+            color: red;
+        }
+
+        &.focus {
+            color: #5692ff !important;
+            text-shadow: 0 0 10px #5692ff;
         }
     }
 </style>

@@ -3,6 +3,7 @@ import { ISecurityContext } from '../../auth/SecurityController';
 import Comment from '../../arango/schema/Comment';
 import CommentManager from '../../arango/manager/CommentManager';
 import { plainToClass } from 'class-transformer';
+import NotificationManager from "../../arango/manager/NotificationManager";
 
 export const typeDefs = gql`
     type Comment {
@@ -30,7 +31,14 @@ export const resolvers = {
             else if(itemId) comment = new Comment(context.user._id, itemId);
             else throw new Error('Missing some data man.');
             comment.content = content;
-            return commentKey ? CommentManager.update(commentKey, plainToClass(Comment, comment)) : CommentManager.save(comment);
+            return commentKey
+                ? CommentManager.update(commentKey, plainToClass(Comment, comment))
+                : CommentManager.save(comment).then((result) => {
+                    return NotificationManager.findOwnerId(itemId).then((ownerId) => {
+                        return NotificationManager.addNotification(ownerId, itemId, context.user._key, 'comment')
+                            .then(() => result);
+                    });
+                });
         },
         deleteComment: async (_:any, { commentId } : { commentId: string }, context: ISecurityContext) => {
             return CommentManager.findOneBy({ _id: commentId, _from: context.user._id }, true).then((res) => {

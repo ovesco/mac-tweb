@@ -6,7 +6,7 @@
                     <div v-if="loading">Loading</div>
                     <div v-else-if="error">Erreur mamene</div>
                     <div v-else-if="data">
-                        <el-menu>
+                        <el-menu v-if="data.directories.length > 0 || showMines">
                             <el-menu-item v-for="item in data.directories"
                                           :key="item._key" :index="item._key"
                                           @click="$emit('directory-selected', item)">
@@ -17,6 +17,9 @@
                                 <span>Mes fichiers</span>
                             </el-menu-item>
                         </el-menu>
+                        <p v-else class="m-0 text-center">
+                            Aucun dossier actuellement, créez-en un!
+                        </p>
                     </div>
                     <div v-else>no result</div>
                 </template>
@@ -44,5 +47,9 @@
     .el-menu-item {
         height:40px;
         line-height:35px;
+    }
+
+    p {
+        font-size:0.75rem;
     }
 </style>

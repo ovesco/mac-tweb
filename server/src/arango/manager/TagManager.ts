@@ -12,13 +12,19 @@ class TagManager extends AbstractManager {
             });
         }
         const hashtags = extract.map(hashtag => hashtag.substr(1).toLowerCase());
-        return this.db.query(aql`FOR t IN tags FILTER t.tag IN ${hashtags} RETURN t.tag`)
+        return this.query(aql`FOR t IN ${this.collection} FILTER t.tag IN ${hashtags} RETURN t.tag`)
             .then(cursor => cursor.all()).then((existingTags) => {
                 // for each non existing tag, add it in DB
                 const diff = hashtags.filter(tag => !existingTags.includes(tag));
                 const newTags = diff.map(tag => new Tag(tag));
                 return this.collection.import(newTags).then(() => hashtags);
             });
+    }
+
+    search(needle: string) : Promise<Array<Tag>> {
+        const searchItem = `%${needle}%`;
+        return this.query(aql`FOR t IN ${this.collection} FILTER t.tag LIKE ${searchItem} LIMIT 5 RETURN t`)
+            .then(cursor => cursor.all());
     }
 }
 

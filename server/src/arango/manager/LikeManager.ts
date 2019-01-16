@@ -1,20 +1,19 @@
-import  { aql } from 'arangojs';
+import { aql } from 'arangojs';
 import EdgeManager from './EdgeManager';
 import { IUser } from '../schema/User';
 import { ILike } from '../schema/Like';
 
-export const LIKES_GRAPH = 'likes_graph';
-export const LIKES_COLLECTION = 'likes_collection';
+export const LIKE_QUALIFIER = 'like';
 
 class LikeManager extends EdgeManager {
     async getUserReputation(user: IUser) {
-        return this.db.query(aql`
+        return this.query(aql`
             LET a = (FOR f IN files FILTER f.userKey == ${user._key} RETURN f)
             LET b = (FOR ac IN activities FILTER ac.userKey == ${user._key} RETURN ac)
             FOR c IN APPEND(a, b)
-            FOR l IN likes FILTER l._to == c._id
+            FOR l IN ${this.collection} FILTER l._to == c._id && l._qualifier == ${LIKE_QUALIFIER}
             RETURN l`).then(cursor => cursor.all()) as Promise<ILike>;
     }
 }
 
-export default new LikeManager(LIKES_COLLECTION);
+export default new LikeManager(LIKE_QUALIFIER);

@@ -16,6 +16,7 @@ import {
     faSignOutAlt,
     faFileImage,
     faTimes,
+    faSearch,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
@@ -34,5 +35,6 @@ library.add(faSignInAlt);
 library.add(faSignOutAlt);
 library.add(faFileImage);
 library.add(faTimes);
+library.add(faSearch);
 
 Vue.component('icon', FontAwesomeIcon);

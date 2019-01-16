@@ -1,5 +1,5 @@
 import FileSelectionMixin from './FileSelectionMixin';
-import { addFileToDirectoryQuery } from '../graphql/DirectoryQueries';
+import { addFileToDirectoryQuery, directoryQuery } from '../graphql/DirectoryQueries';
 
 export default {
     mixins: [
@@ -17,6 +17,17 @@ export default {
             await Promise.all(this.selected.map(file => this.$apollo.mutate({
                 mutation: addFileToDirectoryQuery,
                 variables: { directoryId: directory._id, fileId: file._id },
+                update: (cache) => {
+                    try {
+                        const dirCache = cache.readQuery({
+                            query: directoryQuery,
+                            variables: { directoryKey: directory._key },
+                        }).directory;
+                        dirCache.files.push(file);
+                    } catch (e) {
+                        // On a pas encore le dossier en cache, on fait rien
+                    }
+                },
             }))).then(() => {
                 this.$toasted.success(`Fichiers ajoutés à ${directory.name}`);
             }).catch((e) => {

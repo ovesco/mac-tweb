@@ -23,9 +23,29 @@ export const fileFragment = gql`
     ${likeFragment}
 `;
 
+export const directoryFilesQuery = gql`
+    query($id: ID!, $begin: Int, $amount: Int!) {
+        directoryFiles(id: $id, begin: $begin, amount: $amount) {
+            ...fileFragment
+        }
+    }
+    
+    ${fileFragment}
+`;
+
 export const uploadQuery = gql`
     mutation uploadFiles($file: ActivityFileInput!) {
         uploadActivityFile(fileInput: $file) {
+            ...fileFragment
+        }
+    }
+    
+    ${fileFragment}
+`;
+
+export const searchQuery = gql`
+    query($text: String, $tags: [String]!) {
+        searchFiles(text: $text, tags: $tags) {
             ...fileFragment
         }
     }

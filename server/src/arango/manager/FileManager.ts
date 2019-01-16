@@ -5,10 +5,11 @@ import { IFile } from '../schema/File';
 export const FILES_COLLECTION = 'files';
 
 class FileManager extends AbstractManager {
-    getUserFiles(userKey: string) : Promise<Array<IFile>> {
-        return this.db.query(
-            aql`FOR file IN ${this.collection} FILTER file.userKey == ${userKey} RETURN file`)
-            .then(cursor => cursor.all());
+    search(text: string, tags: Array<string>): Promise<IFile> {
+        const textQuery = `%${text}%`;
+        return this.query(aql`
+        FOR f IN files FILTER f.filename LIKE ${textQuery}
+            OR LENGTH(INTERSECTION(f.tags, ${tags})) > 0 RETURN f`).then(cursor => cursor.all());
     }
 }
 

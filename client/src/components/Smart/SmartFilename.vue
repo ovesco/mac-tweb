@@ -3,7 +3,7 @@
         <el-popover :open-delay="700"
                 placement="top-start"
                 width="300"
-                trigger="click">
+                trigger="hover">
             <div>
                 <apollo-query :query="require('../../graphql/FileQueries').fileQuery"
                               :variables="{ fileKey: file._key }">
@@ -19,13 +19,14 @@
                                 <div>
                                     <div class="filename">{{ data.file.filename | filename }}</div>
                                     <div class="meta">
-                                        {{ data.file.date|moment('from') }} - {{ data.file.size }}
+                                        {{ data.file.date|moment('from') }} -
+                                        {{ data.file.size|size }}
                                     </div>
                                 </div>
                             </div>
-                            <div>
+                            <div class="d-flex align-items-center justify-content-between mt-2">
+                                <like-displayer :likes="data.file.likes" />
                                 <like-button :likes="data.file.likes" :item-id="data.file._id" />
-                                <like-badges :likes="data.file.likes" />
                             </div>
                         </div>
                         <div v-else>
@@ -34,7 +35,7 @@
                     </template>
                 </apollo-query>
             </div>
-            <p class="m-0 f-title" slot="reference" :style="smartStyle">
+            <p class="m-0 f-title" slot="reference" :style="smartStyle" @click="openFile">
                 {{ file.filename | filename(this.nameSize) }}
             </p>
         </el-popover>
@@ -44,9 +45,9 @@
 <script>
     import FilePropMixin from '../../mixins/FilePropMixin';
     import SmartMixin from '../../mixins/SmartMixin';
-    import LikeBadges from '../like/LikeBadges.vue';
     import LikeButton from './PressLikeButton.vue';
     import FileIcon from '../files/FileIcon.vue';
+    import LikeDisplayer from '../like/LikesDisplayer.vue';
 
     export default {
         mixins: [
@@ -56,12 +57,17 @@
         components: {
             FileIcon,
             LikeButton,
-            LikeBadges,
+            LikeDisplayer,
         },
         props: {
             nameSize: {
                 type: Number,
                 default: () => 30,
+            },
+        },
+        methods: {
+            openFile() {
+                this.$store.commit('ui/addFileToWatch', this.file);
             },
         },
     };

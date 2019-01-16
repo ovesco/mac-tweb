@@ -7,6 +7,7 @@ export const directoryFragment = gql`
         _id
         _key
         name
+        filesAmount
         user {
             ...userFragment
         }
@@ -45,13 +46,9 @@ export const directoryQuery = gql`
     query($directoryKey: ID!) {
         directory(_key: $directoryKey) {
             ...directoryFragment
-            files {
-                ...fileFragment
-            }
         }
     }
 
-    ${fileFragment}
     ${directoryFragment}
 `;
 

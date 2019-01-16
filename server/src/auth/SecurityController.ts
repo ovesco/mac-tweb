@@ -1,69 +1,66 @@
-import * as uniqid from 'uniqid';
 import * as bcrypt from 'bcryptjs';
-import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
-import SessionManager from '../arango/manager/SessionManager';
 import UserManager from '../arango/manager/UserManager';
-import { IUser } from '../arango/schema/User';
-import Session, { ISession } from '../arango/schema/Session';
+import User, { IUser } from '../arango/schema/User';
 
 export interface ISecurityContext {
-    user: IUser
+    user: IUser;
+}
+
+export interface ISession {
+    token: string;
+    user: IUser;
+}
+
+export interface IPayload {
+    userKey: string;
 }
 
 class SecurityController {
-    authenticate(username: string, password: string): Promise<ISession> {
+    static authenticate(username: string, password: string): Promise<ISession> {
         return UserManager.findByUsername(username).then((user) => {
-            if(user !== null && user.password === this.encodePassword(password, user.salt)) {
-                return this.createSession(user);
+            if(user !== null && user.password === SecurityController.encodePassword(password, user.salt)) {
+                return SecurityController.createAuthResponse(user);
             }
             return null;
         });
     }
 
-    extractUser(context: ISecurityContext): IUser {
-        if(!context.user) throw new Error('You must be authenticated to access this resource');
-        return context.user;
-    }
-
-    createSession(user: IUser) : Promise<ISession> {
-        const session = new Session();
-        session.userKey = user._key;
-        session.localKey = uniqid();
-        return SessionManager.save(session);
-    }
-
-    createJWT(user: IUser): string {
-        const payload = {
-            _key: user._key,
+    static createAuthResponse(user: IUser): ISession {
+        return {
+            token: SecurityController.createJWT(user),
+            user,
         };
-
-        const privateKey = fs.readFileSync('../../key/private.key', 'utf8');
-
-        const signOptions = {
-            issuer: 'colibri',
-            subject: user._key,
-            audience: 'http://localhost:4000',
-        };
-
-        return jwt.sign(payload, privateKey, signOptions);
     }
 
-    async context({ req } : { req: any}) {
-        const token = (req.headers[process.env.SESSION_HEADER] || '').replace('Bearer ', '');
-        return SessionManager.findOneBy({ localKey: token }, true).then(
-            (session: ISession) => session === null
-                ? null
-                : UserManager.find(session.userKey).then(user => user === null ? null : { user }));
+    static createJWT(user: IUser): string {
+        return jwt.sign({
+            userKey: user._key,
+        }, process.env.JWT_SECRET);
     }
 
-    encodePassword(clear: string, salt: string): string {
+    static jwtToUser(token: string): Promise<User> {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET) as IPayload;
+            return UserManager.find(decoded.userKey);
+        } catch (err) {
+            return new Promise((resolve) => {
+                resolve(null);
+            });
+        }
+    }
+
+    static async contextUser(token: string) {
+        return SecurityController.jwtToUser(token).then(user => user ? { user } : null);
+    }
+
+    static encodePassword(clear: string, salt: string): string {
         return bcrypt.hashSync(clear, salt);
     }
 
-    generateSalt(): string {
+    static generateSalt(): string {
         return bcrypt.genSaltSync(parseInt(process.env.SALT_ROUNDS, 10));
     }
 }
 
-export default new SecurityController();
+export default SecurityController;

@@ -8,6 +8,14 @@ Vue.use(Vuex);
 
 const vuexLocal = new VuexPersistence({
     storage: window.localStorage,
+    reducer(state) {
+        return {
+            ui: {
+                menuCollapsed: state.ui.menuCollapsed,
+            },
+            security: state.security,
+        };
+    },
 });
 
 export default new Vuex.Store({

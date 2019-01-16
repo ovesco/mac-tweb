@@ -5,9 +5,12 @@ export const ACTIVITIES_COLLECTION = 'activities';
 
 class ActivityManager extends AbstractManager {
     async getUserFeed(userKey: string) {
-        return this.db.query(aql`
-        FOR a IN ${this.collection} FILTER a.userKey == ${userKey} SORT a.date DESC
-                LIMIT 10 RETURN a`).then(cursor => cursor.all());
+        return this.query(aql`
+            FOR a IN ${this.collection}
+                SORT a.date DESC
+                RETURN a`).then(cursor => cursor.all()).catch((e) => {
+                    console.log(e);
+        });
     }
 }
 

@@ -1,16 +1,16 @@
 require('dotenv').config();
 import AbstractManager from './manager/AbstractManager';
+import NotificationManager from './manager/NotificationManager';
 import ActivityManager, { ACTIVITIES_COLLECTION } from './manager/ActivityManager';
 import CommentManager from './manager/CommentManager';
 import FileManager, { FILES_COLLECTION } from './manager/FileManager';
-import SessionManager from './manager/SessionManager';
 import TagManager from './manager/TagManager';
 import UserManager, { USERS_COLLECTION } from './manager/UserManager';
-import DirectoryManager from './manager/DirectoryManager';
-import ActivityFileEdgeManager from './manager/ActivityFileEdgeManager';
-import DirectoryFileEdgeManager from './manager/DirectoryFileEdgeManager';
-import LikeManager, { LIKES_GRAPH, LIKES_COLLECTION } from './manager/LikeManager';
+import DirectoryManager, { DIRECTORIES_COLLECTION } from './manager/DirectoryManager';
+import LikeManager from './manager/LikeManager';
+import { EDGES_COLLECTION, EDGES_GRAPH } from './manager/EdgeManager';
 import db from './Database';
+import Tag from './schema/Tag';
 
 db.graph('likes_graph').get().then((res) => {
     console.log(res);
@@ -21,42 +21,49 @@ function initCollections() {
         ActivityManager,
         CommentManager,
         FileManager,
-        SessionManager,
         TagManager,
         UserManager,
         DirectoryManager,
-        ActivityFileEdgeManager,
-        DirectoryFileEdgeManager,
-        LikeManager,
+        NotificationManager,
+        LikeManager, // Will create edges collection
     ];
 
-    return Promise.all(managers.map((manager: AbstractManager) => {
-        manager.getCollection().create().then(
+    Promise.all(managers.map((manager: AbstractManager) => {
+        return manager.getCollection().create().then(
             () => null,
-            err => console.log('Collection already exist'),
+            err => console.log(`collection already exist: ${manager.getCollection().name}`),
         );
-    }));
+    })).then(async () => {
+        try {
+            await db.graph(EDGES_GRAPH).get();
+            console.log('graph already exists');
+        } catch (e) {
+            await db.graph(EDGES_GRAPH).create({
+                edgeDefinitions: [{
+                    collection: EDGES_COLLECTION,
+                    from: [USERS_COLLECTION, DIRECTORIES_COLLECTION, ACTIVITIES_COLLECTION],
+                    to: [ACTIVITIES_COLLECTION, FILES_COLLECTION],
+                }],
+            });
+        }
+
+        await postInstall();
+    });
+}
+
+async function postInstall() {
+    await ['heig-vd', 'il', 'swag'].forEach(async (tagname) => {
+        await TagManager.save(new Tag(tagname));
+    });
 }
 
 db.listDatabases().then(async (res) => {
     if(!res.includes(process.env.DB_NAME)) {
         db.createDatabase(process.env.DB_NAME).then(() => {
-            initCollections().then(async () => {
-                try {
-                    await db.graph(LIKES_GRAPH).get();
-                } catch (e) {
-                    await db.graph(LIKES_GRAPH).create({
-                        edgeDefinitions: [{
-                            collection: LIKES_COLLECTION,
-                            from: [USERS_COLLECTION],
-                            to: [ACTIVITIES_COLLECTION, FILES_COLLECTION],
-                        }],
-                    });
-                }
-            });
+            initCollections();
         });
     } else {
-        await initCollections();
+        initCollections();
     }
 });
 // */

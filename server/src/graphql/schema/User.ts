@@ -4,6 +4,9 @@ import UserManager from '../../arango/manager/UserManager';
 import User, { IUser } from '../../arango/schema/User';
 import SecurityController, { ISecurityContext } from '../../auth/SecurityController';
 import LikeManager from '../../arango/manager/LikeManager';
+import { LIKE_QUALIFIER } from '../../arango/manager/LikeManager';
+import { COMMENT_QUALIFIER } from '../../arango/manager/CommentManager';
+import NotificationManager from '../../arango/manager/NotificationManager';
 
 export const typeDefs = gql`
     extend type Query {
@@ -21,6 +24,7 @@ export const typeDefs = gql`
         name: String!
         email: String!
         password: String!
+        followingTags: [String]!
     }
 
     type User {
@@ -30,9 +34,10 @@ export const typeDefs = gql`
         name: String! @capitalize
         email: String!
         files: [File] @aql(query: "FOR f IN files FILTER f.userKey == @current._key RETURN f")
-        comments: [Comment] @aql(query: "FOR c IN comments FILTER c.userKey == @current._key RETURN c")
-        likes: [Like] @aql(query: "For l IN likes FILTER l._from == @current._id RETURN l")
+        comments: [Comment] @aql(query: "FOR c IN edges FILTER c.userKey == @current._key && c._qualifier == '${COMMENT_QUALIFIER}' RETURN c")
+        likes: [Like] @aql(query: "FOR l IN edges FILTER l._from == @current._id && l._qualifier == '${LIKE_QUALIFIER}' RETURN l")
         reputation: [Like]
+        followingTags: [String]!
     }
 `;
 
@@ -55,7 +60,7 @@ export const resolvers = {
             const user = plainToClass(User, data);
             user.salt = SecurityController.generateSalt();
             user.password = SecurityController.encodePassword(user.password, user.salt);
-            return UserManager.save(user).then(res => SecurityController.createSession(res));
+            return UserManager.save(user).then(res => SecurityController.createAuthResponse(res));
         },
     },
 };

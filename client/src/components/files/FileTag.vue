@@ -23,9 +23,5 @@
 
 <style scoped lang="scss">
     .file-tag {
-
-        .el-tag {
-            cursor:pointer;
-        }
     }
 </style>
