@@ -13,8 +13,11 @@
                                             v-on:myfiles-selected="selectedMyFiles" />
                         </el-card>
                     </div>
-                    <div class="col-lg-9" v-if="directory !== null">
-                        <file-selecter :directory="directory" />
+                    <div class="col-lg-9" v-if="directory !== null && !ownDirectory">
+                        <directory-files :directory="directory" />
+                    </div>
+                    <div class="col-lg-9" v-if="ownDirectory">
+                        <own-files />
                     </div>
                 </div>
             </div>
@@ -26,27 +29,29 @@
     import newDirectoryButton from '../components/directories/NewDirectoryButton.vue';
     import directoryList from '../components/directories/DirectoryList.vue';
     import fileSelectionMixin from '../mixins/FileSelectionMixin';
-    import fileSelecter from '../components/files/FileSelecter.vue';
+    import directoryFiles from '../components/files/DirectoryFiles.vue';
+    import ownFiles from '../components/files/OwnFiles.vue';
 
     export default {
         mixins: [fileSelectionMixin],
         components: {
             newDirectoryButton,
-            fileSelecter,
+            directoryFiles,
             directoryList,
+            ownFiles,
         },
         methods: {
             selectedDirectory(directory) {
-                this.myFiles = false;
+                this.ownDirectory = false;
                 this.directory = directory;
             },
             selectedMyFiles() {
-                // o
+                this.ownDirectory = true;
             },
         },
         data() {
             return {
-                myFiles: false,
+                ownDirectory: false,
                 directory: null,
             };
         },

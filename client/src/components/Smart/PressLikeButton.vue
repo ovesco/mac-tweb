@@ -17,10 +17,8 @@
 </template>
 
 <script>
-    import { LikeQuery } from '../../graphql/LikeQueries';
-    import { feedQuery } from '../../graphql/ActivityQueries';
-    import { fileQuery } from '../../graphql/FileQueries';
     import LikeMixin from '../../mixins/LikeMixin';
+    import { LikeQuery, likeCacheFragments } from '../../graphql/LikeQueries';
 
     const actions = {
         LIKE: 'LIKE',
@@ -40,6 +38,9 @@
             itemKey() {
                 return this.itemId.split('/').pop();
             },
+            state() {
+                return this.isLiked() ? this.isLiked().type : null;
+            },
         },
         mixins: [LikeMixin],
         mounted() {
@@ -58,13 +59,10 @@
             btn.addEventListener('mouseleave', () => {
                 this.clear();
             });
-
-            this.state = this.isLiked() ? this.isLiked().type : null;
         },
         data() {
             return {
                 press: false,
-                state: null,
                 timer: null,
                 action: actions.LIKE,
                 ...actions,
@@ -89,7 +87,6 @@
             },
             finished() {
                 this.mutate(this.action).then(() => {
-                    this.state = this.state === null ? this.action : null;
                     this.clear();
                 });
             },
@@ -102,19 +99,33 @@
                     },
                     update: (cache, { data }) => {
                         const { like } = data;
-                        if (this.itemId.startsWith('activities')) {
-                            const { feed } = cache.readQuery({ query: feedQuery });
-                            const { likes } = feed.filter(a => a._id === this.itemId)[0];
-                            this.updateCacheLikes(type, likes, like);
-                        } else if (this.itemId.startsWith('files')) {
-                            const { file } = cache.readQuery({
-                                query: fileQuery,
-                                variables: { fileKey: this.itemKey },
-                            });
-                            this.updateCacheLikes(type, file.likes, like);
-                        }
+                        const fragmentName = this.itemId.startsWith('files') ? 'File' : 'Activity';
+                        const fragment = this.itemId.startsWith('files')
+                            ? likeCacheFragments.file : likeCacheFragments.activity;
+                        const item = cache.readFragment({
+                            id: this.itemId,
+                            fragmentName: `searchLikes${fragmentName}`,
+                            fragment: fragment.read,
+                        });
 
-                        // handle dude's reputation
+                        if (type === actions.DELETE) {
+                            const index = item.likes.findIndex(e => e.userKey === this.currentKey);
+                            if (index > -1) item.likes.splice(index, 1);
+                        } else item.likes.push(like);
+                        cache.writeFragment({
+                            id: this.itemId,
+                            data: item,
+                            fragmentName: `updateLikes${fragmentName}`,
+                            fragment: fragment.write,
+                        });
+
+                        console.log(JSON.stringify(item));
+                        const item2 = cache.readFragment({
+                            id: this.itemId,
+                            fragmentName: `searchLikes${fragmentName}`,
+                            fragment: fragment.read,
+                        });
+                        console.log(JSON.stringify(item2.likes));
                     },
                 });
             },
@@ -126,12 +137,6 @@
             },
             getButton() {
                 return this.$refs.button;
-            },
-            updateCacheLikes(type, likes, newLike) {
-                if (type === actions.DELETE) {
-                    const index = likes.findIndex(e => e.userKey === this.currentKey);
-                    if (index > -1) likes.splice(index, 1);
-                } else likes.push(newLike);
             },
         },
     };

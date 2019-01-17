@@ -8,12 +8,18 @@ import ActivityFileEdgeManager from '../../arango/manager/ActivityFileEdgeManage
 import ActivityFileEdge from '../../arango/schema/ActivityFileEdge';
 import { IActivity } from '../../arango/schema/Activity';
 import { LIKE_QUALIFIER } from '../../arango/manager/LikeManager';
-import DirectoryFileEdgeManager from "../../arango/manager/DirectoryFileEdgeManager";
+import DirectoryFileEdgeManager from '../../arango/manager/DirectoryFileEdgeManager';
 
 export const typeDefs = gql`
+
+    type SearchFiles {
+        files: [File]
+        amount: Int!
+    }
+
     extend type Query {
         file(_key: ID!): File
-        searchFiles(text: String, tags: [String]!): [File]
+        searchFiles(text: String, tags: [String]!, page: Int!, amount: Int!): SearchFiles
         directoryFiles(id: ID!, begin: Int, amount: Int!): [File]
     }
 
@@ -44,7 +50,7 @@ export const typeDefs = gql`
 export const resolvers = {
     Query: {
         file: async (_:any, { _key } : { _key: string }) => FileManager.find(_key),
-        searchFiles: (_:any, { text, tags } : { text: string, tags: Array<string> }) => FileManager.search(text, tags),
+        searchFiles: (_:any, { text, tags } : { text: string, tags: Array<string> }) => FileManager.search(text, tags, 0, 8),
         directoryFiles: (_:any, { id, begin, amount }: { id: string, begin: number, amount: number }) =>
             DirectoryFileEdgeManager.getDirectoryFiles(id, begin || 0, amount),
     },

@@ -16,7 +16,6 @@
     import userPicture from '../user/UserPicture.vue';
     import smartInput from '../Smart/SmartInput.vue';
     import FeedMixin from '../../mixins/FeedMixin';
-    import { feedQuery } from '../../graphql/ActivityQueries';
     import { createOrUpdateComment } from '../../graphql/CommentQueries';
 
     export default {
@@ -49,12 +48,7 @@
                             content: this.comment,
                             itemId: this.itemId,
                         },
-                        update: (cache, { data }) => {
-                            const comment = data.createOrUpdateComment;
-                            const { feed } = cache.readQuery({ query: feedQuery });
-                            const activity = this.getActivity(feed, this.itemId);
-                            if (activity === null) return;
-                            activity.comments.push(comment);
+                        update: () => {
                             this.comment = '';
                             this.showInput = true;
                         },

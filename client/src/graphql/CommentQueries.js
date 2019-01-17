@@ -4,6 +4,7 @@ export const commentFragment = gql`
     fragment commentFragment on Comment {
         _id
         _key
+        _to
         date
         content
         user {
@@ -12,6 +13,22 @@ export const commentFragment = gql`
         }
     }
 `;
+
+export const activityCommentCache = {
+    read: gql`
+        fragment searchCommentActivity on Activity {
+            comments {
+                ...commentFragment
+            }
+        }
+        ${commentFragment}
+    `,
+    write: gql`
+        fragment updateCommentActivity on Activity {
+            comments
+        }
+    `,
+};
 
 export const createOrUpdateComment = gql`
     mutation($content: String!, $itemId: ID, $commentKey: String) {

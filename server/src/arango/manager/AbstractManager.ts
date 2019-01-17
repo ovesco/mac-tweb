@@ -84,7 +84,15 @@ export default abstract class AbstractManager {
     }
 
     remove<T extends IBase>(item: T): Promise<any> {
-        return this.collection.remove(item);
+        // browse edges to remove all liked to this element
+        const edges = this.db.collection('edges');
+        return this.query(aql`
+            FOR item IN ${edges}
+                FILTER item._from == ${item._id} || item._to == ${item._id}
+                    REMOVE {_key: item._key} IN edges
+        `).then(() => this.collection.remove(item)).catch((e) => {
+            console.log(e);
+        });
     }
 
     getCollection(): BaseCollection {

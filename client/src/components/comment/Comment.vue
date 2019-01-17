@@ -29,13 +29,15 @@
 </template>
 
 <script>
-    import { createOrUpdateComment, deleteComment } from '../../graphql/CommentQueries';
-    import { feedQuery } from '../../graphql/ActivityQueries';
+    import { createOrUpdateComment, deleteComment, activityCommentCache } from '../../graphql/CommentQueries';
     import userPicture from '../user/UserPicture.vue';
     import smartUsername from '../Smart/SmartUsername.vue';
     import SmartInput from '../Smart/SmartInput.vue';
 
     export default {
+        mounted() {
+            console.log(this.comment._to);
+        },
         components: {
             SmartInput,
             userPicture,
@@ -72,12 +74,19 @@
                     mutation: deleteComment,
                     variables: { commentId: this.comment._id },
                     update: (cache) => {
-                        const { feed } = cache.readQuery({ query: feedQuery });
-                        const activities = feed.filter(a => a.comments
-                            .filter(c => c._id === this.comment._id).length === 1);
-                        if (activities.length !== 1) return;
-                        const { comments } = activities.pop();
-                        comments.splice(comments.indexOf(this.comment), 1);
+                        const data = cache.readFragment({
+                            id: this.comment._to,
+                            fragmentName: 'searchCommentActivity',
+                            fragment: activityCommentCache.read,
+                        });
+                        data.comments
+                            .splice(data.comments.findIndex(c => c._id === this.comment._id), 1);
+                        cache.writeFragment({
+                            id: this.comment._to,
+                            data,
+                            fragmentName: 'updateCommentActivity',
+                            fragment: activityCommentCache.write,
+                        });
                     },
                 });
             },

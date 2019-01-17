@@ -3,6 +3,7 @@ import { likeFragment } from './LikeQueries';
 
 export const userFragment = gql`
     fragment userFragment on User {
+        _id
         _key
         username
         name
@@ -26,22 +27,9 @@ export const userQuery = gql`
 `;
 
 export const meQuery = gql`
-    {
+    query {
         me {
             ...userFragment
-            files {
-                _id
-                _key
-                filename
-                size
-                date
-                mimeType
-                tags
-                src
-                user {
-                    ...userFragment
-                }
-            }
         }
     }
     

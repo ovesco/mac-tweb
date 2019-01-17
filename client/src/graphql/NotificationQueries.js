@@ -5,6 +5,7 @@ import { fileFragment } from './FileQueries';
 
 export const NotificationFragment = gql`
     fragment NotificationFragment on Notification {
+        _id
         _key
         _from
         _to

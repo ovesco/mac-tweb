@@ -7,6 +7,7 @@ export const typeDefs = gql`
     }
 
     type Tag {
+        _id: ID!
         _key: ID!
         date: String!
         tag: String!

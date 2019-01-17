@@ -6,11 +6,17 @@ import SecurityController, { ISecurityContext } from '../../auth/SecurityControl
 import LikeManager from '../../arango/manager/LikeManager';
 import { LIKE_QUALIFIER } from '../../arango/manager/LikeManager';
 import { COMMENT_QUALIFIER } from '../../arango/manager/CommentManager';
-import NotificationManager from '../../arango/manager/NotificationManager';
+import FileManager from '../../arango/manager/FileManager';
 
 export const typeDefs = gql`
+    type myFiles {
+        files: [File]
+        amount: Int!
+    }
+
     extend type Query {
         me: User
+        myFiles(begin: Int, amount: Int!): myFiles
         user(_key: ID!): User
         users: [User]
     }
@@ -28,12 +34,12 @@ export const typeDefs = gql`
     }
 
     type User {
+        _id: ID!
         _key: ID!
         date: String!
         username: String!
         name: String! @capitalize
         email: String!
-        files: [File] @aql(query: "FOR f IN files FILTER f.userKey == @current._key RETURN f")
         comments: [Comment] @aql(query: "FOR c IN edges FILTER c.userKey == @current._key && c._qualifier == '${COMMENT_QUALIFIER}' RETURN c")
         likes: [Like] @aql(query: "FOR l IN edges FILTER l._from == @current._id && l._qualifier == '${LIKE_QUALIFIER}' RETURN l")
         reputation: [Like]
@@ -45,6 +51,8 @@ export const resolvers = {
     Query: {
         me: async (x: any, y: any, context: ISecurityContext) => UserManager.find(context.user._key),
         user: async (_:any, { _key } : { _key: string }) => UserManager.find(_key),
+        myFiles: async (x: any, { begin, amount }: { begin:number, amount:number }, context: ISecurityContext) =>
+            FileManager.findUserFiles(context.user._key, begin, amount),
         users: async () => UserManager.findAll(),
     },
     User: {

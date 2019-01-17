@@ -23,6 +23,22 @@ export const fileFragment = gql`
     ${likeFragment}
 `;
 
+export const fileCacheFragments = {
+    read: gql`
+        fragment searchFile on Activity {
+            likes {
+                ...likeFragment
+            }
+        }
+        ${likeFragment}
+    `,
+    write: gql`
+        fragment updateFile on Activity {
+            likes
+        }
+    `,
+};
+
 export const directoryFilesQuery = gql`
     query($id: ID!, $begin: Int, $amount: Int!) {
         directoryFiles(id: $id, begin: $begin, amount: $amount) {
@@ -44,9 +60,12 @@ export const uploadQuery = gql`
 `;
 
 export const searchQuery = gql`
-    query($text: String, $tags: [String]!) {
-        searchFiles(text: $text, tags: $tags) {
-            ...fileFragment
+    query($text: String, $tags: [String]!, $page: Int!, $amount: Int!) {
+        searchFiles(text: $text, tags: $tags, page: $page, amount: $amount) {
+            files {
+                ...fileFragment
+            }
+            amount
         }
     }
     
@@ -60,5 +79,18 @@ export const fileQuery = gql`
         }
     }
     
+    ${fileFragment}
+`;
+
+export const myFilesQuery = gql`
+    query($begin: Int, $amount: Int!) {
+        myFiles(begin: $begin, amount: $amount) {
+            files {
+                ...fileFragment
+            }
+            amount
+        }
+    }
+
     ${fileFragment}
 `;

@@ -56,8 +56,8 @@ export const myActivitiesQuery = gql`
 `;
 
 export const feedQuery = gql`
-    query {
-        feed {
+    query($page: Int!) {
+        feed(page: $page) {
             ...activityFragment
         }
     }

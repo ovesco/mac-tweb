@@ -2,7 +2,7 @@
     <el-select v-model="selectedTags" multiple :loading="loading"
                :remote-method="remoteQuery" style="width:100%;"
                filterable remote :placeholder="placeholder || 'Choisir des tags'">
-        <el-option v-for="tagOption in choiceTags" :key="tagOption._key"
+        <el-option v-for="tagOption in choiceTags" :key="tagOption._id"
                    :label="'#' + tagOption.tag" :value="tagOption.tag" />
     </el-select>
 </template>

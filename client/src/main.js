@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Toasted from 'vue-toasted';
 import ClickOutside from 'vue-click-outside';
+import InfiniteScroll from 'vue-infinite-scroll';
 import ElementUI from 'element-ui';
 
 import moment from 'moment';
@@ -25,6 +26,7 @@ Vue.directive('clickOutside', ClickOutside);
 
 Vue.config.productionTip = false;
 
+Vue.use(InfiniteScroll);
 Vue.use(ElementUI);
 Vue.use(Toasted, {
     position: 'top-right',

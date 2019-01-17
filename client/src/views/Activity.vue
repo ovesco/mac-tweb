@@ -1,42 +1,68 @@
 <template>
     <div>
-        <div class="container-md pt-lg-5">
+        <div class="container-md pt-lg-5" v-infinite-scroll="showMore">
             <div class="mb-5">
                 <add-activity />
             </div>
-            <apollo-query :query="require('../graphql/ActivityQueries').feedQuery">
-                <template slot-scope="{ result: { loading, error, data } }">
-                    <div v-if="loading">Chargement</div>
-                    <div v-else-if="error">Erreur! {{ error }}</div>
-                    <div v-else-if="data">
-                        <loaded-activity v-for="activity in data.feed"
-                                         :activity="activity" :key="activity._key"
-                                         class="mb-4 "/>
-                        <div v-if="data.feed.length === 0">
-                            Rien à afficher pour l'instant
-                        </div>
-                    </div>
-                    <div v-else></div>
-                </template>
-            </apollo-query>
+            <loaded-activity v-for="activity in feed"
+                             :activity="activity" :key="activity._key"
+                             class="mb-4 "/>
         </div>
     </div>
 </template>
 
 <script>
-    import addActivity from '../components/activity/AddActivity.vue';
-    import loadedActivity from '../components/activity/LoadedActivity.vue';
-    import DummyFiles from '../assets/DummyFiles';
+import addActivity from '../components/activity/AddActivity.vue';
+import loadedActivity from '../components/activity/LoadedActivity.vue';
+import { feedQuery } from '../graphql/ActivityQueries';
 
-    export default {
-        components: {
-            addActivity,
-            loadedActivity,
+export default {
+    apollo: {
+        feed: {
+            query: feedQuery,
+            variables: {
+                page: 0,
+            },
         },
-        data() {
-            return {
-                files: DummyFiles,
-            };
+    },
+    watch: {
+        bottom(bottom) {
+            if (bottom) this.showMore();
         },
-    };
+    },
+    methods: {
+        bottomVisible() {
+            const { scrollY } = window;
+            const visible = document.documentElement.clientHeight;
+            const pageHeight = document.documentElement.scrollHeight;
+            const bottomOfPage = visible + scrollY >= pageHeight;
+            return bottomOfPage || pageHeight < visible;
+        },
+        showMore() {
+            this.page += 1;
+            this.$apollo.queries.feed.fetchMore({
+                variables: {
+                    page: this.page,
+                },
+                updateQuery: (previousResult, { fetchMoreResult }) => {
+                    console.log(previousResult, fetchMoreResult);
+                    return {
+                        feed: [...previousResult.feed, ...fetchMoreResult.feed],
+                    };
+                },
+            });
+        },
+    },
+    components: {
+        addActivity,
+        loadedActivity,
+    },
+    data() {
+        return {
+            page: 0,
+            bottom: false,
+            feed: [],
+        };
+    },
+};
 </script>

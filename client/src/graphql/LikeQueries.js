@@ -14,6 +14,39 @@ export const likeFragment = gql`
     }
 `;
 
+export const likeCacheFragments = {
+    file: {
+        read: gql`
+            fragment searchLikesFile on File {
+                likes {
+                    ...likeFragment
+                }
+            }
+            ${likeFragment}
+        `,
+        write: gql`
+            fragment updateLikesFile on File {
+                likes
+            }
+        `,
+    },
+    activity: {
+        read: gql`
+            fragment searchLikesActivity on Activity {
+                likes {
+                    ...likeFragment
+                }
+            }
+            ${likeFragment}
+        `,
+        write: gql`
+            fragment updateLikesActivity on Activity {
+                likes
+            }
+        `,
+    },
+};
+
 export const LikeQuery = gql`
     mutation ($itemId: String!, $type: LikeType!) {
         like(type : $type, itemId: $itemId) {

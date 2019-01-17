@@ -3,7 +3,7 @@
         <files-viewer :files.sync="directoryFiles" @amount="changedAmount">
             <template slot="actions">
                 <button class="btn btn-white mr-2" @click="removeFiles"
-                        v-if="selected.length > 0 && !myFiles">
+                        v-if="selected.length > 0">
                     <icon icon="trash" class="text-black-50 mr-1" />
                     Retirer {{ selected.length }} fichiers
                 </button>
@@ -42,6 +42,11 @@ export default {
             },
         },
     },
+    watch: {
+        directory() {
+            this.page = 1;
+        },
+    },
     methods: {
         changedAmount(value) {
             this.filesPerPage = value;
@@ -53,8 +58,9 @@ export default {
                 update: () => {
                     const index = this.directoryFiles.indexOf(f);
                     if (index > -1) this.directoryFiles.splice(index, 1);
-                    this.directoryFiles.forEach((f) => {
-                        f.selected = false;
+                    this.directoryFiles.forEach((curr) => {
+                        // eslint-disable-next-line
+                        curr.selected = false;
                     });
                 },
             }))).then(() => {
@@ -65,7 +71,6 @@ export default {
     data() {
         return {
             directoryFiles: [],
-            myFiles: false,
             filesPerPage: 8,
             page: 1,
         };

@@ -13,7 +13,7 @@ export const typeDefs = gql`
     extend type Query {
         activity(_key: ID!): Activity
         myActivities: [Activity]
-        feed: [Activity]
+        feed(page: Int!): [Activity]
     }
 
     extend type Mutation {
@@ -42,8 +42,8 @@ export const typeDefs = gql`
 export const resolvers = {
     Query: {
         activity: async (_:any, { _key } : { _key: string }) => ActivityManager.find(_key),
-        feed: async (x: any, y: any, context: ISecurityContext) => ActivityManager
-            .getUserFeed(context.user._key),
+        feed: async (x: any, { page } : { page: number }, context: ISecurityContext) => ActivityManager
+            .getUserFeed(context.user._key, page),
         myActivities: async (x:any, y:any, context: ISecurityContext) => ActivityManager.findBy({
             userKey: context.user._key,
         }),

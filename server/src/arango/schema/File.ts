@@ -1,7 +1,6 @@
 import * as Joi from 'joi';
 import Base, { IBase } from './Base';
 import Comment from './Comment';
-import Tag from './Tag';
 
 export interface IFile extends IBase {
     filename: string;

@@ -32,9 +32,7 @@ export const typeDefs = gql`
 export const resolvers = {
     Query: {
         directory: async (_:any, { _key } : { _key: string }) => DirectoryManager.find(_key),
-        directories: async (x:any, y:any, context:ISecurityContext) => {
-            return DirectoryManager.findBy({ userKey: context.user._key });
-        },
+        directories: async (x:any, y:any, context:ISecurityContext) => DirectoryManager.findBy({ userKey: context.user._key }),
     },
     Directory: {
         filesAmount: (directory: IDirectory) => DirectoryFileEdgeManager.countFiles(directory._id),

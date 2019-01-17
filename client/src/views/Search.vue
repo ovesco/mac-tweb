@@ -20,15 +20,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-9">
-                    <apollo-query :query="require('../graphql/FileQueries').searchQuery"
-                                  fetch-policy="no-cache"
-                                  :variables="{ text: filename, tags: searchTags }">
-                        <template slot-scope="{ result: { loading, error, data } }">
-                            <files-viewer v-if="data && data.searchFiles.length > 0"
-                                          :files.sync="data.searchFiles"></files-viewer>
-                        </template>
-                    </apollo-query>
+                <div class="col-lg-9" v-if="searchFiles !== null">
+                    <files-viewer @amount="updateAmount"
+                                  :files.sync="searchFiles.files"></files-viewer>
+                    <el-pagination layout="pager" class="mt-2"
+                                   :background="true"
+                                   :current-page.sync="page"
+                                   :page-size="filesPerPage"
+                                   :total="searchFiles.amount">
+                    </el-pagination>
                 </div>
             </div>
         </div>
@@ -39,14 +39,36 @@
     import filesViewer from '../components/files/FilesViewer.vue';
     import fileSelectionMixin from '../mixins/FileSelectionMixin';
     import TagsChooser from '../components/Smart/TagsChooser.vue';
+    import { searchQuery } from '../graphql/FileQueries';
 
     export default {
+        apollo: {
+            searchFiles: {
+                query: searchQuery,
+                variables() {
+                    return {
+                        text: this.filename,
+                        tags: this.searchTags,
+                        amount: this.filesPerPage,
+                        page: this.page,
+                    };
+                },
+                update(data) {
+                    data.searchFiles.files.forEach((f) => {
+                        f.selected = false;
+                    });
+                    return data.searchFiles;
+                },
+            },
+        },
         data() {
             return {
+                searchFiles: null,
                 searchTags: [],
                 tagsOptions: [],
                 filename: '',
-                loading: false,
+                page: 1,
+                filesPerPage: 8,
                 filenameTimer: null,
             };
         },
@@ -58,6 +80,9 @@
             filesViewer,
         },
         methods: {
+            updateAmount(amount) {
+                this.filesPerPage = amount;
+            },
             updateFilename(newValue) {
                 if (this.filenameTimer) clearTimeout(this.filenameTimer);
                 this.filenameTimer = setTimeout(() => {

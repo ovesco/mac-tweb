@@ -40,7 +40,10 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData,
 });
 
-const cache = new InMemoryCache({ fragmentMatcher });
+const cache = new InMemoryCache({
+    fragmentMatcher,
+    dataIdFromObject: object => object._id || null,
+});
 
 const link = split(
     // split based on operation type
