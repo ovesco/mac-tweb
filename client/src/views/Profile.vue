@@ -24,6 +24,7 @@
                     </div>
                     <div class="col-lg-4">
                         <h2 class="text-black-50 pt-4 font-weight-normal">Profil</h2>
+                        <profile-fields />
                     </div>
                 </div>
             </div>
@@ -32,11 +33,13 @@
 </template>
 
 <script>
+import profileFields from '../components/user/ProfileFields.vue';
 import loadedActivity from '../components/activity/LoadedActivity.vue';
 
 export default {
     components: {
         loadedActivity,
+        profileFields,
     },
 };
 </script>

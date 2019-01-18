@@ -84,7 +84,10 @@ export const resolvers = {
                 if (data.email) user.email = data.email;
                 if (data.followingTags) user.followingTags = data.followingTags;
                 if (data.oldPassword || data.newPassword) {
-                    if (data.oldPassword === user.password) user.password = data.newPassword;
+                    console.log(data.oldPassword, user.password);
+                    if (SecurityController.encodePassword(data.oldPassword, user.salt) === user.password) {
+                        user.password = SecurityController.encodePassword(data.newPassword, user.salt);
+                    }
                     else throw Error('Password is not correct');
                 }
                 return UserManager.update(user._key, plainToClass(User, user));

@@ -10,7 +10,7 @@
                     <div class="ml-1">
                         <smart-filename v-if="notification.target.filename"
                                         :file="notification.target" />
-                        <div v-else
+                        <div v-else class="activity-link"
                              @click="$store.commit('ui/setModalActivity', notification.target._id)">
                             votre activité
                         </div>
@@ -46,6 +46,13 @@ export default {
         .metas {
             font-size:0.8rem;
             color:$gray-600;
+        }
+
+        .activity-link {
+            cursor:pointer;
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 </style>
