@@ -11,7 +11,7 @@
                         <smart-filename v-if="notification.target.filename"
                                         :file="notification.target" />
                         <div v-else
-                             @click="$store.commit('ui/setModalActivity', notification.target)">
+                             @click="$store.commit('ui/setModalActivity', notification.target._id)">
                             votre activité
                         </div>
                     </div>

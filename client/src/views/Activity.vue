@@ -1,12 +1,17 @@
 <template>
     <div>
         <div class="container-md pt-lg-5" v-infinite-scroll="showMore">
+            <div class="mb-5" v-if="me !== null">
+                <tags-chooser @input="newTagsSelected" v-model="me.followingTags" />
+            </div>
             <div class="mb-5">
                 <add-activity />
             </div>
-            <loaded-activity v-for="activity in feed"
-                             :activity="activity" :key="activity._key"
-                             class="mb-4 "/>
+            <div v-loading="loading || $apollo.loading">
+                <loaded-activity v-for="activity in feed"
+                                 :activity="activity" :key="activity._key"
+                                 class="mb-4 "/>
+            </div>
         </div>
     </div>
 </template>
@@ -14,7 +19,9 @@
 <script>
 import addActivity from '../components/activity/AddActivity.vue';
 import loadedActivity from '../components/activity/LoadedActivity.vue';
+import tagsChooser from '../components/Smart/TagsChooser.vue';
 import { feedQuery } from '../graphql/ActivityQueries';
+import { updateMeMutation, meQuery } from '../graphql/UserQueries';
 
 export default {
     apollo: {
@@ -24,28 +31,30 @@ export default {
                 page: 0,
             },
         },
-    },
-    watch: {
-        bottom(bottom) {
-            if (bottom) this.showMore();
+        me: {
+            query: meQuery,
         },
     },
     methods: {
-        bottomVisible() {
-            const { scrollY } = window;
-            const visible = document.documentElement.clientHeight;
-            const pageHeight = document.documentElement.scrollHeight;
-            const bottomOfPage = visible + scrollY >= pageHeight;
-            return bottomOfPage || pageHeight < visible;
+        newTagsSelected(followingTags) {
+            this.loading = true;
+            this.$apollo.mutate({
+                mutation: updateMeMutation,
+                variables: { data: { followingTags } },
+            }).then(() => {
+                this.loading = false;
+                this.$apollo.queries.feed.refresh();
+            });
         },
         showMore() {
+            this.loading = true;
             this.page += 1;
             this.$apollo.queries.feed.fetchMore({
                 variables: {
                     page: this.page,
                 },
                 updateQuery: (previousResult, { fetchMoreResult }) => {
-                    console.log(previousResult, fetchMoreResult);
+                    this.loading = false;
                     return {
                         feed: [...previousResult.feed, ...fetchMoreResult.feed],
                     };
@@ -56,11 +65,13 @@ export default {
     components: {
         addActivity,
         loadedActivity,
+        tagsChooser,
     },
     data() {
         return {
             page: 0,
-            bottom: false,
+            loading: true,
+            me: null,
             feed: [],
         };
     },

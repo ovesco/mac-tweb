@@ -12,15 +12,15 @@ import DirectoryFileEdgeManager from '../../arango/manager/DirectoryFileEdgeMana
 
 export const typeDefs = gql`
 
-    type SearchFiles {
+    type PaginatedFiles {
         files: [File]
         amount: Int!
     }
 
     extend type Query {
         file(_key: ID!): File
-        searchFiles(text: String, tags: [String]!, page: Int!, amount: Int!): SearchFiles
-        directoryFiles(id: ID!, begin: Int, amount: Int!): [File]
+        searchFiles(text: String, tags: [String]!, page: Int!, amount: Int!): PaginatedFiles
+        directoryFiles(id: ID!, page: Int!, amount: Int!): PaginatedFiles
     }
 
     extend type Mutation {
@@ -51,8 +51,8 @@ export const resolvers = {
     Query: {
         file: async (_:any, { _key } : { _key: string }) => FileManager.find(_key),
         searchFiles: (_:any, { text, tags } : { text: string, tags: Array<string> }) => FileManager.search(text, tags, 0, 8),
-        directoryFiles: (_:any, { id, begin, amount }: { id: string, begin: number, amount: number }) =>
-            DirectoryFileEdgeManager.getDirectoryFiles(id, begin || 0, amount),
+        directoryFiles: (_:any, { id, page, amount }: { id: string, page: number, amount: number }) =>
+            DirectoryFileEdgeManager.getDirectoryFiles(id, page || 0, amount),
     },
     Mutation: {
         uploadActivityFile: async (parent: any, { fileInput } : { fileInput: IActivityFileInput },

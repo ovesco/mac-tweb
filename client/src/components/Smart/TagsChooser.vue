@@ -12,6 +12,11 @@
 
     export default {
         props: ['value', 'placeholder'],
+        created() {
+            this.value.forEach((v) => {
+                this.selectedTags.push(v);
+            });
+        },
         data() {
             return {
                 choiceTags: [],

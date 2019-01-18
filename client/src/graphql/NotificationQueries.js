@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { userFragment } from './UserQueries';
-import { activityFragment } from './ActivityQueries';
 import { fileFragment } from './FileQueries';
 
 export const NotificationFragment = gql`
@@ -14,7 +13,7 @@ export const NotificationFragment = gql`
         read
         target {
             ... on Activity {
-                ...activityFragment
+                _id
             }
             ... on File {
                 ...fileFragment
@@ -25,7 +24,6 @@ export const NotificationFragment = gql`
         }
     }
     
-    ${activityFragment}
     ${fileFragment}
     ${userFragment}
 `;

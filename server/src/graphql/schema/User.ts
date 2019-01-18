@@ -23,6 +23,15 @@ export const typeDefs = gql`
 
     extend type Mutation {
         addUser(data: UserInput!): Session
+        updateMe(data: UpdateUserInput!): User
+    }
+
+    input UpdateUserInput {
+        name: String
+        email: String
+        followingTags: [String]
+        oldPassword: String
+        newPassword: String
     }
 
     input UserInput {
@@ -30,7 +39,6 @@ export const typeDefs = gql`
         name: String!
         email: String!
         password: String!
-        followingTags: [String]!
     }
 
     type User {
@@ -69,6 +77,18 @@ export const resolvers = {
             user.salt = SecurityController.generateSalt();
             user.password = SecurityController.encodePassword(user.password, user.salt);
             return UserManager.save(user).then(res => SecurityController.createAuthResponse(res));
+        },
+        updateMe: async (_:any, { data } : { data: any }, context: ISecurityContext) => {
+            return UserManager.find(context.user._key).then((user: IUser) => {
+                if (data.name) user.name = data.name;
+                if (data.email) user.email = data.email;
+                if (data.followingTags) user.followingTags = data.followingTags;
+                if (data.oldPassword || data.newPassword) {
+                    if (data.oldPassword === user.password) user.password = data.newPassword;
+                    else throw Error('Password is not correct');
+                }
+                return UserManager.update(user._key, plainToClass(User, user));
+            });
         },
     },
 };

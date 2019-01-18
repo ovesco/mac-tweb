@@ -13,7 +13,6 @@
                                 <div v-else-if="data">
                                     <loaded-activity v-for="activity in data.myActivities"
                                         :key="activity._key" :activity="activity"
-                                        :show-likes="false" :show-comments="false"
                                         class="mb-4" />
                                     <div v-if="data.myActivities.length === 0">
                                         Vous n'avez publié aucune activité pour l'instant.

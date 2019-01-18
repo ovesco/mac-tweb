@@ -16,7 +16,7 @@
     import userPicture from '../user/UserPicture.vue';
     import smartInput from '../Smart/SmartInput.vue';
     import FeedMixin from '../../mixins/FeedMixin';
-    import { createOrUpdateComment } from '../../graphql/CommentQueries';
+    import { activityCommentCache, createOrUpdateComment } from '../../graphql/CommentQueries';
 
     export default {
         props: {
@@ -48,9 +48,22 @@
                             content: this.comment,
                             itemId: this.itemId,
                         },
-                        update: () => {
+                        update: (cache, { data }) => {
+                            const comment = data.createOrUpdateComment;
                             this.comment = '';
                             this.showInput = true;
+                            const activity = cache.readFragment({
+                                fragment: activityCommentCache.read,
+                                fragmentName: 'searchCommentActivity',
+                                id: comment._to,
+                            });
+                            activity.comments.push(comment);
+                            cache.writeFragment({
+                                fragment: activityCommentCache.write,
+                                fragmentName: 'updateCommentActivity',
+                                id: comment._to,
+                                data: activity,
+                            });
                         },
                     });
                 }

@@ -3,7 +3,8 @@
         <div class="activity-modal" v-if="$store.getters['ui/showModalActivity']">
             <div class="dimmer d-flex justify-content-center align-items-center">
                 <div class="content container-md" v-click-outside="closeModal">
-                    <loaded-activity :activity="$store.state.ui.modalActivity" />
+                    <loaded-activity :activity="activity"
+                        :show-comments="false" :show-likes="false" />
                 </div>
             </div>
         </div>
@@ -12,6 +13,7 @@
 
 <script>
 import loadedActivity from './LoadedActivity.vue';
+import { activityFragment } from '../../graphql/ActivityQueries';
 
 export default {
     components: {
@@ -20,6 +22,17 @@ export default {
     methods: {
         closeModal() {
             this.$store.commit('ui/setModalActivity', null);
+        },
+    },
+    computed: {
+        activity() {
+            const id = this.$store.state.ui.modalActivityId;
+            if (id === null) return null;
+            return this.$apollo.provider.clients.defaultClient.cache.readFragment({
+                fragmentName: 'activityFragment',
+                fragment: activityFragment,
+                id,
+            });
         },
     },
 };

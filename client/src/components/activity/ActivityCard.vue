@@ -67,7 +67,10 @@
                     },
                     update: (cache) => {
                         try {
-                            const { feed } = cache.readQuery({ query: feedQuery });
+                            const { feed } = cache.readQuery({
+                                query: feedQuery,
+                                variables: { page: 0 },
+                            });
                             const index = feed.indexOf(this.activity);
                             if (index !== -1) feed.splice(index, 1);
                         } catch {

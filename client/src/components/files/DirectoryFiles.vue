@@ -1,6 +1,6 @@
 <template>
     <div>
-        <files-viewer :files.sync="directoryFiles" @amount="changedAmount">
+        <files-viewer :files.sync="directoryFiles.files" @amount="changedAmount">
             <template slot="actions">
                 <button class="btn btn-white mr-2" @click="removeFiles"
                         v-if="selected.length > 0">
@@ -13,7 +13,7 @@
                        :background="true"
                        :current-page.sync="page"
                        :page-size="filesPerPage"
-                       :total="directory.filesAmount">
+                       :total="directoryFiles.amount">
         </el-pagination>
     </div>
 </template>
@@ -35,10 +35,18 @@ export default {
             query: directoryFilesQuery,
             variables() {
                 return {
-                    begin: this.currentPage,
+                    page: this.currentPage,
                     amount: this.filesPerPage,
                     id: this.directory._id,
                 };
+            },
+            update(data) {
+                console.log(data);
+                data.directoryFiles.files.forEach((f) => {
+                    // eslint-disable-next-line
+                    f.selected = false;
+                });
+                return data.directoryFiles;
             },
         },
     },
@@ -70,7 +78,7 @@ export default {
     },
     data() {
         return {
-            directoryFiles: [],
+            directoryFiles: { files: [], amount: 0 },
             filesPerPage: 8,
             page: 1,
         };
@@ -80,7 +88,7 @@ export default {
             return this.page - 1;
         },
         selected() {
-            return this.directoryFiles.filter(file => file.selected);
+            return this.directoryFiles.files.filter(file => file.selected);
         },
     },
 };

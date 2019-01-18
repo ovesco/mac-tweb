@@ -55,6 +55,7 @@
                 },
                 update(data) {
                     data.searchFiles.files.forEach((f) => {
+                        // eslint-disable-next-line
                         f.selected = false;
                     });
                     return data.searchFiles;

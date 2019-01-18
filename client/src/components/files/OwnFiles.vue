@@ -29,6 +29,13 @@
                         amount: this.filesPerPage,
                     };
                 },
+                update(data) {
+                    data.myFiles.files.forEach((f) => {
+                        // eslint-disable-next-line
+                        f.selected = false;
+                    });
+                    return data.myFiles;
+                },
             },
         },
         methods: {

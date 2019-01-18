@@ -26,8 +26,11 @@ export const likeCacheFragments = {
         `,
         write: gql`
             fragment updateLikesFile on File {
-                likes
+                likes {
+                    ...likeFragment
+                }
             }
+            ${likeFragment}
         `,
     },
     activity: {
@@ -41,8 +44,11 @@ export const likeCacheFragments = {
         `,
         write: gql`
             fragment updateLikesActivity on Activity {
-                likes
+                likes {
+                    ...likeFragment
+                }
             }
+            ${likeFragment}
         `,
     },
 };

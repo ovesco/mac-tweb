@@ -23,26 +23,13 @@ export const fileFragment = gql`
     ${likeFragment}
 `;
 
-export const fileCacheFragments = {
-    read: gql`
-        fragment searchFile on Activity {
-            likes {
-                ...likeFragment
-            }
-        }
-        ${likeFragment}
-    `,
-    write: gql`
-        fragment updateFile on Activity {
-            likes
-        }
-    `,
-};
-
 export const directoryFilesQuery = gql`
-    query($id: ID!, $begin: Int, $amount: Int!) {
-        directoryFiles(id: $id, begin: $begin, amount: $amount) {
-            ...fileFragment
+    query($id: ID!, $page: Int!, $amount: Int!) {
+        directoryFiles(id: $id, page: $page, amount: $amount) {
+            files {
+                ...fileFragment
+            }
+            amount
         }
     }
     

@@ -25,8 +25,11 @@ export const activityCommentCache = {
     `,
     write: gql`
         fragment updateCommentActivity on Activity {
-            comments
+            comments {
+                ...commentFragment
+            }
         }
+        ${commentFragment}
     `,
 };
 

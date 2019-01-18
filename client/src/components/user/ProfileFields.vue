@@ -1,30 +1,44 @@
 <template>
     <div>
         <div class="mb-2">
-            <el-input placeholder="Nom d'utilisateur" size="small"
-                      v-model="form.username"></el-input>
-        </div>
-        <div class="mb-2" v-if="createAccount">
             <el-input placeholder="Nom" size="small"
-                      v-model="form.name"></el-input>
+                      v-model="name"></el-input>
         </div>
-        <div class="mb-2" v-if="createAccount">
+        <div class="mb-2">
             <el-input placeholder="Email" size="small"
-                      v-model="form.email"></el-input>
+                      v-model="email"></el-input>
         </div>
-        <div class="mb-2" v-if="createAccount">
+        <div class="mb-2">
             <tags-chooser v-model="tags"
                           placeholder="S'abonner à des tags" />
         </div>
+        <hr/>
         <div class="mb-2">
             <el-input placeholder="Mot de passe" size="small"
-                      v-model="form.password"></el-input>
+                      v-model="oldPassword"></el-input>
+        </div>
+        <div class="mb-2">
+            <el-input placeholder="Mot de passe" size="small"
+                      v-model="newPassword"></el-input>
         </div>
     </div>
 </template>
 
 <script>
-export default {
+import TagsChooser from '../Smart/TagsChooser.vue';
 
-}
+export default {
+    components: {
+        TagsChooser,
+    },
+    data() {
+        return {
+            name: '',
+            email: '',
+            tags: [],
+            oldPassword: '',
+            newPassword: '',
+        };
+    },
+};
 </script>

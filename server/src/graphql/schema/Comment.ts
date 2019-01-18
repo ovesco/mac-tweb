@@ -3,7 +3,7 @@ import { ISecurityContext } from '../../auth/SecurityController';
 import Comment from '../../arango/schema/Comment';
 import CommentManager from '../../arango/manager/CommentManager';
 import { plainToClass } from 'class-transformer';
-import NotificationManager from "../../arango/manager/NotificationManager";
+import NotificationManager from '../../arango/manager/NotificationManager';
 
 export const typeDefs = gql`
     type Comment {

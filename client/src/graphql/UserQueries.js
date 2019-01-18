@@ -8,6 +8,7 @@ export const userFragment = gql`
         username
         name
         email
+        followingTags
         reputation {
             ...likeFragment
         }
@@ -29,6 +30,16 @@ export const userQuery = gql`
 export const meQuery = gql`
     query {
         me {
+            ...userFragment
+        }
+    }
+    
+    ${userFragment}
+`;
+
+export const updateMeMutation = gql`
+    mutation($data: UpdateUserInput!) {
+        updateMe(data: $data) {
             ...userFragment
         }
     }

@@ -107,7 +107,6 @@
                             fragmentName: `searchLikes${fragmentName}`,
                             fragment: fragment.read,
                         });
-
                         if (type === actions.DELETE) {
                             const index = item.likes.findIndex(e => e.userKey === this.currentKey);
                             if (index > -1) item.likes.splice(index, 1);
@@ -118,14 +117,6 @@
                             fragmentName: `updateLikes${fragmentName}`,
                             fragment: fragment.write,
                         });
-
-                        console.log(JSON.stringify(item));
-                        const item2 = cache.readFragment({
-                            id: this.itemId,
-                            fragmentName: `searchLikes${fragmentName}`,
-                            fragment: fragment.read,
-                        });
-                        console.log(JSON.stringify(item2.likes));
                     },
                 });
             },

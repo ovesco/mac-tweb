@@ -7,7 +7,6 @@ export const directoryFragment = gql`
         _id
         _key
         name
-        filesAmount
         user {
             ...userFragment
         }

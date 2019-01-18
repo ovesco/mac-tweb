@@ -6,10 +6,12 @@ export default {
     state: {
         token: null,
         userKey: null,
+        userId: null,
     },
     mutations: {
-        login(state, { token, userKey }) {
-            state.userKey = userKey;
+        login(state, { token, userId }) {
+            state.userKey = userId.split('/').pop();
+            state.userId = userId;
             state.token = token;
         },
         logout(state) {

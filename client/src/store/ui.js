@@ -7,16 +7,16 @@ export default {
             files: [],
         },
         notifications: [],
-        modalActivity: null,
+        modalActivityId: null,
         notificationsManagerVisible: false,
     },
     mutations: {
         collapseMenu: (state, value) => {
             state.menuCollapsed = value;
         },
-        setModalActivity(state, activity) {
+        setModalActivity(state, activityId) {
             state.notificationsManagerVisible = false;
-            state.modalActivity = activity;
+            state.modalActivityId = activityId;
         },
         showNotifications: (state, value) => {
             if (!value) state.notifications.splice(0);
@@ -36,7 +36,7 @@ export default {
     getters: {
         showReader: state => state.reader.files.length > 0,
         showNotifications: state => state.notificationsManagerVisible,
-        showModalActivity: state => state.modalActivity !== null,
+        showModalActivity: state => state.modalActivityId !== null,
         notified: state => state.notifications.filter(n => !n.read).length > 0,
         menuCollapsed: state => state.menuCollapsed,
     },

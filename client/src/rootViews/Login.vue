@@ -25,10 +25,6 @@
                                     <el-input placeholder="Email" size="small"
                                               v-model="form.email"></el-input>
                                 </div>
-                                <div class="mb-2" v-if="createAccount">
-                                    <tags-chooser v-model="tags"
-                                                  placeholder="S'abonner à des tags" />
-                                </div>
                                 <div class="mb-2">
                                     <el-input placeholder="Mot de passe" size="small"
                                               v-model="form.password"></el-input>
@@ -56,7 +52,7 @@
                                 </p>
                                 <p>
                                     Chaque fichier et activité est identifiée par des tags que vous
-                                    pouvez suivre afin de recevoir des actualités plus adaptées.
+                                    pourrez suivre afin de recevoir des actualités plus adaptées.
                                 </p>
                             </div>
                         </div>
@@ -70,12 +66,8 @@
 <script>
     import gql from 'graphql-tag';
     import { loginQuery, registerQuery } from '../graphql/AuthQueries';
-    import TagsChooser from '../components/Smart/TagsChooser.vue';
 
     export default {
-        components: {
-            TagsChooser,
-        },
         data() {
             return {
                 createAccount: false,
@@ -85,14 +77,13 @@
                     email: '',
                     password: '',
                 },
-                tags: [],
             };
         },
         methods: {
             async submit($event) {
                 $event.preventDefault();
                 const variables = this.createAccount
-                    ? { data: { ...this.form, followingTags: this.tags } }
+                    ? { data: { ...this.form } }
                     : { username: this.form.username, password: this.form.password };
                 return this.$apollo.mutate({
                     mutation: gql`${this.createAccount ? registerQuery : loginQuery}`,
@@ -104,10 +95,9 @@
                         return;
                     }
                     const localKey = result.token;
-                    const userKey = result.user._key;
                     this.$store.commit('security/login', {
                         token: localKey,
-                        userKey,
+                        userId: result.user._id,
                     });
                     this.$router.push({ name: 'home' });
                 }).catch((err) => {
