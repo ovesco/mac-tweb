@@ -108,7 +108,7 @@
                             fragment: fragment.read,
                         });
                         if (type === actions.DELETE) {
-                            const index = item.likes.findIndex(e => e.userKey === this.currentKey);
+                            const index = item.likes.findIndex(e => e._from === this.currentId);
                             if (index > -1) item.likes.splice(index, 1);
                         } else item.likes.push(like);
                         cache.writeFragment({

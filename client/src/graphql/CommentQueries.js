@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+import { userFragment } from './UserQueries';
 
 export const commentFragment = gql`
     fragment commentFragment on Comment {
@@ -8,10 +9,11 @@ export const commentFragment = gql`
         date
         content
         user {
-            _key
-            name
+            ...userFragment
         }
     }
+
+    ${userFragment}
 `;
 
 export const activityCommentCache = {

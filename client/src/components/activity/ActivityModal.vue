@@ -46,7 +46,7 @@ export default {
         width:100%;
         z-index:10;
         height:100%;
-        padding-top:58px;
+        padding-top:53px;
 
         .dimmer {
             width:100%;

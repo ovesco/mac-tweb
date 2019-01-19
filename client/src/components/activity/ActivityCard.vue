@@ -33,7 +33,8 @@
                 </div>
             </div>
             <div class="activity-comments" v-if="showComments">
-                <comments :comments="activity.comments" :itemId="activity._id" />
+                <comments :comments="activity.comments" :user="activity.user"
+                          :itemId="activity._id" />
             </div>
         </div>
     </div>

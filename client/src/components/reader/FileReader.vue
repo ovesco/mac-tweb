@@ -39,7 +39,7 @@
     .files-reader {
 
         position:fixed;
-        padding-top:57px;
+        padding-top:53px;
         z-index:2005;
         top:0;
         width:100%;

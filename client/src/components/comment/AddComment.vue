@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex align-items-start">
         <div class="mr-lg-3">
-            <user-picture :size="2.3" />
+            <user-picture :picture-key="pictureKey" :size="2.3" />
         </div>
         <div class="flex-grow-1 pt-lg-3">
             <form method="post">
@@ -20,6 +20,9 @@
 
     export default {
         props: {
+            pictureKey: {
+                type: String,
+            },
             itemId: {
                 type: String,
                 required: true,

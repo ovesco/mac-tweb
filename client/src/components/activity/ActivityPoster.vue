@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="user-details d-lg-flex align-items-lg-center">
-            <user-picture class="mr-lg-3"/>
+            <user-picture :picture-key="activity.user.pictureKey" class="mr-lg-3"/>
             <div class="user-details d-lg-flex flex-lg-column">
                 <div class="username mb-lg-1 d-flex">
                     <smart-username :user="activity.user" />

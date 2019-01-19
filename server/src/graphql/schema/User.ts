@@ -7,6 +7,8 @@ import LikeManager from '../../arango/manager/LikeManager';
 import { LIKE_QUALIFIER } from '../../arango/manager/LikeManager';
 import { COMMENT_QUALIFIER } from '../../arango/manager/CommentManager';
 import FileManager from '../../arango/manager/FileManager';
+import Uploader from '../../fs/Uploader';
+import { IFile } from '../../arango/schema/File';
 
 export const typeDefs = gql`
     type myFiles {
@@ -24,6 +26,7 @@ export const typeDefs = gql`
     extend type Mutation {
         addUser(data: UserInput!): Session
         updateMe(data: UpdateUserInput!): User
+        updateProfilePicture(data: UpdateUserInput!): String!
     }
 
     input UpdateUserInput {
@@ -32,6 +35,7 @@ export const typeDefs = gql`
         followingTags: [String]
         oldPassword: String
         newPassword: String
+        picture: Upload
     }
 
     input UserInput {
@@ -48,6 +52,7 @@ export const typeDefs = gql`
         username: String!
         name: String! @capitalize
         email: String!
+        pictureKey: String
         comments: [Comment] @aql(query: "FOR c IN edges FILTER c.userKey == @current._key && c._qualifier == '${COMMENT_QUALIFIER}' RETURN c")
         likes: [Like] @aql(query: "FOR l IN edges FILTER l._from == @current._id && l._qualifier == '${LIKE_QUALIFIER}' RETURN l")
         reputation: [Like]
@@ -91,6 +96,15 @@ export const resolvers = {
                     else throw Error('Password is not correct');
                 }
                 return UserManager.update(user._key, plainToClass(User, user));
+            });
+        },
+        updateProfilePicture: async (_:any, args: any, context: ISecurityContext) => {
+            const { data: { picture } } = args;
+            return Uploader.saveFile(context.user, picture, ['image/jpeg', 'image/jpg', 'image/png']).then((file: IFile) => {
+                return FileManager.save(file).then((updated: IFile) => {
+                    context.user.pictureKey = updated._key;
+                    return UserManager.update(context.user._key, plainToClass(User, context.user)).then(() => updated._key);
+                });
             });
         },
     },

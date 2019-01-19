@@ -58,7 +58,7 @@ export const resolvers = {
         uploadActivityFile: async (parent: any, { fileInput } : { fileInput: IActivityFileInput },
                                    context: ISecurityContext) : Promise<IFile> => {
             return ActivityManager.findById(fileInput.activityId).then((activity: IActivity) => {
-                return Uploader.saveFile(context.user, fileInput.upload).then((file: IFile) => {
+                return Uploader.saveFile(context.user, fileInput.upload, Uploader.defaultMimes()).then((file: IFile) => {
                     const { tags, content } = (activity as IActivity);
                     file.tags = tags;
                     file.description = content;

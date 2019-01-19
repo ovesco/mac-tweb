@@ -9,6 +9,7 @@ export const userFragment = gql`
         name
         email
         followingTags
+        pictureKey
         reputation {
             ...likeFragment
         }
@@ -16,6 +17,13 @@ export const userFragment = gql`
     
     ${likeFragment}
 `;
+
+export const changePictureMutation = gql`
+    mutation($data: UpdateUserInput!) {
+        updateProfilePicture(data: $data)
+    }
+`;
+
 
 export const userQuery = gql`
     query($userKey: ID!) {

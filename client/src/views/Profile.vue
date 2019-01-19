@@ -24,7 +24,20 @@
                     </div>
                     <div class="col-lg-4">
                         <h2 class="text-black-50 pt-4 font-weight-normal">Profil</h2>
-                        <profile-fields />
+                        <el-card shadow="never">
+                            <div class="d-flex">
+                                <photo-field class="mr-3" />
+                                <div class="flex-fill">
+                                    <profile-fields />
+                                </div>
+                            </div>
+                        </el-card>
+                        <h3 class="text-black-50 pt-4 mt-5 font-weight-normal">
+                            Changer de mot de passe
+                        </h3>
+                        <el-card shadow="never">
+                            <password-fields />
+                        </el-card>
                     </div>
                 </div>
             </div>
@@ -35,11 +48,15 @@
 <script>
 import profileFields from '../components/user/ProfileFields.vue';
 import loadedActivity from '../components/activity/LoadedActivity.vue';
+import PasswordFields from '../components/user/PasswordFields.vue';
+import PhotoField from '../components/user/PhotoField.vue';
 
 export default {
     components: {
+        PasswordFields,
         loadedActivity,
         profileFields,
+        PhotoField,
     },
 };
 </script>

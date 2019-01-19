@@ -81,7 +81,7 @@ export default {
 
     #notifications-manager {
         position:fixed;
-        padding-top:58px;
+        padding-top:53px;
         right:0;
         top:0;
         width:20em;

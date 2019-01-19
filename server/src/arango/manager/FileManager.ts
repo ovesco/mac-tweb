@@ -12,6 +12,7 @@ class FileManager extends AbstractManager {
         FOR f IN files
             FILTER f.filename LIKE ${textQuery}
             AND LENGTH(INTERSECTION(f.tags, ${tags})) > 0
+            SORT f.date DESC
             LIMIT ${page*amount}, ${amount}
             RETURN f
         )
@@ -32,6 +33,7 @@ class FileManager extends AbstractManager {
         LET files = (
         FOR f IN ${this.collection}
             FILTER f.userKey == ${userKey}
+            SORT f.date DESC
             LIMIT ${begin*amount}, ${amount}
             RETURN f
         )

@@ -24,6 +24,9 @@ const server = new ApolloServer({
             return SecurityController.contextUser(connectionParams.token || '');
         },
     },
+    formatError(error: any) {
+        console.log(error);
+    },
 });
 
 server.applyMiddleware({ app });

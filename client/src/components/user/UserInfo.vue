@@ -1,51 +1,61 @@
 <template>
     <div>
-        <apollo-query :query="require('../../graphql/UserQueries').userQuery"
-                      :variables="{ userKey }">
-            <template slot-scope="{ result: { liading, error, data } }">
-                <div v-if="data">
-                    <div class="d-lg-flex user-info">
-                        <user-picture :size="5" :rounded="false" class="mr-lg-3 mt-lg-2" />
-                        <div class="flex-grow-1 d-flex flex-column justify-content-between">
-                            <div>
-                                <p class="m-0 username">{{ data.user.name }}</p>
-                                <p class="m-0 description">{{ data.user.email }}</p>
-                            </div>
+        <div v-if="user">
+            <div class="d-lg-flex user-info">
+                <user-picture :size="5" :picture-key="user.pictureKey" :rounded="false"
+                              class="mr-lg-3 mt-lg-2" />
+                <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                    <div>
+                        <p class="m-0 username">{{ user.name }}</p>
+                        <p class="m-0 description">{{ user.email }}</p>
+                    </div>
 
-                            <div class="d-flex justify-content-between stats">
-                                <div class="d-flex align-items-center">
-                                    <icon icon="heart" class="stats-icon mr-2"/>
-                                    <p class="m-0 stats-data text-black-50">
-                                        {{ countLikes(data.user.reputation, 'SAVE') }}
-                                    </p>
-                                </div>
+                    <div class="d-flex justify-content-between stats">
+                        <div class="d-flex align-items-center">
+                            <icon icon="heart" class="stats-icon mr-2"/>
+                            <p class="m-0 stats-data text-black-50">
+                                {{ countLikes(user.reputation, 'SAVE') }}
+                            </p>
+                        </div>
 
-                                <div class="d-flex align-items-center">
-                                    <icon icon="star" class="stats-icon mr-2"/>
-                                    <p class="m-0 stats-data text-black-50">
-                                        {{ countLikes(data.user.reputation, 'STAR') }}
-                                    </p>
-                                </div>
+                        <div class="d-flex align-items-center">
+                            <icon icon="star" class="stats-icon mr-2"/>
+                            <p class="m-0 stats-data text-black-50">
+                                {{ countLikes(user.reputation, 'STAR') }}
+                            </p>
+                        </div>
 
-                                <div class="d-flex align-items-center">
-                                    <icon icon="thumbs-up" class="stats-icon mr-2"/>
-                                    <p class="m-0 stats-data text-black-50">
-                                        {{ countLikes(data.user.reputation, 'LIKE') }}
-                                    </p>
-                                </div>
-                            </div>
+                        <div class="d-flex align-items-center">
+                            <icon icon="thumbs-up" class="stats-icon mr-2"/>
+                            <p class="m-0 stats-data text-black-50">
+                                {{ countLikes(user.reputation, 'LIKE') }}
+                            </p>
                         </div>
                     </div>
                 </div>
-            </template>
-        </apollo-query>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import userPicture from './UserPicture.vue';
+    import { userQuery } from '../../graphql/UserQueries';
 
     export default {
+        apollo: {
+            user: {
+                query: userQuery,
+                variables() {
+                    return { userKey: this.userKey };
+                },
+            },
+        },
+        data() {
+            return {
+                user: null,
+            };
+        },
         props: {
             userKey: {
                 type: String,
@@ -53,6 +63,9 @@
             },
         },
         methods: {
+            reload() {
+                this.$apollo.queries.user.refetch();
+            },
             countLikes(reputation, type) {
                 return reputation.filter(l => l.type === type).length;
             },

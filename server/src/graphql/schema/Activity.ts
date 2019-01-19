@@ -43,7 +43,7 @@ export const resolvers = {
     Query: {
         activity: async (_:any, { _key } : { _key: string }) => ActivityManager.find(_key),
         feed: async (x: any, { page } : { page: number }, context: ISecurityContext) => ActivityManager
-            .getUserFeed(context.user._key, page),
+            .getUserFeed(context.user, page),
         myActivities: async (x:any, y:any, context: ISecurityContext) => ActivityManager.findBy({
             userKey: context.user._key,
         }),

@@ -6,7 +6,7 @@
                          :key="comment._id" :comment="comment"/>
             </div>
             <div class="mt-lg-3">
-                <add-comment :item-id="itemId" />
+                <add-comment :item-id="itemId" :picture-key="me.pictureKey" />
             </div>
         </div>
     </div>
@@ -15,13 +15,23 @@
 <script>
     import comment from './Comment.vue';
     import AddComment from './AddComment.vue';
+    import { meQuery } from '../../graphql/UserQueries';
 
     export default {
+        apollo: {
+            me: {
+                query: meQuery,
+            },
+        },
         components: {
             comment,
             AddComment,
         },
         props: {
+            user: {
+                type: Object,
+                required: true,
+            },
             comments: {
                 type: Array,
                 default: () => [],

@@ -29,7 +29,7 @@ Vue.config.productionTip = false;
 Vue.use(InfiniteScroll);
 Vue.use(ElementUI);
 Vue.use(Toasted, {
-    position: 'top-right',
+    position: 'top-center',
     duration: 3000,
 });
 Vue.use(VueMoment, { moment });

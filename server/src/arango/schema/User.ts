@@ -13,6 +13,7 @@ export interface IUser extends IBase {
     email: string;
     roles: Array<ROLE>;
     followingTags: Array<string>;
+    pictureKey: string;
 }
 
 export default class User extends Base implements IUser {
@@ -22,6 +23,7 @@ export default class User extends Base implements IUser {
     name: string;
     email: string;
     roles: Array<ROLE>;
+    pictureKey: string;
     followingTags: Array<string>;
 
     buildSchema() : object {
@@ -33,6 +35,7 @@ export default class User extends Base implements IUser {
             email: Joi.string().email().required(),
             roles: Joi.array(),
             followingTags: Joi.array(),
+            pictureKey: Joi.string(),
         };
     }
 }

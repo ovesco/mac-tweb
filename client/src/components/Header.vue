@@ -23,18 +23,6 @@
                         ></i>
                     </el-badge>
                 </div>
-                <div class="user-menu ml-lg-3 mr-lg-3">
-                    <el-dropdown>
-                        <div class="image-container">
-                            <img src="./../assets/images/face.jpeg" />
-                        </div>
-                        <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item>
-                                <div @click="$store.commit('security/logout')">Logout</div>
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </el-dropdown>
-                </div>
             </div>
         </div>
     </div>
@@ -73,17 +61,6 @@ export default {
                     font-size:1em;
                     padding-top:0;
                 }
-            }
-        }
-
-        .user-menu {
-
-            line-height:0;
-
-            .image-container {
-                width:2.7em;
-                height:2.7em;
-                border-radius:100px;
             }
         }
     }

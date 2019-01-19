@@ -22,7 +22,6 @@ export const typeDefs = gql`
         _from: String
         _to: String
         type: LikeType
-        userKey: String
         date: String
         user: User @aql(query: "FOR u IN users FILTER u._id == @current._from RETURN u", single: true)
     }
@@ -40,7 +39,6 @@ export const resolvers = {
             }
 
             const like = new Like(context.user._id, itemId);
-            like.userKey = context.user._key;
             if (type === LikeType.STAR) like.type = LikeType.STAR;
             else if (type === LikeType.SAVE) like.type = LikeType.SAVE;
             else like.type = LikeType.LIKE;

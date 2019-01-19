@@ -1,8 +1,10 @@
 <template>
     <div>
         <div class="user-picture">
+            <img v-if="pictureKey" :src="pictureSrc" v-bind:style="{height: pSize, width: pSize}"
+                 :class="{'rounded': !rounded}"/>
             <img src="../../assets/images/face.jpeg" v-bind:style="{height: pSize, width: pSize}"
-            :class="{'rounded': !rounded}"/>
+                 v-else :class="{'rounded': !rounded}"/>
         </div>
     </div>
 </template>
@@ -11,6 +13,9 @@
     export default {
         props: {
             image: {
+                type: String,
+            },
+            pictureKey: {
                 type: String,
             },
             rounded: {
@@ -25,6 +30,9 @@
         computed: {
             pSize() {
                 return `${this.size}em`;
+            },
+            pictureSrc() {
+                return `http://localhost:4000/file/${this.pictureKey}`;
             },
         },
     };

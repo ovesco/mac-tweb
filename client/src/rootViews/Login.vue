@@ -27,7 +27,7 @@
                                 </div>
                                 <div class="mb-2">
                                     <el-input placeholder="Mot de passe" size="small"
-                                              v-model="form.password"></el-input>
+                                              type="password" v-model="form.password"></el-input>
                                 </div>
                                 <div class="row mt-5">
                                     <div class="col-4">

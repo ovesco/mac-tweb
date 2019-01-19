@@ -69,7 +69,7 @@ export default abstract class AbstractManager {
     }
 
     update<T extends IBase>(key: string, item: T): Promise<T> {
-        Joi.assert(item, item._getSchema());
+        Joi.assert(item, item._getSchema()); // Vérification des données
         return this.collection.update(key, item).then(() => item);
     }
 

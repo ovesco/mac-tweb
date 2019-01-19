@@ -2,7 +2,10 @@
     <div>
         <div class="container-md pt-lg-5" v-infinite-scroll="showMore">
             <div class="mb-5" v-if="me !== null">
-                <tags-chooser @input="newTagsSelected" v-model="me.followingTags" />
+                <div>
+                    <p class="m-0 font-size-9 text-muted">Les tags auxquels vous êtes abonné</p>
+                    <tags-chooser @input="newTagsSelected" v-model="me.followingTags" />
+                </div>
             </div>
             <div class="mb-5">
                 <add-activity />

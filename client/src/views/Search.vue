@@ -22,6 +22,7 @@
                 </div>
                 <div class="col-lg-9" v-if="searchFiles !== null">
                     <files-viewer @amount="updateAmount"
+                                  v-loading="$apollo.loading"
                                   :files.sync="searchFiles.files"></files-viewer>
                     <el-pagination layout="pager" class="mt-2"
                                    :background="true"

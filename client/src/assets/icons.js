@@ -9,6 +9,8 @@ import {
     faUser,
     faFolderOpen,
     faExternalLinkAlt,
+    faCompress,
+    faExpand,
     faTrash,
     faCopy,
     faFolderPlus,
@@ -32,6 +34,8 @@ library.add(faExternalLinkAlt);
 library.add(faCopy);
 library.add(faFolderPlus);
 library.add(faSignInAlt);
+library.add(faCompress);
+library.add(faExpand);
 library.add(faSignOutAlt);
 library.add(faFileImage);
 library.add(faTimes);

@@ -59,6 +59,7 @@
             },
             clear() {
                 this.$refs.uploader.clearFiles();
+                this.fileList.splice(0);
                 this.description = '';
             },
             fileRemoved(file) {

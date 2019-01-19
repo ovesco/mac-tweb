@@ -2,7 +2,7 @@
     <div>
         <div class="comment">
             <div class="d-flex align-items-lg-start">
-                <user-picture :size="2.3" class="mr-lg-3" />
+                <user-picture :size="2.3" :picture-key="comment.user.pictureKey" class="mr-lg-3" />
                 <div class="comment-content">
                     <p class="m-0 content d-flex">
                         <smart-username class="mr-2" :user="comment.user" />

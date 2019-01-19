@@ -32,11 +32,18 @@
                 <el-menu :collapse="menuCollapsed">
                     <el-menu-item index="collapse" class="d-flex" @click="toggle">
                         <div class="icon" v-bind:class="{'collapsed': menuCollapsed}">
-                            <icon icon="sign-out-alt" v-if="menuCollapsed" />
-                            <icon icon="sign-in-alt" v-else />
+                            <icon icon="expand" v-if="menuCollapsed" />
+                            <icon icon="compress" v-else />
                         </div>
                         <span slot="title" v-if="menuCollapsed">Agrandir</span>
                         <span slot="title" v-else>Réduire</span>
+                    </el-menu-item>
+                    <el-menu-item index="logout" class="d-flex"
+                                  @click="$store.commit('security/logout')">
+                        <div class="icon" v-bind:class="{'collapsed': menuCollapsed}">
+                            <icon icon="sign-out-alt" />
+                        </div>
+                        <span slot="title">Deconnexion</span>
                     </el-menu-item>
                 </el-menu>
             </div>

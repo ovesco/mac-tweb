@@ -7,7 +7,6 @@ export const likeFragment = gql`
         _to
         date
         type
-        userKey
         user {
             name
         }

@@ -9,17 +9,14 @@ export enum LikeType {
 
 export interface ILike extends IEdge {
     type: LikeType;
-    userKey: string;
 }
 
 export default class Like extends Edge implements ILike {
     type: LikeType;
-    userKey: string;
 
     _edgeSchema() : object {
         return {
             type: Joi.string().required(),
-            userKey: Joi.string().required(),
         };
     }
 }

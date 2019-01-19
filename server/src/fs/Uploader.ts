@@ -5,8 +5,12 @@ import File from '../arango/schema/File';
 import { IUser } from '../arango/schema/User';
 
 export default class Uploader {
-    static mimeTypeSupported(mime: string): boolean {
-        return process.env.SUPPORTED_MIME_TYPES.split(',').indexOf(mime) !== -1;
+    static defaultMimes(): Array<string> {
+        return process.env.SUPPORTED_MIME_TYPES.split(',');
+    }
+
+    static mimeTypeSupported(mimes: Array<string>, mime: string): boolean {
+        return mimes.indexOf(mime) !== -1;
     }
 
     static streamFile(src: string) : fs.ReadStream {
@@ -32,10 +36,10 @@ export default class Uploader {
         });
     }
 
-    static async saveFile(user: IUser, fileInput: Promise<object>): Promise<File> {
+    static async saveFile(user: IUser, fileInput: Promise<object>, mimes: Array<string>): Promise<File> {
         // @ts-ignore
         const { stream, filename, mimetype } = await fileInput;
-        if(!Uploader.mimeTypeSupported(mimetype)) throw new Error('Unsupported mime type');
+        if(!Uploader.mimeTypeSupported(mimes, mimetype)) throw new Error('Unsupported mime type');
 
         // Create file
         const file = new File();
