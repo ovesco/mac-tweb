@@ -27,6 +27,7 @@ class SecurityController {
     }
 
     static createAuthResponse(user: IUser): ISession {
+        console.log(user);
         return {
             token: SecurityController.createJWT(user),
             user,
@@ -51,7 +52,8 @@ class SecurityController {
     }
 
     static async contextUser(token: string) {
-        return SecurityController.jwtToUser(token).then(user => user ? { user } : null);
+        return token === '' ? null : SecurityController.jwtToUser(token)
+            .then(user => user ? { user } : null).catch(() => null);
     }
 
     static encodePassword(clear: string, salt: string): string {

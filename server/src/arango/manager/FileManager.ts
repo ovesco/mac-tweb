@@ -5,6 +5,13 @@ import { IFile } from '../schema/File';
 export const FILES_COLLECTION = 'files';
 
 class FileManager extends AbstractManager {
+    /**
+     * Recherche des fichiers selon le nom et les tags
+     * @param text le nom du fichier
+     * @param tags les tags à chercher
+     * @param page indice de pagination
+     * @param amount quantité de fichiers à afficher pour la pagination
+     */
     async search(text: string, tags: Array<string>, page: number, amount: number): Promise<IFile> {
         const textQuery = `%${text}%`;
         return this.query(aql`
@@ -28,6 +35,12 @@ class FileManager extends AbstractManager {
         });
     }
 
+    /**
+     * Trouve les fichiers de l'utilisateur
+     * @param userKey la clé de l'utilisateur
+     * @param begin indice de pagination
+     * @param amount quantité à afficher
+     */
     async findUserFiles(userKey: string, begin: number, amount: number) {
         return this.query(aql`
         LET files = (

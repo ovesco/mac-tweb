@@ -5,6 +5,12 @@ import { aql } from 'arangojs';
 const DIRECTORY_FILE_QUALIFIER = 'directory_file';
 
 class DirectoryFileEdgeManager extends EdgeManager {
+    /**
+     * Retourne les fichiers paginés d'un dossier, ainsi que le nombre total
+     * @param id l'id du dossier
+     * @param begin début de pagination
+     * @param amount quantité souhaitée
+     */
     async getDirectoryFiles(id: string, begin: number, amount: number) : Promise<Array<IFile>> {
         return this.query(aql`
         LET amount = (

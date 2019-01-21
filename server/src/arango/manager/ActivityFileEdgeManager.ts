@@ -5,6 +5,10 @@ import { IFile } from '../schema/File';
 const ACTIVITY_FILE_QUALIFIER = 'activity_file';
 
 class ActivityFileEdgeManager extends EdgeManager {
+    /**
+     * Retourne les fichiers rattachés à une activité donnée
+     * @param activityId
+     */
     getActivityFiles(activityId: string) : Promise<Array<IFile>> {
         return this.query(aql`
         FOR file IN OUTBOUND ${activityId} ${this.collection} RETURN file`)

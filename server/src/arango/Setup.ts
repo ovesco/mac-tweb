@@ -12,10 +12,6 @@ import { EDGES_COLLECTION, EDGES_GRAPH } from './manager/EdgeManager';
 import db from './Database';
 import Tag from './schema/Tag';
 
-db.graph('likes_graph').get().then((res) => {
-    console.log(res);
-});
-
 function initCollections() {
     const managers = [
         ActivityManager,
@@ -52,18 +48,9 @@ function initCollections() {
 }
 
 async function postInstall() {
-    await ['heig-vd', 'il', 'swag'].forEach(async (tagname) => {
+    await ['heig-vd', 'il'].forEach(async (tagname) => {
         await TagManager.save(new Tag(tagname));
     });
 }
 
-db.listDatabases().then(async (res) => {
-    if(!res.includes(process.env.DB_NAME)) {
-        db.createDatabase(process.env.DB_NAME).then(() => {
-            initCollections();
-        });
-    } else {
-        initCollections();
-    }
-});
-// */
+initCollections();

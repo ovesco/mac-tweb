@@ -26,6 +26,11 @@ export default class User extends Base implements IUser {
     pictureKey: string;
     followingTags: Array<string>;
 
+    constructor() {
+        super();
+        this.followingTags = [];
+    }
+
     buildSchema() : object {
         return {
             username: Joi.string().alphanum().min(3).max(20).required(),

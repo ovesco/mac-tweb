@@ -22,11 +22,6 @@ const query = gql`
         version: String
     }
 
-    type Session {
-        token: String!
-        user: User!
-    }
-
     type Mutation {
         login(username: String, password: String): Session
     }

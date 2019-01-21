@@ -16,6 +16,11 @@ export const typeDefs = gql`
         amount: Int!
     }
 
+    type Session {
+        token: String!
+        user: User!
+    }
+
     extend type Query {
         me: User
         myFiles(begin: Int, amount: Int!): myFiles

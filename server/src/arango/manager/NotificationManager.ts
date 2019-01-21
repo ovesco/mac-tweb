@@ -7,9 +7,20 @@ import pubSub, { NOTIFICATION } from '../../graphql/Subscriber';
 export const NOTIFICATION_QUALIFIER = 'notifications';
 
 class NotificationManager extends EdgeManager {
+    /**
+     *
+     * @param from
+     * @param to
+     * @param performerKey
+     * @param type
+     */
     async addNotification(from: string, to: string, performerKey: string, type: string): Promise<any> {
         const notification = new Notification(from, to, performerKey, type);
-        return this.save(notification).then(notif => pubSub.publish(NOTIFICATION, { notified: notif }));
+        if (from.split('/').pop() !== performerKey) {
+            return this.save(notification)
+                .then(notif => pubSub.publish(NOTIFICATION, { notified: notif }));
+        }
+        return new Promise((resolve) => { resolve(); });
     }
 
     async lastNotifications(userId: string) {
