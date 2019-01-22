@@ -1,6 +1,11 @@
 import Base, { IBase } from './Base';
 import * as Joi from 'joi';
 
+/**
+ * All edges of the app are contained in a single collection on which
+ * we build an arango graph
+ */
+
 export interface IEdge extends IBase {
     _qualifier: string;
     _from: string;

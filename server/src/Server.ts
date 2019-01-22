@@ -32,6 +32,10 @@ const server = new ApolloServer({
 
 server.applyMiddleware({ app });
 
+/**
+ * Only express route, used to retrieve and return a file based
+ * on its key
+ */
 app.get('/file/:fileKey', (req, res) => {
     const fileKey = req.params.fileKey;
     if(fileKey) {
@@ -49,7 +53,7 @@ app.get('/file/:fileKey', (req, res) => {
 const httpServer = createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
-httpServer.listen({ port: 4000 }, () => {
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
-    console.log(`🚀 WS ready at ws://localhost:4000${server.subscriptionsPath}`);
+httpServer.listen({ port: process.env.PORT }, () => {
+    console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`);
+    console.log(`🚀 WS ready at ws://localhost:${process.env.PORT}${server.subscriptionsPath}`);
 });

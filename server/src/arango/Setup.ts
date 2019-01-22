@@ -12,6 +12,11 @@ import { EDGES_COLLECTION, EDGES_GRAPH } from './manager/EdgeManager';
 import db from './Database';
 import Tag from './schema/Tag';
 
+/**
+ * This script is included in package.json and allows configuration
+ * of the DB. You must first create a DB from the arango admin dashboard
+ * and then run this script
+ */
 function initCollections() {
     const managers = [
         ActivityManager,

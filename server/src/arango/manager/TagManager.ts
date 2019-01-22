@@ -3,6 +3,10 @@ import { aql } from 'arangojs';
 import Tag from '../schema/Tag';
 
 class TagManager extends AbstractManager {
+    /**
+     * Extracts tags from a string and return them
+     * @param content string to extract tags from
+     */
     extractTags(content: string) : Promise<Array<string>> {
         // Extract hashtags and remove # char
         const extract = content.match(/#[a-z0-9_]+/g);
@@ -21,6 +25,10 @@ class TagManager extends AbstractManager {
             });
     }
 
+    /**
+     * Search some hashtag based on a given needle
+     * @param needle
+     */
     search(needle: string) : Promise<Array<Tag>> {
         const searchItem = `%${needle}%`;
         return this.query(aql`FOR t IN ${this.collection} FILTER t.tag LIKE ${searchItem} LIMIT 5 RETURN t`)

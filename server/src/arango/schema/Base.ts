@@ -1,5 +1,10 @@
 import * as Joi from 'joi';
 
+/**
+ * All entities from our system must implement this
+ * interface
+ */
+
 export interface IBase {
     _key?: string;
     _id?: string;
@@ -31,6 +36,10 @@ export default abstract class Base implements IBase {
         });
     }
 
+    /**
+     * Implemented in every entity, called by the abstract manager
+     * when we perform a write operation to validate schema
+     */
     abstract buildSchema(): object;
 
     static schema() : object {

@@ -8,11 +8,11 @@ export const NOTIFICATION_QUALIFIER = 'notifications';
 
 class NotificationManager extends EdgeManager {
     /**
-     *
-     * @param from
-     * @param to
-     * @param performerKey
-     * @param type
+     * Adds a notification and publish it
+     * @param from dude notified
+     * @param to object of notification
+     * @param performerKey dude who made the notification
+     * @param type like or comment
      */
     async addNotification(from: string, to: string, performerKey: string, type: string): Promise<any> {
         const notification = new Notification(from, to, performerKey, type);
@@ -23,6 +23,10 @@ class NotificationManager extends EdgeManager {
         return new Promise((resolve) => { resolve(); });
     }
 
+    /**
+     * Gets last unread notifications
+     * @param userId
+     */
     async lastNotifications(userId: string) {
         console.log(userId);
         return this.findBy({
@@ -34,6 +38,10 @@ class NotificationManager extends EdgeManager {
         });
     }
 
+    /**
+     * Marks a set of notifications as read
+     * @param keys
+     */
     async markReadNotifications(keys: Array<string>) {
         return this.query(aql`
             FOR n IN ${this.collection}
@@ -42,10 +50,18 @@ class NotificationManager extends EdgeManager {
         `);
     }
 
+    /**
+     * Finds owner of an object, either comment or like
+     * @param itemId
+     */
     async findOwnerId(itemId: string) {
         return this.findItemById(itemId).then(res => res === null ? null : `${USERS_COLLECTION}/${res.userKey}`);
     }
 
+    /**
+     * an object based on its ID from whichever collection it belongs to
+     * @param itemId
+     */
     async findItemById(itemId: string) {
         const collection = itemId.split('/').shift();
         return this.query(aql`
