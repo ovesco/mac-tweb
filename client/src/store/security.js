@@ -15,6 +15,7 @@ export default {
             state.token = token;
         },
         logout(state) {
+            state.userId = null;
             state.userKey = null;
             state.token = null;
             router.push({ name: 'login' });
