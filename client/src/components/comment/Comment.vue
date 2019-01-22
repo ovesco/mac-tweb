@@ -35,9 +35,6 @@
     import SmartInput from '../Smart/SmartInput.vue';
 
     export default {
-        mounted() {
-            console.log(this.comment._to);
-        },
         components: {
             SmartInput,
             userPicture,

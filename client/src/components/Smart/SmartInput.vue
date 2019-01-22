@@ -1,10 +1,10 @@
 <template>
     <div>
-        <at-ta :ats="['#']" :members="members" ref="at">
+        <at-ta :ats="['#']" :members="tags" ref="at" :allow-spaces="false">
             <textarea class="smart-input" spellcheck="false"
                       @keydown="$emit('keydown', $event)"
                       @blur="handleBlur"
-                      @input="$emit('update:value', $event.target.value) && log()"
+                      @input="$emit('update:value', $event.target.value)"
                       :placeholder="placeholder" title="">{{value}}</textarea>
         </at-ta>
     </div>
@@ -12,28 +12,41 @@
 
 <script>
     import AtTa from 'vue-at/dist/vue-at-textarea';
+    import { tagsQuery } from '../../graphql/TagQueries';
 
     export default {
+        apollo: {
+            tags: {
+                query: tagsQuery,
+                variables() {
+                    return {
+                        search: this.searchTag,
+                    };
+                },
+                update(data) {
+                    return data.tags.map(t => t.tag);
+                },
+            },
+        },
         components: {
             AtTa,
         },
+        computed: {
+            searchTag() {
+                const data = this.value.split(' ').pop();
+                if (data.charAt(0) === '#' && data.length > 1) return data.substr(1);
+                return null;
+            },
+        },
         data() {
             return {
+                tags: [],
                 content: '',
-                members: [
-                    'yolo',
-                    'swag',
-                    'bim bim',
-                    'stylé',
-                ],
             };
         },
         methods: {
             handleBlur() {
                 this.$refs.at.closePanel();
-            },
-            log() {
-                console.log(this.$refs.at._data.atwho);
             },
         },
         props: {

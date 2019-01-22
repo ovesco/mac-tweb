@@ -13,7 +13,6 @@ export default {
     },
     methods: {
         async addToDirectory(directory) {
-            console.log(directory);
             await Promise.all(this.selected.map(file => this.$apollo.mutate({
                 mutation: addFileToDirectoryQuery,
                 variables: { directoryId: directory._id, fileId: file._id },

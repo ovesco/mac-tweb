@@ -32,7 +32,7 @@
                 return `${this.size}em`;
             },
             pictureSrc() {
-                return `http://localhost:4000/file/${this.pictureKey}`;
+                return `${this.$store.getters['ui/serverUrl']}/file/${this.pictureKey}`;
             },
         },
     };

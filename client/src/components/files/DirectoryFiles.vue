@@ -41,7 +41,6 @@ export default {
                 };
             },
             update(data) {
-                console.log(data);
                 data.directoryFiles.files.forEach((f) => {
                     // eslint-disable-next-line
                     f.selected = false;

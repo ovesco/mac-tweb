@@ -8,6 +8,7 @@ import { ApolloLink, concat, split } from 'apollo-link';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import Store from '../store';
 import introspectionQueryResultData from './fragmentTypes.json';
+import settings from '../../env.json';
 
 Vue.use(VueApollo);
 
@@ -23,11 +24,11 @@ const AuthMiddleware = new ApolloLink((operation, forward) => {
 });
 
 const httpLink = createUploadLink({
-    uri: 'http://localhost:4000/graphql',
+    uri: `${settings.url}/graphql`,
 });
 
 const wsLink = new WebSocketLink({
-    uri: 'ws://localhost:4000/subscriptions',
+    uri: settings.wsUrl,
     options: {
         reconnect: true,
         connectionParams: {

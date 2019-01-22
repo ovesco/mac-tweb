@@ -7,7 +7,7 @@ export default {
     },
     computed: {
         fileSrc() {
-            return `http://localhost:4000/file/${this.file._key}`;
+            return `${this.$store.getters['ui/serverUrl']}/file/${this.file._key}`;
         },
     },
 };

@@ -39,7 +39,7 @@ export default {
     },
     computed: {
         pictureSrc() {
-            return `http://localhost:4000/file/${this.me.pictureKey}`;
+            return `${this.$store.getters['ui/serverUrl']}/file/${this.me.pictureKey}`;
         },
     },
     methods: {

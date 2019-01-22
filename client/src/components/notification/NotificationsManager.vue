@@ -33,7 +33,6 @@ export default {
         this.$apollo.query({
             query: lastNotificationsQuery,
         }).then(({ data }) => {
-            console.log(data);
             data.lastNotifications.forEach((notif) => {
                 this.$store.commit('ui/addNotification', notif);
             });
@@ -58,7 +57,6 @@ export default {
             notified: {
                 query: NotifiedSubscription,
                 result({ data }) {
-                    console.log(data.notified.target);
                     this.$store.commit('ui/addNotification', data.notified);
                 },
             },

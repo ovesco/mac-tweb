@@ -1,3 +1,5 @@
+import settings from '../../env.json';
+
 /* eslint-disable no-param-reassign */
 export default {
     namespaced: true,
@@ -39,5 +41,6 @@ export default {
         showModalActivity: state => state.modalActivityId !== null,
         notified: state => state.notifications.filter(n => !n.read).length > 0,
         menuCollapsed: state => state.menuCollapsed,
+        serverUrl: () => settings.url,
     },
 };
