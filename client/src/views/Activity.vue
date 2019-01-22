@@ -46,7 +46,9 @@ export default {
                 variables: { data: { followingTags } },
             }).then(() => {
                 this.loading = false;
-                this.$apollo.queries.feed.refresh();
+                console.log(1);
+                this.$apollo.queries.feed.refetch();
+                console.log(2);
             });
         },
         showMore() {

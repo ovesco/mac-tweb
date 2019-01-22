@@ -26,6 +26,7 @@ const server = new ApolloServer({
     },
     formatError(error: any) {
         console.log(error);
+        return error;
     },
 });
 

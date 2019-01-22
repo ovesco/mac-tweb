@@ -4,6 +4,14 @@
     </div>
 </template>
 
-<style lang="scss">
+<script>
+import Bus from './Bus';
 
-</style>
+export default {
+    mounted() {
+        Bus.$on('graphql-error', (message) => {
+            this.$toasted.error(message);
+        });
+    },
+};
+</script>

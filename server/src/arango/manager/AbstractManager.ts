@@ -111,7 +111,7 @@ export default abstract class AbstractManager {
      * @param item le document
      */
     update<T extends IBase>(key: string, item: T): Promise<T> {
-        Joi.assert(item, item._getSchema()); // Vérification des données
+        AbstractManager.validate(item);
         return this.collection.update(key, item).then(() => item);
     }
 
@@ -120,7 +120,7 @@ export default abstract class AbstractManager {
      * @param item l'objet à sauvegarder
      */
     save<T extends IBase>(item: T): Promise<T> {
-        Joi.assert(item, item._getSchema());
+        AbstractManager.validate(item);
         return (this.collection as DocumentCollection).save(item).then((response : IBase) => {
             item._key = response._key;
             item._id = response._id;
@@ -150,5 +150,12 @@ export default abstract class AbstractManager {
      */
     getCollection(): BaseCollection {
         return this.collection;
+    }
+
+    static validate(object: IBase) : Error {
+        Joi.validate(object, object._getSchema(), (err) => {
+            if (err !== null) throw err.details.map(e => e.message);
+        });
+        return null;
     }
 }

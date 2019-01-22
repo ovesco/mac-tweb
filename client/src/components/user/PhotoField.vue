@@ -51,6 +51,7 @@ export default {
             }).then(({ data: { updateProfilePicture } }) => {
                 this.me.pictureKey = updateProfilePicture;
                 this.$toasted.success('Photo de profil changée');
+                this.$apollo.queries.me.refetch();
             });
         },
         beforeAvatarUpload() {

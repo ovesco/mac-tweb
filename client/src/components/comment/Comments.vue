@@ -5,7 +5,7 @@
                 <comment class="mb-lg-4" v-for="comment in comments"
                          :key="comment._id" :comment="comment"/>
             </div>
-            <div class="mt-lg-3">
+            <div class="mt-lg-3" v-if="me !== null">
                 <add-comment :item-id="itemId" :picture-key="me.pictureKey" />
             </div>
         </div>
@@ -26,6 +26,11 @@
         components: {
             comment,
             AddComment,
+        },
+        data() {
+            return {
+                me: null,
+            };
         },
         props: {
             user: {
