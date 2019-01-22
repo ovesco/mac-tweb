@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="activity-card p-5">
+        <div class="activity-card p-5" v-loading="loading">
             <div class="pt-lg-3 pb-lg-5">
                 <smart-input :value.sync="description"
                     placeholder="Exprimez-vous ou décrivez les fichiers que vous allez uploader..."
@@ -51,6 +51,7 @@
             return {
                 fileList: [],
                 description: '',
+                loading: false,
             };
         },
         methods: {
@@ -61,12 +62,14 @@
                 this.$refs.uploader.clearFiles();
                 this.fileList.splice(0);
                 this.description = '';
+                this.loading = false;
             },
             fileRemoved(file) {
                 const index = this.fileList.indexOf(file);
                 if (index !== -1) this.fileList.splice(index, 1);
             },
             publish() {
+                this.loading = true;
                 this.$apollo.mutate({
                     mutation: addActivityQuery,
                     variables: { data: { content: this.description } },
