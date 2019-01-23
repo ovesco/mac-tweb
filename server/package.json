@@ -7,7 +7,7 @@
     "postinstall": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/Server.js",
-    "serve": "node build/Server.js",
+    "serve": "tsc && node build/Server.js",
     "dev": "nodemon",
     "setup": "tsc && node build/arango/Setup.js"
   },
